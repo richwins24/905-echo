@@ -28,9 +28,9 @@
     #lyricsBox { --played: #ffffff; --todo: #64748b; height: 12rem; overflow-y: auto; }
     #lyricsBox .lyric-line { transform-origin: center; }
     .lyric-line { color: var(--todo); opacity: .55; transition: color .3s, opacity .3s, transform .3s; }
-    .lyric-line.on { color: var(--played); opacity: 1; }
+    .lyric-line.on { color: #ffffff; opacity: 1; transform: scale(1.14); transform-origin: center; font-weight: 700; }
     #lyricsBox.fx-glow .lyric-line.on { text-shadow: 0 0 10px var(--played), 0 0 20px var(--played); }
-    #lyricsBox.fx-pop .lyric-line.on { transform: translateY(-2px); }
+    #lyricsBox.fx-pop .lyric-line.on { transform: scale(1.14) translateY(-2px); }
     #lyricsBox.fx-wave .lyric-line.on { animation: lyricWave 1.2s ease-in-out infinite; }
     @keyframes lyricWave { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
     @keyframes lyricNeon { 0%, 18%, 22%, 62%, 64%, 100% { text-shadow: 0 0 6px var(--played), 0 0 14px var(--played), 0 0 28px var(--played); opacity: 1; } 20%, 63% { text-shadow: none; opacity: .6; } }
@@ -800,7 +800,7 @@
     }
     function applyLyricStyle() {
       const st = getLyricStyle();
-      const played = '#c084fc', todo = '#64748b', fx = st.fx || 'none';   // 文字顏色固定
+      const played = '#ffffff', todo = '#64748b', fx = st.fx || 'none';   // 已唱的字為白色
       const box = document.getElementById('lyricsBox');
       box.style.setProperty('--played', played);
       box.style.setProperty('--todo', todo);
