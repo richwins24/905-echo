@@ -309,7 +309,7 @@
     let currentPlaylistFilter = "all";
     let sortMode = "manual";
     let waveOn = true;
-    let lyricsOn = true;   // 歌詞預設開啟
+    let lyricsOn = false;  // 歌詞預設關閉，播放時開啟，歌曲結束時關閉
     let currentLyrics = [];   // [{ time, text }]
     let activeLyric = -1;
     // 循環模式：關（播完停止）／全部循環／單曲循環
@@ -821,8 +821,9 @@
       if (on) updateLyrics();
     }
     audio.addEventListener('play', () => openLyricsPanel(true));
-    // 進入網頁時也預設開啟歌詞面板
-    openLyricsPanel(true);
+    // 進入網頁時歌詞面板預設關閉，播放時才開啟
+    openLyricsPanel(false);
+    audio.addEventListener('ended', () => openLyricsPanel(false));
     if (!document.getElementById('lyricsBox').innerHTML.trim()) {
       document.getElementById('lyricsBox').innerHTML = '<p class="text-slate-500 text-sm pt-12">播放歌曲後顯示歌詞</p>';
     }
