@@ -124,7 +124,7 @@
     </section>
 
     <!-- 最近播放／繼續上次播放 -->
-    <div id="recentRow" class="flex items-center gap-2 overflow-x-auto pb-3 text-xs"></div>
+    <div id="recentRow" class="login-only flex items-center gap-2 overflow-x-auto pb-3 text-xs"></div>
 
     <!-- 新歌提示 -->
     <div id="newSongBanner" class="hidden mb-4 flex items-center justify-between gap-3 bg-purple-900/40 border border-purple-500/40 rounded-xl px-4 py-2 text-sm">
@@ -133,7 +133,7 @@
     </div>
 
     <!-- 我的清單（登入後顯示） -->
-    <div id="myListBox" class="hidden mb-4 flex flex-wrap items-center gap-2 text-sm">
+    <div id="myListBox" class="login-only hidden mb-4 flex flex-wrap items-center gap-2 text-sm">
       <span class="text-slate-400"><i class="fa-solid fa-folder"></i> 我的清單</span>
       <input id="newUserListName" maxlength="20" placeholder="新清單名稱" class="flex-1 min-w-[140px] bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-white">
       <button id="addUserListBtn" class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600">建立</button>
@@ -454,7 +454,7 @@
     // ===== 渲染 =====
     function renderGenreFilters() {
       const cats = ['all', ...genres].map(g => [g, g === 'all' ? '全部' : esc(g)]);
-      const specials = currentUser ? [["__fav", "❤ 我的收藏"], ["__hist", "🕘 最近播放"]] : [];
+      const specials = (currentUser && (loginOpen || isAdmin)) ? [["__fav", "❤ 我的收藏"], ["__hist", "🕘 最近播放"]] : [];
       genreFilters.innerHTML = [...cats, ...specials].map(([g, label]) => {
         const active = g === currentGenreFilter;
         return `<button class="genre-btn shrink-0 px-4 py-1.5 rounded-full text-xs font-medium transition ${active ? 'bg-purple-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}" data-genre="${esc(g)}">${label}</button>`;
