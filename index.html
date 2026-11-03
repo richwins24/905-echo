@@ -22,6 +22,10 @@
     body.is-guest .login-only { display: none !important; }
     body.login-off .login-only { display: none !important; }
     #playerBar.mini { padding-top: 6px; padding-bottom: 6px; }
+    @media (min-width: 768px) {
+      #playerBar .extra-controls { flex-wrap: wrap; overflow: visible; justify-content: flex-end; row-gap: 4px; }
+      #playerBar .extra-controls select { max-width: 96px; }
+    }
     #playerBar.mini .full-only, #playerBar.mini .extra-controls, #playerBar.mini #currentCover, #playerBar.mini #waveBar { display: none !important; }
     #playerBar.mini #currentTitle { font-size: 12px; }
 
@@ -1266,13 +1270,13 @@
         authRef = firebase.auth();
         authRef.onAuthStateChanged(user => {
           currentUser = user;
-          if (settingsLoaded && user && !loginOpen && !isAdminUser()) {
+          if (settingsLoaded && user && !loginOpen && !isAdmin) {
             // 登入功能未開放：非管理員登入後立即登出，並顯示敬請期待
             authRef.signOut();
             showPanel('登入功能', '<p class="text-center py-6 text-slate-300 text-base">敬請期待</p>');
             return;
           }
-          document.body.classList.toggle('login-off', !(loginOpen || isAdminUser()));
+          document.body.classList.toggle('login-off', !(loginOpen || isAdmin));
           updateLoginBtn();
           attachUserData();
         });
@@ -1294,7 +1298,7 @@
       sharedDb.ref('settings/loginEnabled').on('value', snap => {
         loginOpen = snap.val() === true;
         settingsLoaded = true;
-        document.body.classList.toggle('login-off', !(loginOpen || isAdminUser()));
+        document.body.classList.toggle('login-off', !(loginOpen || isAdmin));
         const t = document.getElementById('loginToggle');
         if (t) t.checked = loginOpen;
         renderSongs(getFilteredSongs());
@@ -1303,9 +1307,9 @@
 
     // 管理員在後台開關登入功能
     document.getElementById('loginToggle').addEventListener('change', async e => {
-      if (!isAdminUser() || !sharedDb) {
+      if (!isAdmin || !currentUser || !sharedDb) {
         e.target.checked = loginOpen;
-        return alert('只有管理員（Google 登入）可以開關登入功能');
+        return alert('請先進入管理後台，並用 Google 登入後再開關');
       }
       await sharedDb.ref('settings/loginEnabled').set(e.target.checked);
     });
