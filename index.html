@@ -27,7 +27,7 @@
     /* ===== 歌詞整句效果 ===== */
     #lyricsBox { --played: #ffffff; --todo: #64748b; height: 12rem; overflow-y: auto; }
     #lyricsBox .lyric-line { transform-origin: center; }
-    .lyric-line { color: var(--todo); opacity: .55; transition: color .3s, opacity .3s, transform .3s; }
+    .lyric-line { color: var(--todo); opacity: .55; cursor: pointer; transition: color .3s, opacity .3s, transform .3s; }
     .lyric-line.on { color: #ffffff; opacity: 1; transform: scale(1.14); transform-origin: center; font-weight: 700; }
     #lyricsBox.fx-glow .lyric-line.on { text-shadow: 0 0 10px var(--played), 0 0 20px var(--played); }
     #lyricsBox.fx-pop .lyric-line.on { transform: scale(1.14) translateY(-2px); }
@@ -151,6 +151,9 @@
         <i class="fa-solid fa-play"></i> 播放全部
       </button>
     </div>
+
+    <!-- 班級公告 -->
+    <div id="noticeBox" class="hidden mb-4 bg-amber-900/30 border border-amber-500/40 text-amber-100 rounded-xl px-4 py-2 text-sm"></div>
 
     <!-- 本週熱門 -->
     <div id="hotBox" class="flex flex-wrap items-center gap-2 mb-6"></div>
@@ -464,6 +467,13 @@
       if (isUser) plName.textContent = `${userLists[activeUserList].name}（${Object.keys(userLists[activeUserList].ids || {}).length} 首）`;
     }
 
+    // 新歌標記：songs.json 裡的 "added"（YYYY-MM-DD）在 7 天內會顯示 NEW
+    function isNewSong(song) {
+      if (!song.added) return false;
+      const diff = (new Date(todayKey()) - new Date(song.added)) / 86400000;
+      return diff >= 0 && diff <= 7;
+    }
+
     function renderSongs(list) {
       musicGrid.innerHTML = '';
       if (songs.length === 0) {
@@ -483,6 +493,7 @@
         const isPlayingThis = isCurrent && playingNow;
         const showWave = waveOn && isPlayingThis;
         const stat = st(song.id);
+        const isNew = song.added && (Date.now() - new Date(song.added).getTime()) < 7 * 86400000;
 
         const fav = userFavs.has(song.id);
         const ri = ratingInfo(song.id);
@@ -513,7 +524,9 @@
               <i class="fa-solid ${isPlayingThis ? 'fa-pause' : 'fa-play'}"></i>
             </button>
             <span class="absolute top-3 left-3 bg-slate-950/70 backdrop-blur px-2.5 py-1 rounded-md text-[11px] font-semibold text-purple-400 border border-slate-700">${esc(song.genre)}</span>
+            ${isNewSong(song) ? '<span class="absolute top-12 left-3 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">NEW</span>' : ''}
             <span class="absolute top-3 right-3 bg-slate-950/70 px-2.5 py-1 rounded-md text-[11px] font-bold text-amber-300 border border-slate-700">#${rank}</span>
+            ${isNew ? '<span class="absolute top-12 left-3 bg-amber-400 text-slate-900 px-2 py-0.5 rounded text-[10px] font-bold">NEW</span>' : ''}
             ${showWave ? `<div class="wave absolute bottom-3 left-3"><span></span><span></span><span></span><span></span></div>` : ''}
           </div>
           <div class="p-4 flex flex-col flex-grow justify-between gap-3">
@@ -691,6 +704,16 @@
       else { audio.pause(); setPlayingUI(false); }
     });
 
+    // 點歌詞某一句，直接跳到那一句的時間
+    document.getElementById('lyricsBox').addEventListener('click', e => {
+      const p = e.target.closest('.lyric-line');
+      if (!p) return;
+      const line = currentLyrics[Number(p.dataset.i)];
+      if (!line) return;
+      audio.currentTime = line.time;
+      if (audio.paused) audio.play();
+    });
+
     // 音檔載入失敗時提示（例如路徑錯誤或檔案未上傳）
     audio.addEventListener('error', () => {
       const s = songs.find(x => x.id === currentId);
@@ -853,6 +876,7 @@
     audio.addEventListener('timeupdate', () => {
       if (currentId !== null && Date.now() - lastSaveAt > 3000) {
         lastSaveAt = Date.now();
+        saveProgress();
         try { localStorage.setItem('sg_last', JSON.stringify({ id: currentId, t: audio.currentTime })); } catch (e) {}
       }
       if (!isNaN(audio.duration)) {
@@ -1544,7 +1568,7 @@
     async function loadSong(id, startAt = 0) {
       const target = Number(volumeBar.value);
       if (!audio.paused && audio.src && currentId !== id) await fadeVolume(0, 300);
-      await loadSongNow(id, startAt);
+      await loadSongNow(id, startAt || savedProgress(id));
       audio.volume = 0;
       fadeVolume(target, 500);
     }
@@ -1698,6 +1722,38 @@
     document.getElementById('introModal').addEventListener('click', e => {
       if (e.target.id === 'introModal') document.getElementById('introModal').classList.add('hidden');
     });
+
+    // ===== 播放進度記憶（每首歌記住聽到哪裡）=====
+    function savedProgress(id) {
+      try {
+        const p = JSON.parse(localStorage.getItem('sg_progress') || '{}');
+        return p[id] > 5 ? p[id] : 0;
+      } catch (e) { return 0; }
+    }
+    function saveProgress() {
+      if (currentId === null || !audio.duration || isNaN(audio.duration)) return;
+      try {
+        const p = JSON.parse(localStorage.getItem('sg_progress') || '{}');
+        const t = audio.currentTime;
+        if (t > 5 && t < audio.duration - 10) p[currentId] = Math.floor(t);
+        else delete p[currentId];
+        localStorage.setItem('sg_progress', JSON.stringify(p));
+      } catch (e) {}
+    }
+
+    // ===== 班級公告：讀取 music/notice.json 的 text =====
+    async function loadNotice() {
+      try {
+        const r = await fetch('music/notice.json', { cache: 'no-store' });
+        if (!r.ok) return;
+        const n = await r.json();
+        if (!n || !n.text) return;
+        const b = document.getElementById('noticeBox');
+        b.textContent = '📢 ' + n.text;
+        b.classList.remove('hidden');
+      } catch (e) {}
+    }
+    loadNotice();
 
     // ===== 啟動：先讀本機資料，再讀 music/songs.json（所有人共用的歌單） =====
     async function loadRemote() {
