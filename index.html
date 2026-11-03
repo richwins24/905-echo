@@ -1307,25 +1307,27 @@
 
     // 管理員在後台開關登入功能
     document.getElementById('loginToggle').addEventListener('change', async e => {
-      if (!isAdmin || !sharedDb) {
+      const want = e.target.checked;
+      const ADMIN_ACCOUNT = 'bacaca2431@gmail.com';
+      if (!isAdmin || !sharedDb || !authRef) {
         e.target.checked = loginOpen;
         return alert('請先進入管理後台（輸入管理碼）再開關');
       }
+      // 只有指定的管理員帳號可以開關：沒有登入此帳號時，在按下的當下跳出 Google 視窗
+      if (!(authRef.currentUser && authRef.currentUser.email === ADMIN_ACCOUNT)) {
+        await doGoogleLogin();
+      }
+      const u = authRef.currentUser;
+      if (!u || u.email !== ADMIN_ACCOUNT) {
+        if (u) await authRef.signOut();
+        e.target.checked = loginOpen;
+        return alert('只有管理員帳號 ' + ADMIN_ACCOUNT + ' 可以開關登入功能');
+      }
       try {
-        // 開啟登入功能時，跳出 Google 帳號視窗（要在按下的當下呼叫，避免被瀏覽器阻擋）
-        if (e.target.checked && !(authRef && authRef.currentUser && !authRef.currentUser.isAnonymous)) {
-          await doGoogleLogin();
-          if (!(authRef && authRef.currentUser)) {
-            e.target.checked = false;
-            return;
-          }
-        }
-        // 沒有任何登入時，取得匿名身分以便寫入設定
-        if (authRef && !authRef.currentUser) await authRef.signInAnonymously();
-        await sharedDb.ref('settings/loginEnabled').set(e.target.checked);
+        await sharedDb.ref('settings/loginEnabled').set(want);
       } catch (err) {
         e.target.checked = loginOpen;
-        alert('無法更新設定：' + err.message + '（請確認 Firebase 已啟用匿名登入）');
+        alert('無法更新設定：' + err.message);
       }
     });
 
