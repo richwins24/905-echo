@@ -1312,7 +1312,15 @@
         return alert('請先進入管理後台（輸入管理碼）再開關');
       }
       try {
-        // 進入管理後台即可開關：沒有登入時，自動以匿名身分取得寫入權限（不需要 Google 登入）
+        // 開啟登入功能時，跳出 Google 帳號視窗（要在按下的當下呼叫，避免被瀏覽器阻擋）
+        if (e.target.checked && !(authRef && authRef.currentUser && !authRef.currentUser.isAnonymous)) {
+          await doGoogleLogin();
+          if (!(authRef && authRef.currentUser)) {
+            e.target.checked = false;
+            return;
+          }
+        }
+        // 沒有任何登入時，取得匿名身分以便寫入設定
         if (authRef && !authRef.currentUser) await authRef.signInAnonymously();
         await sharedDb.ref('settings/loginEnabled').set(e.target.checked);
       } catch (err) {
