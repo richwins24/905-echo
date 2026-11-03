@@ -1307,11 +1307,18 @@
 
     // 管理員在後台開關登入功能
     document.getElementById('loginToggle').addEventListener('change', async e => {
-      if (!isAdmin || !currentUser || !sharedDb) {
+      if (!isAdmin || !sharedDb) {
         e.target.checked = loginOpen;
-        return alert('請先進入管理後台，並用 Google 登入後再開關');
+        return alert('請先進入管理後台（輸入管理碼）再開關');
       }
-      await sharedDb.ref('settings/loginEnabled').set(e.target.checked);
+      try {
+        // 進入管理後台即可開關：沒有登入時，自動以匿名身分取得寫入權限（不需要 Google 登入）
+        if (authRef && !authRef.currentUser) await authRef.signInAnonymously();
+        await sharedDb.ref('settings/loginEnabled').set(e.target.checked);
+      } catch (err) {
+        e.target.checked = loginOpen;
+        alert('無法更新設定：' + err.message + '（請確認 Firebase 已啟用匿名登入）');
+      }
     });
 
     document.getElementById('loginBtn').addEventListener('click', () => {
