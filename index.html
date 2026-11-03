@@ -117,7 +117,6 @@
         <div class="flex items-center gap-4">
           <button id="adminReportBtn" class="text-sm px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200">報表</button>
       <button id="resetAllBtn" class="text-sm px-4 py-2 rounded-lg bg-amber-900/60 hover:bg-amber-800 text-amber-200">清除全部紀錄</button>
-          <label class="flex items-center gap-2 text-xs text-slate-300"><input id="loginToggle" type="checkbox" class="accent-purple-500"> 開放登入功能</label>
           <button id="lockBtn" class="text-xs text-slate-400 hover:text-white">鎖定</button>
         </div>
       </div>
@@ -1298,42 +1297,20 @@
 
     if (sharedDb) {
       sharedDb.ref('settings/loginEnabled').on('value', snap => {
-        loginOpen = snap.val() === true;
+        loginOpen = false;   // 登入功能暫時隱藏（日後要開啟時改為 snap.val() === true）
         settingsLoaded = true;
         document.body.classList.toggle('login-off', !(loginOpen || isAdmin));
-        const t = document.getElementById('loginToggle');
-        if (t) t.checked = loginOpen;
         renderSongs(getFilteredSongs());
       });
     }
 
     // 管理員在後台開關登入功能
-    document.getElementById('loginToggle').addEventListener('change', async e => {
-      const want = e.target.checked;
-      const ADMIN_ACCOUNT = 'bacaca2431@gmail.com';
-      if (!isAdmin || !sharedDb || !authRef) {
-        e.target.checked = loginOpen;
-        return alert('請先進入管理後台（輸入管理碼）再開關');
-      }
-      // 只有指定的管理員帳號可以開關：沒有登入此帳號時，在按下的當下跳出 Google 視窗
-      if (!(authRef.currentUser && authRef.currentUser.email === ADMIN_ACCOUNT)) {
-        await doGoogleLogin();
-      }
-      const u = authRef.currentUser;
-      if (!u || u.email !== ADMIN_ACCOUNT) {
-        if (u) await authRef.signOut();
-        e.target.checked = loginOpen;
-        return alert('只有管理員帳號 ' + ADMIN_ACCOUNT + ' 可以開關登入功能');
-      }
-      try {
-        await sharedDb.ref('settings/loginEnabled').set(want);
-      } catch (err) {
-        e.target.checked = loginOpen;
-        alert('無法更新設定：' + err.message);
-      }
-    });
 
     document.getElementById('loginBtn').addEventListener('click', () => {
+      if (!loginOpen && !isAdmin) {
+        showPanel('登入功能', '<p class="text-center py-6 text-slate-300 text-base">敬請期待</p>');
+        return;
+      }
       if (currentUser) {
         if (confirm('確定要登出嗎？')) authRef && authRef.signOut();
         return;
