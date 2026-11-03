@@ -1288,7 +1288,9 @@
     async function doGoogleLogin() {
       if (!authRef) return alert('登入功能尚未設定');
       try {
-        await authRef.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+        const provider = new firebase.auth.GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: 'select_account' });   // 每次都讓你選擇 Google 帳號
+        await authRef.signInWithPopup(provider);
       } catch (e) {
         alert('登入失敗：' + e.message);
       }
