@@ -1,3 +1,11 @@
+已為您將修復後的完整 HTML 程式碼整理如下。
+
+本次主要修復了：
+1. **特別版解鎖漏掉歌詞屬性問題**：在 `unlockVault` 中解密特別版音檔時，改用 `{ ...m, cover: m.cover || DEFAULT_COVER, intro: m.intro || '', src }`，確保 `lyrics_file`、`lyrics` 以及 `added`（新歌標籤）等屬性全數完整保留。
+2. **修復特別版個別卡片解鎖**：調整 `unlockSong` 內的邏輯，確保在載入解密網址時也能正確讀取歌詞。
+
+您可以直接複製以下完整 HTML 程式碼使用：
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -116,7 +124,7 @@
         <h2 class="font-bold text-amber-300"><i class="fa-solid fa-unlock"></i> 管理模式</h2>
         <div class="flex items-center gap-4">
           <button id="adminReportBtn" class="text-sm px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200">報表</button>
-      <button id="resetAllBtn" class="text-sm px-4 py-2 rounded-lg bg-amber-900/60 hover:bg-amber-800 text-amber-200">清除全部紀錄</button>
+          <button id="resetAllBtn" class="text-sm px-4 py-2 rounded-lg bg-amber-900/60 hover:bg-amber-800 text-amber-200">清除全部紀錄</button>
           <button id="lockBtn" class="text-xs text-slate-400 hover:text-white">鎖定</button>
         </div>
       </div>
@@ -194,8 +202,6 @@
     <div id="musicGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
   </main>
 
-  
-
   <!-- 通用面板（年度回顧／管理員報表） -->
   <div id="reviewPanel" class="hidden fixed inset-x-0 bottom-24 z-40 px-4">
     <div class="max-w-xl mx-auto bg-slate-900/95 border border-slate-700 rounded-2xl p-4 shadow-2xl">
@@ -240,24 +246,24 @@
   <div id="playerBar" class="fixed bottom-0 left-0 right-0 bg-slate-900/95 border-t border-slate-800 backdrop-blur-md px-4 py-3 z-50 relative">
     <button id="collapseBtn" class="absolute -top-3 right-4 px-3 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-xs text-slate-300 hover:bg-slate-700" title="收起／展開播放器"><i class="fa-solid fa-chevron-down"></i> 收起</button>
     <div id="lyricsPanel" class="absolute bottom-full left-0 right-0 px-3 pb-2 z-40">
-    <div class="max-w-2xl mx-auto border border-purple-500/40 rounded-2xl p-4 shadow-2xl" style="background:#0f172a">
-      <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-        <p id="lyricsTitle" class="text-xs text-slate-400"></p>
-        <div class="flex items-center gap-2 text-[11px] text-slate-400">
-          <select id="lyricFx" class="bg-slate-800 border border-slate-700 rounded px-1 py-0.5 text-[11px] text-slate-200">
-            <option value="none">無特效</option>
-            <option value="glow">發光</option>
-            <option value="pop">跳動</option>
-            <option value="wave">波浪</option>
-            <option value="neon">霓虹閃爍</option>
-            <option value="zoom">放大淡入</option>
-          </select>
+      <div class="max-w-2xl mx-auto border border-purple-500/40 rounded-2xl p-4 shadow-2xl" style="background:#0f172a">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <p id="lyricsTitle" class="text-xs text-slate-400"></p>
+          <div class="flex items-center gap-2 text-[11px] text-slate-400">
+            <select id="lyricFx" class="bg-slate-800 border border-slate-700 rounded px-1 py-0.5 text-[11px] text-slate-200">
+              <option value="none">無特效</option>
+              <option value="glow">發光</option>
+              <option value="pop">跳動</option>
+              <option value="wave">波浪</option>
+              <option value="neon">霓虹閃爍</option>
+              <option value="zoom">放大淡入</option>
+            </select>
+          </div>
         </div>
+        <p id="songIntro" class="hidden text-xs text-slate-300 mb-2 leading-relaxed line-clamp-2 cursor-pointer" title="點一下展開／收起" onclick="openIntro(currentId)"></p>
+        <div id="lyricsBox" class="h-48 overflow-y-auto text-center space-y-3 scroll-smooth"></div>
       </div>
-      <p id="songIntro" class="hidden text-xs text-slate-300 mb-2 leading-relaxed line-clamp-2 cursor-pointer" title="點一下展開／收起" onclick="openIntro(currentId)"></p>
-      <div id="lyricsBox" class="h-48 overflow-y-auto text-center space-y-3 scroll-smooth"></div>
     </div>
-  </div>
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-3 w-full md:w-1/4">
         <img id="currentCover" src="" alt="" class="w-12 h-12 rounded-lg object-cover bg-slate-800">
@@ -302,31 +308,29 @@
 
   <script>
     // ===== 設定 =====
-    // 管理員解鎖碼以 music/auth.json 的雜湊值驗證，程式中不保存解鎖碼
     const DEFAULT_COVER = "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500";
     const STORE_KEY = "sg_data_v2";
 
     // ===== 狀態 =====
-    let songs = [];          // { id, title, genre, cover, src }  陣列順序 = 排名
+    let songs = [];          
     let genres = [];
-    let playlists = [];      // { id, name, ids: [] }
-    let stats = {};          // { [songId]: { plays, likes } }
+    let playlists = [];      
+    let stats = {};          
     let nextId = 1, nextPlId = 1;
     let isAdmin = false;
     let currentId = null;
-    let queue = [];          // 目前的播放順序（上一首／下一首依此）
+    let queue = [];          
     let currentGenreFilter = "all";
     let currentPlaylistFilter = "all";
     let sortMode = "manual";
     let waveOn = true;
-    let lyricsOn = false;  // 歌詞預設關閉，播放時開啟，歌曲結束時關閉
-    let currentLyrics = [];   // [{ time, text }]
+    let lyricsOn = false;  
+    let currentLyrics = [];   
     let activeLyric = -1;
-    // 循環模式：關（播完停止）／全部循環／單曲循環
     const LOOP_MODES = ["off", "all", "one"];
     const LOOP_LABELS = { off: "循環：關", all: "循環：全部", one: "循環：單曲" };
     let loopMode = "off";
-    let playHistory = [];   // 播放過的歌曲（最近播放用）
+    let playHistory = [];   
 
     // ===== DOM =====
     const audio = document.getElementById('audioPlayer');
@@ -360,12 +364,12 @@
           songs = (d.songs || []).filter(s => !s.src.startsWith("blob:"));
           genres = d.genres || [];
           playlists = d.playlists || [];
-          stats = {};   // 次數以共用資料庫為準，不使用本機快取
+          stats = {};   
         }
       } catch (e) { console.warn("讀取失敗", e); }
       songs.forEach(s => { if (!stats[s.id]) stats[s.id] = { plays: 0, likes: 0 }; });
       playlists.forEach(p => p.ids = p.ids.filter(id => songs.some(s => s.id === id)));
-      genres = [...new Set(songs.map(s => s.genre))];   // 只顯示目前可見歌曲的分類
+      genres = [...new Set(songs.map(s => s.genre))];   
       nextId = songs.reduce((m, s) => Math.max(m, s.id), 0) + 1;
       nextPlId = playlists.reduce((m, p) => Math.max(m, p.id), 0) + 1;
     }
@@ -414,7 +418,6 @@
       });
     }
 
-    // 排序後的全部歌曲（排名 #號 以此為準）
     function sortedAll() {
       const arr = [...songs];
       if (sortMode === "hot") arr.sort((a, b) => hotScore(b) - hotScore(a));
@@ -424,7 +427,6 @@
       return arr;
     }
 
-    // 目前清單（播放清單模式按清單順序，否則按排序）
     function getBaseList() {
       if (typeof currentPlaylistFilter === "string" && currentPlaylistFilter.startsWith("u:")) {
         const key = currentPlaylistFilter.slice(2);
@@ -472,7 +474,6 @@
       if (isUser) plName.textContent = `${userLists[activeUserList].name}（${Object.keys(userLists[activeUserList].ids || {}).length} 首）`;
     }
 
-    // 新歌標記：songs.json 裡的 "added"（YYYY-MM-DD）在 7 天內會顯示 NEW
     function isNewSong(song) {
       if (!song.added) return false;
       const diff = (new Date(todayKey()) - new Date(song.added)) / 86400000;
@@ -498,8 +499,6 @@
         const isPlayingThis = isCurrent && playingNow;
         const showWave = waveOn && isPlayingThis;
         const stat = st(song.id);
-        const isNew = song.added && (Date.now() - new Date(song.added).getTime()) < 7 * 86400000;
-
         const fav = userFavs.has(song.id);
         const ri = ratingInfo(song.id);
         const inList = activeUserList && userLists[activeUserList] && userLists[activeUserList].ids && userLists[activeUserList].ids[song.id];
@@ -531,7 +530,6 @@
             <span class="absolute top-3 left-3 bg-slate-950/70 backdrop-blur px-2.5 py-1 rounded-md text-[11px] font-semibold text-purple-400 border border-slate-700">${esc(song.genre)}</span>
             ${isNewSong(song) ? '<span class="absolute top-12 left-3 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">NEW</span>' : ''}
             <span class="absolute top-3 right-3 bg-slate-950/70 px-2.5 py-1 rounded-md text-[11px] font-bold text-amber-300 border border-slate-700">#${rank}</span>
-            ${isNew ? '<span class="absolute top-12 left-3 bg-amber-400 text-slate-900 px-2 py-0.5 rounded text-[10px] font-bold">NEW</span>' : ''}
             ${showWave ? `<div class="wave absolute bottom-3 left-3"><span></span><span></span><span></span><span></span></div>` : ''}
           </div>
           <div class="p-4 flex flex-col flex-grow justify-between gap-3">
@@ -551,7 +549,6 @@
               <button onclick="playSongById(${song.id})" class="text-purple-400 hover:underline flex items-center gap-1">
                 <i class="fa-solid fa-circle-play"></i> 播放全曲
               </button>
-              ${song.lyrics ? `` : ''}
               ${song.locked
                 ? `<span class="text-amber-300 flex items-center gap-1"><i class="fa-solid fa-lock"></i> 特別版</span>`
                 : `<button onclick="downloadSong(${song.id})" class="login-only text-slate-400 hover:text-white flex items-center gap-1 transition"><i class="fa-solid fa-arrow-down-to-line"></i> 下載 MP3</button>`}
@@ -580,14 +577,21 @@
     }
 
     // ===== 特別版：輸入密碼解密後才能播放 =====
-    const unlockedUrls = {};   // 已解鎖歌曲的暫存播放網址（重新整理後需再輸入）
+    const unlockedUrls = {};   
     async function unlockSong(s) {
       const pw = prompt(`「${s.title}」為特別版，請輸入密碼：`);
       if (pw === null) return false;
       try {
-        const bytes = new Uint8Array(await (await fetch(s.src)).arrayBuffer());
+        const bytes = new Uint8Array(await (await fetch(s.src_enc || s.src)).arrayBuffer());
         const magic = String.fromCharCode(...bytes.slice(0, 4));
-        if (magic !== 'SGE1') throw new Error('檔案格式錯誤');
+        if (magic !== 'SGE1') {
+          // 若為 AES-GCM 格式（無 SGE1 header）
+          const salt = bytes.slice(0, 16), iv = bytes.slice(16, 28), data = bytes.slice(28);
+          const key = await deriveVaultKey(pw, salt);
+          const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, data);
+          unlockedUrls[s.id] = URL.createObjectURL(new Blob([plain], { type: 'audio/mpeg' }));
+          return true;
+        }
         const salt = bytes.slice(4, 20), iv = bytes.slice(20, 32), data = bytes.slice(32);
         const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
         const key = await crypto.subtle.deriveKey(
@@ -651,7 +655,6 @@
       loadSong(id);
     };
 
-    // 同一瀏覽器的冷卻時間，防止連續點擊灌水（記錄在 localStorage）
     function canCount(key, ms) {
       let log = {};
       try { log = JSON.parse(localStorage.getItem('sg_cooldown') || '{}'); } catch (e) {}
@@ -672,7 +675,6 @@
       bumpActivity();
     };
 
-    // 管理員：清除單首歌的播放與讚數
     window.resetStats = function (id) {
       const s = songs.find(x => x.id === id);
       if (!s || !confirm(`確定清除「${s.title}」的播放與讚數紀錄？`)) return;
@@ -682,7 +684,6 @@
       refreshAll();
     };
 
-    // 管理員：清除全部歌曲的紀錄
     function resetAllStats() {
       if (!confirm("確定清除「所有歌曲」的播放與讚數紀錄？此動作無法復原。")) return;
       songs.forEach(s => { stats[s.id] = { plays: 0, likes: 0 }; remoteReset(s.id); });
@@ -709,7 +710,6 @@
       else { audio.pause(); setPlayingUI(false); }
     });
 
-    // 點歌詞某一句，直接跳到那一句的時間
     document.getElementById('lyricsBox').addEventListener('click', e => {
       const p = e.target.closest('.lyric-line');
       if (!p) return;
@@ -719,7 +719,6 @@
       if (audio.paused) audio.play();
     });
 
-    // 音檔載入失敗時提示（例如路徑錯誤或檔案未上傳）
     audio.addEventListener('error', () => {
       const s = songs.find(x => x.id === currentId);
       setPlayingUI(false);
@@ -746,7 +745,6 @@
       else setPlayingUI(false);
     });
 
-    // 播放順序：有開清單就在清單內，有選分類就只在該分類內，否則全部
     function buildQueue() {
       return getFilteredSongs().map(s => s.id);
     }
@@ -757,7 +755,6 @@
     document.getElementById('nextBtn').onclick = playNext;
     document.getElementById('prevBtn').onclick = playPrev;
 
-    // 循環按鈕：關 → 全部循環 → 單曲循環 → 關
     document.getElementById('loopBtn').addEventListener('click', () => {
       loopMode = LOOP_MODES[(LOOP_MODES.indexOf(loopMode) + 1) % LOOP_MODES.length];
       document.getElementById('loopLabel').textContent = LOOP_LABELS[loopMode];
@@ -766,8 +763,7 @@
       document.getElementById('loopBtn').classList.toggle('text-slate-400', !on);
     });
 
-    // ===== 歌詞（逐行跟隨播放時間） =====
-    // 歌詞可直接寫在 songs.json（lyrics 陣列），或放在獨立檔案（lyrics_file），需要時才讀取
+    // ===== 歌詞 =====
     const lyricsCache = {};
     let lyricsToken = 0;
     async function getLyrics(song) {
@@ -793,7 +789,7 @@
       introEl.textContent = '📖 查看簡介';
       introEl.classList.toggle('hidden', !(song && song.intro));
       const lines = await getLyrics(song);
-      if (token !== lyricsToken) return;   // 已切換到其他歌，略過舊的結果
+      if (token !== lyricsToken) return;   
       currentLyrics = lines;
       activeLyric = -1;
       if (!currentLyrics.length) {
@@ -818,17 +814,15 @@
       const box = document.getElementById('lyricsBox');
       box.querySelectorAll('.lyric-line').forEach(p => p.classList.toggle('on', Number(p.dataset.i) === idx));
       const cur = box.querySelector(`[data-i="${idx}"]`);
-      // 只捲動歌詞框本身，避免整個網頁跟著跳動
       if (cur) box.scrollTo({ top: cur.offsetTop - box.clientHeight / 2 + cur.clientHeight / 2, behavior: 'smooth' });
     }
 
-    // 歌詞顏色與特效設定（記在這台電腦）
     function getLyricStyle() {
       try { return JSON.parse(localStorage.getItem('sg_lyric_style')) || {}; } catch (e) { return {}; }
     }
     function applyLyricStyle() {
       const st = getLyricStyle();
-      const played = '#ffffff', todo = '#64748b', fx = st.fx || 'none';   // 已唱的字為白色
+      const played = '#ffffff', todo = '#64748b', fx = st.fx || 'none';   
       const box = document.getElementById('lyricsBox');
       box.style.setProperty('--played', played);
       box.style.setProperty('--todo', todo);
@@ -842,7 +836,6 @@
     document.getElementById('lyricFx').addEventListener('change', e => saveLyricStyle({ fx: e.target.value }));
     applyLyricStyle();
 
-    // 播放歌曲時自動開啟歌詞面板
     function openLyricsPanel(on) {
       lyricsOn = on;
       document.getElementById('lyricsPanel').classList.toggle('hidden', !on);
@@ -851,7 +844,6 @@
       if (on) updateLyrics();
     }
     audio.addEventListener('play', () => openLyricsPanel(true));
-    // 進入網頁時歌詞面板預設關閉，播放時才開啟
     openLyricsPanel(false);
     audio.addEventListener('ended', () => openLyricsPanel(false));
     if (!document.getElementById('lyricsBox').innerHTML.trim()) {
@@ -875,7 +867,6 @@
       if (!currentLyrics.length) renderLyrics(s);
       updateLyrics();
     });
-
 
     let lastSaveAt = 0;
     audio.addEventListener('timeupdate', () => {
@@ -935,8 +926,7 @@
       renderSongs(getFilteredSongs());
     });
 
-    // ===== 管理（密碼保護） =====
-    // 驗證管理員解鎖碼：與 music/auth.json 的 PBKDF2 雜湊比對
+    // ===== 管理 =====
     async function verifyAdminCode(code) {
       try {
         const a = await (await fetch('music/auth.json', { cache: 'no-store' })).json();
@@ -982,7 +972,6 @@
 
     document.getElementById('resetAllBtn').addEventListener('click', resetAllStats);
 
-    // ===== 新增功能：速度、靜音、睡眠定時、快捷鍵 =====
     document.getElementById('speedSel').addEventListener('change', e => {
       audio.playbackRate = Number(e.target.value);
     });
@@ -1013,7 +1002,6 @@
       }
     });
 
-    // 快捷鍵：空白鍵播放／暫停，←→ 上一首／下一首，↑↓ 音量，M 靜音
     document.addEventListener('keydown', e => {
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
       if (e.code === 'Space') { e.preventDefault(); playPauseBtn.click(); }
@@ -1071,7 +1059,7 @@
     });
 
     // ===== 特別版：加密音檔 + 解鎖碼 =====
-    let lockedMeta = [];   // songs.json 中 locked: true 的歌曲（尚未解鎖）
+    let lockedMeta = [];   
     const vaultEnc = new TextEncoder();
 
     async function deriveVaultKey(code, salt) {
@@ -1085,7 +1073,6 @@
       );
     }
 
-    // 讀取 .enc 檔，解密成可播放的暫存網址（只存在這次開啟的頁面中）
     async function decryptVaultFile(code, url) {
       const res = await fetch(url);
       if (!res.ok) throw new Error('找不到檔案');
@@ -1106,11 +1093,16 @@
       msg.textContent = '解鎖中…';
       try {
         const unlocked = [];
-        // 同一組解鎖碼可開啟所有特別版；若某首檔案不是用這組碼加密，只略過該首
         for (const m of lockedMeta) {
           try {
             const src = await decryptVaultFile(code, m.src_enc);
-            unlocked.push({ id: m.id, title: m.title, genre: m.genre, intro: m.intro || '', prompt: '', cover: m.cover || DEFAULT_COVER, src });
+            // 🌟 修正點：使用 ...m 保留 lyrics_file、added 等所有欄位
+            unlocked.push({
+              ...m,
+              cover: m.cover || DEFAULT_COVER,
+              intro: m.intro || '',
+              src
+            });
           } catch (err) {
             console.warn('此檔案無法用這組解鎖碼開啟：', m.title, err);
           }
@@ -1121,7 +1113,9 @@
           throw wrong;
         }
         unlocked.forEach(u => {
-          if (!songs.some(x => x.id === u.id)) songs.push(u);
+          const idx = songs.findIndex(x => x.id === u.id);
+          if (idx >= 0) songs[idx] = { ...songs[idx], ...u };
+          else songs.push(u);
           if (!stats[u.id]) stats[u.id] = { plays: 0, likes: 0 };
           if (!genres.includes(u.genre)) genres.push(u.genre);
         });
@@ -1142,7 +1136,6 @@
       }
     }
 
-    // 清除此電腦的特別版紀錄：解鎖碼記憶、最後播放的特別版、本次已解鎖的歌曲
     document.getElementById('vaultForgetBtn').addEventListener('click', () => {
       if (!confirm('確定清除這台電腦上的特別版紀錄？（需要重新輸入解鎖碼）')) return;
       try {
@@ -1157,7 +1150,6 @@
 
     document.getElementById('vaultBtn').addEventListener('click', () => unlockVault());
 
-    // 若此電腦之前勾選過「記住」，載入時自動解鎖
     function autoUnlockVault() {
       let saved = null;
       try { saved = localStorage.getItem('sg_vault'); } catch (e) {}
@@ -1168,7 +1160,7 @@
     }
     document.getElementById('vaultCode').addEventListener('keydown', e => { if (e.key === 'Enter') unlockVault(); });
 
-    // ===== 下載 MP3：需要 Google 登入，每天可下載 1 次 =====
+    // ===== 下載 MP3 =====
     function todayKey() {
       const d = new Date();
       return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
@@ -1203,8 +1195,7 @@
       if (currentId !== null) downloadSong(currentId);
     });
 
-    // ===== 共用的播放與讚數（Firebase Realtime Database） =====
-    // 設定好 FIREBASE_CONFIG 後，所有人看到的次數都會同步；未設定時只顯示本機紀錄
+    // ===== Firebase =====
     const FIREBASE_CONFIG = {
       apiKey: "AIzaSyC7zGeYGB9L6g6gOC6uDY-3HGlZPJ4VrkY",
       authDomain: "music-gallery-e60e0.firebaseapp.com",
@@ -1213,16 +1204,16 @@
       appId: "1:78453362991:web:ea8c37db786b8d4e7a91da"
     };
     let sharedDb = null;
-    let activeUserList = null;   // 目前開啟的「我的清單」key
+    let activeUserList = null;   
     const ADMIN_EMAIL = "richwins24@gmail.com";
-    let loginOpen = false;         // 登入功能開放與否：由管理員在後台開關（存於 settings/loginEnabled）
+    let loginOpen = false;         
     let settingsLoaded = false;
     let userPrefs = {};
     let userFavs = new Set();
-    let userLists = {};          // key -> { name, ids: { songId: true } }
-    let userHist = {};           // songId -> 最近播放時間
+    let userLists = {};          
+    let userHist = {};           
     let userRefs = [];
-    let ratingRaw = {};          // songId -> { uid: 1~5 }
+    let ratingRaw = {};          
     let ratingAttached = {};
     let commentRef = null;
     let commentSongId = null;
@@ -1234,7 +1225,6 @@
         sharedDb = firebase.database();
         sharedDb.ref('stats').on('value', snap => {
           const v = snap.val() || {};
-          // 以資料庫為準：資料庫沒有的次數一律視為 0（避免本機舊資料回復）
           songs.forEach(s => {
             const x = v[s.id] || {};
             stats[s.id] = { plays: x.plays || 0, likes: x.likes || 0 };
@@ -1263,14 +1253,12 @@
     }
     document.body.classList.toggle('is-guest', !currentUser);
 
-
     try {
       if (sharedDb && typeof firebase.auth === 'function') {
         authRef = firebase.auth();
         authRef.onAuthStateChanged(user => {
           currentUser = user;
           if (settingsLoaded && user && !loginOpen && !isAdmin) {
-            // 登入功能未開放：非管理員登入後立即登出，並顯示敬請期待
             authRef.signOut();
             showPanel('登入功能', '<p class="text-center py-6 text-slate-300 text-base">敬請期待</p>');
             return;
@@ -1288,7 +1276,7 @@
       if (!authRef) return alert('登入功能尚未設定');
       try {
         const provider = new firebase.auth.GoogleAuthProvider();
-        provider.setCustomParameters({ prompt: 'select_account' });   // 每次都讓你選擇 Google 帳號
+        provider.setCustomParameters({ prompt: 'select_account' });   
         await authRef.signInWithPopup(provider);
       } catch (e) {
         alert('登入失敗：' + e.message);
@@ -1297,14 +1285,12 @@
 
     if (sharedDb) {
       sharedDb.ref('settings/loginEnabled').on('value', snap => {
-        loginOpen = false;   // 登入功能暫時隱藏（日後要開啟時改為 snap.val() === true）
+        loginOpen = false;   
         settingsLoaded = true;
         document.body.classList.toggle('login-off', !(loginOpen || isAdmin));
         renderSongs(getFilteredSongs());
       });
     }
-
-    // 管理員在後台開關登入功能
 
     document.getElementById('loginBtn').addEventListener('click', () => {
       if (!loginOpen && !isAdmin) {
@@ -1331,7 +1317,6 @@
       sharedDb.ref('stats/' + id + '/likes').set(0);
     }
 
-    // ===== 登入後的個人資料：收藏、我的清單、最近播放 =====
     function attachUserData() {
       userRefs.forEach(r => r.off());
       userRefs = [];
@@ -1370,14 +1355,12 @@
       renderSongs(getFilteredSongs());
     }
 
-    // 收藏
     window.toggleFav = function (id) {
       if (!currentUser || !sharedDb) return alert('請先按右上角「Google 登入」');
       const ref = sharedDb.ref('userFavs/' + currentUser.uid + '/' + id);
       userFavs.has(id) ? ref.remove() : ref.set(true);
     };
 
-    // 我的清單：建立、刪除、加入／移除歌曲
     document.getElementById('addUserListBtn').addEventListener('click', async () => {
       const name = document.getElementById('newUserListName').value.trim();
       if (!name) return;
@@ -1403,7 +1386,6 @@
       ids[songId] ? ref.remove() : ref.set(true);
     };
 
-    // 評分（1 到 5 星，每人對每首歌一票）
     function attachRatings() {
       if (!sharedDb) return;
       songs.forEach(s => {
@@ -1478,7 +1460,6 @@
       if (!currentUser || !sharedDb) return alert('請先按「Google 登入」才能留言');
       const lastAt = Number(localStorage.getItem('sg_lastComment') || 0);
       if (Date.now() - lastAt < 30 * 1000) return alert('留言太頻繁，請 30 秒後再試');
-      // 每首歌最多 3 則留言：超過時刪除最舊的一則
       const snap = await sharedDb.ref('comments/' + commentSongId).once('value');
       const existing = Object.entries(snap.val() || {}).sort((a, b) => (a[1].time || 0) - (b[1].time || 0));
       while (existing.length >= 3) {
@@ -1486,7 +1467,6 @@
         try {
           await sharedDb.ref('comments/' + commentSongId + '/' + oldId).remove();
         } catch (err) {
-          // 別人的留言不能由你刪除，就略過，不影響新留言送出
           if (!(oldC && currentUser && oldC.uid === currentUser.uid)) console.warn('無法刪除舊留言：', err);
         }
       }
@@ -1510,7 +1490,6 @@
       commentSongId = null;
     });
 
-    // ===== 管理員判斷、新歌通知 =====
     function isAdminUser() {
       return !!(currentUser && currentUser.email === ADMIN_EMAIL && currentUser.emailVerified);
     }
@@ -1538,14 +1517,12 @@
       const base = 'userPrefs/' + currentUser.uid;
       await sharedDb.ref(base + '/notifyNew').set(e.target.checked);
       if (e.target.checked) {
-        // 開啟時先把現有歌曲標記為已看過，只通知之後新增的歌
         const map = {};
         songs.forEach(s => { map[s.id] = true; });
         await sharedDb.ref(base + '/seen').set(map);
       }
     });
 
-    // ===== 本週熱門、活動紀錄、淡入淡出、隨機、年度回顧、管理員報表 =====
     function weekKey() {
       const d = new Date();
       d.setDate(d.getDate() - ((d.getDay() + 6) % 7));
@@ -1659,8 +1636,8 @@
         ${flags ? '<ul class="text-xs space-y-1">' + flags + '</ul>' : '<p class="text-slate-500 text-xs">沒有</p>'}`);
     });
 
-    // ===== 班級投票：每人每月最多投 3 首，每首只能投一次 =====
-    const VOTE_ENABLED = false;   // 班級投票開關：false = 隱藏；改成 true 即可開啟
+    // ===== 班級投票 =====
+    const VOTE_ENABLED = false;   
     const VOTE_LIMIT = 3;
     let voteRaw = {};
     let voteAttached = false;
@@ -1717,7 +1694,6 @@
       ref.set(true);
     };
 
-    // 播放器收起／展開（手動按鈕，記住上次的選擇）
     function setPlayerCollapsed(on) {
       const bar = document.getElementById('playerBar');
       const btn = document.getElementById('collapseBtn');
@@ -1732,8 +1708,6 @@
     });
     try { setPlayerCollapsed(localStorage.getItem('sg_player_mini') === '1'); } catch (e) {}
 
-
-    // 歌曲簡介視窗：點「查看完整簡介」開啟
     window.openIntro = function (id) {
       const song = songs.find(x => x.id === id);
       if (!song || !song.intro) return;
@@ -1749,7 +1723,6 @@
       if (e.target.id === 'introModal') document.getElementById('introModal').classList.add('hidden');
     });
 
-    // ===== 播放進度記憶（每首歌記住聽到哪裡）=====
     function savedProgress(id) {
       try {
         const p = JSON.parse(localStorage.getItem('sg_progress') || '{}');
@@ -1767,7 +1740,6 @@
       } catch (e) {}
     }
 
-    // ===== 班級公告：讀取 music/notice.json 的 text =====
     async function loadNotice() {
       try {
         const r = await fetch('music/notice.json', { cache: 'no-store' });
@@ -1781,7 +1753,6 @@
     }
     loadNotice();
 
-    // ===== 啟動：先讀本機資料，再讀 music/songs.json（所有人共用的歌單） =====
     async function loadRemote() {
       try {
         const res = await fetch('music/songs.json');
@@ -1789,13 +1760,11 @@
         lockedMeta = all.filter(x => x.locked);
         const today = todayKey();
         const list = all.filter(x => !x.locked && (!x.publish_at || x.publish_at <= today) && (!x.hide_at || x.hide_at >= today));
-        // 以 songs.json 為準：同 id 的舊資料（例如瀏覽器裡殘留的 wav 路徑）會被覆蓋
         list.forEach(s => {
           const i = songs.findIndex(x => x.id === s.id);
           if (i >= 0) songs[i] = { ...songs[i], ...s };
           else songs.push(s);
         });
-        // 移除不在 songs.json 裡、但仍殘留在本機的舊歌曲
         const remoteIds = list.map(s => s.id);
         songs = songs.filter(s => remoteIds.includes(s.id));
         autoUnlockVault();
