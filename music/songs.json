@@ -15,15 +15,17 @@
     "genre": "運動會",
     "cover": "music/covers/cover-02.png",
     "src_enc": "music/locked/song-02.enc",
+    "lyrics_file": "music/lyrics/song-02.json",
     "locked": true
   },
   {
     "id": 3,
     "title": "把星星都送給你",
-    "intro": "晚風、街燈與星光，都是為了一句簡單的告白：我想把星星都送給你。一首溫柔情歌。",
+    "intro": "晚風、街燈與星光，都是為了一句簡單的告白：我想把星星都送給你。一首溫柔的情歌。",
     "genre": "溫柔抒情",
     "cover": "music/covers/cover-03.png",
     "src_enc": "music/locked/song-03.enc",
+    "lyrics_file": "music/lyrics/song-03.json",
     "locked": true
   },
   {
@@ -33,6 +35,7 @@
     "genre": "特別版",
     "cover": "music/covers/cover-04.png",
     "src_enc": "music/locked/song-04.enc",
+    "lyrics_file": "music/lyrics/song-04.json",
     "locked": true
   },
   {
@@ -42,6 +45,7 @@
     "genre": "特別版",
     "cover": "music/covers/cover-05.png",
     "src_enc": "music/locked/song-05.enc",
+    "lyrics_file": "music/lyrics/song-05.json",
     "locked": true,
     "added": "2026-11-04"
   }
