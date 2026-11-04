@@ -20,7 +20,7 @@
   {
     "id": 3,
     "title": "把星星都送給你",
-    "intro": "晚風、街燈與星光，都是為了一句簡單的告白：我想把星星都送給你。一首溫柔的情歌。",
+    "intro": "晚風、街燈與星光，都是為了一句簡單的告白：我想把星星都送給你。一首溫柔情歌。",
     "genre": "溫柔抒情",
     "cover": "music/covers/cover-03.png",
     "src_enc": "music/locked/song-03.enc",
@@ -34,5 +34,15 @@
     "cover": "music/covers/cover-04.png",
     "src_enc": "music/locked/song-04.enc",
     "locked": true
+  },
+  {
+    "id": 5,
+    "title": "如果以後不常見",
+    "intro": "如果未來的日子我們不再常見，請記得我們曾在905班一起大笑、一起奔跑的青春模樣。",
+    "genre": "特別版",
+    "cover": "music/covers/cover-05.png",
+    "src_enc": "music/locked/song-05.enc",
+    "locked": true,
+    "added": "2026-11-04"
   }
 ]
