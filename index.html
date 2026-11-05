@@ -1,15 +1,4 @@
-問題的原因在於：當特別版解鎖時（在 `unlockVault` 函式中），程式將解鎖後的歌曲物件加入清單時，**遺漏了 `lyrics_file` 與 `lyrics` 屬性**：
 
-```javascript
-// 原本遺漏了 lyrics 與 lyrics_file 欄位，導致歌詞載入不到
-unlocked.push({ id: m.id, title: m.title, genre: m.genre, intro: m.intro || '', prompt: '', cover: m.cover || DEFAULT_COVER, src });
-```
-
-補上 `lyrics: m.lyrics || null, lyrics_file: m.lyrics_file || ''` 之後，特別版解鎖就能順利抓到歌詞並正常顯示字幕！
-
-以下為**一次修復完成、原本所有功能與模式一字不漏的完整 HTML 程式碼**：
-
-```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -1828,4 +1817,3 @@ unlocked.push({ id: m.id, title: m.title, genre: m.genre, intro: m.intro || '', 
   </script>
 </body>
 </html>
-```
