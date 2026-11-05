@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -88,11 +87,34 @@
       text-shadow: 0 0 25px rgba(236, 72, 153, 0.7), 0 0 50px rgba(168, 85, 247, 0.5);
     }
 
+    /* ===== 跑馬燈動畫 ===== */
+    .marquee-container {
+      display: flex;
+      overflow: hidden;
+      user-select: none;
+      gap: 2rem;
+    }
+    .marquee-content {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-around;
+      min-width: 100%;
+      gap: 2rem;
+      animation: marqueeScroll 28s linear infinite;
+    }
+    .marquee-container:hover .marquee-content {
+      animation-play-state: paused;
+    }
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-100%); }
+    }
+
     /* ===== 介面優化（電腦與手機） ===== */
     html { scroll-behavior: smooth; }
     button, a, select, input { -webkit-tap-highlight-color: transparent; }
-    #genreFilters, #playlistChips { scrollbar-width: none; }
-    #genreFilters::-webkit-scrollbar, #playlistChips::-webkit-scrollbar { display: none; }
+    #genreFilters, #playlistChips, #timelineTrack { scrollbar-width: none; }
+    #genreFilters::-webkit-scrollbar, #playlistChips::-webkit-scrollbar, #timelineTrack::-webkit-scrollbar { display: none; }
     #genreFilters button, #playlistChips button { white-space: nowrap; }
     #musicGrid { gap: 1.25rem; }
     #musicGrid h3 { overflow-wrap: anywhere; }
@@ -155,55 +177,172 @@
 
   <main class="max-w-7xl mx-auto px-4 py-6">
 
-    <!-- 大型醒目畢業倒數看板 -->
-    <section id="gradHeroBanner" class="mb-8 relative overflow-hidden rounded-3xl bg-gradient-to-r from-purple-950/70 via-slate-900/90 to-indigo-950/70 border border-purple-500/40 p-6 md:p-8 shadow-2xl backdrop-blur-xl cursor-pointer" title="點擊切換 畢業倒數 / 認識天數">
-      <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-pink-500/10 rounded-full filter blur-3xl pointer-events-none"></div>
-      <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+    <!-- 📢 905 每日回憶金句跑馬燈 -->
+    <div class="mb-6 bg-slate-900/90 border border-purple-500/30 rounded-2xl px-4 py-2.5 flex items-center gap-3 overflow-hidden shadow-lg backdrop-blur">
+      <span class="shrink-0 flex items-center gap-1.5 text-xs font-bold text-amber-300 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/30">
+        <i class="fa-solid fa-bullhorn animate-bounce"></i> 905 廣播
+      </span>
+      <div class="marquee-container flex-1 text-xs text-slate-300 font-medium">
+        <div class="marquee-content">
+          <span>✨ 照南國中 905 班，把最好的時光唱成歌！</span>
+          <span>🏃 運動會大隊接力，拼盡全力的我們永遠是第一名！</span>
+          <span>📸 拍下沙龍照的那天，大家都穿上最帥氣漂亮的樣子。</span>
+          <span>🚌 畢業旅行在遊覽車上唱歌的瞬間，希望時間停在這一刻。</span>
+          <span>📝 就算以後不常見，我們也要各自在最高處相遇！</span>
+        </div>
+        <div class="marquee-content" aria-hidden="true">
+          <span>✨ 照南國中 905 班，把最好的時光唱成歌！</span>
+          <span>🏃 運動會大隊接力，拼盡全力的我們永遠是第一名！</span>
+          <span>📸 拍下沙龍照的那天，大家都穿上最帥氣漂亮的樣子。</span>
+          <span>🚌 畢業旅行在遊覽車上唱歌的瞬間，希望時間停在這一刻。</span>
+          <span>📝 就算以後不常見，我們也要各自在最高處相遇！</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 頂部雙區塊：【左】大型醒目畢業倒數看板 + 【右】9年級上學期青春里程碑 -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
+      
+      <!-- 【左】大型畢業倒數看板 -->
+      <section id="gradHeroBanner" class="lg:col-span-5 relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-950/70 via-slate-900/90 to-indigo-950/70 border border-purple-500/40 p-6 flex flex-col justify-between shadow-2xl backdrop-blur-xl cursor-pointer" title="點擊切換 畢業倒數 / 認識天數">
+        <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-pink-500/10 rounded-full filter blur-3xl pointer-events-none"></div>
         <div>
           <div class="flex items-center gap-2 mb-2">
-            <span class="px-3 py-1 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40">
-              <i class="fa-solid fa-graduation-cap text-amber-300"></i> <span id="bannerTitleTag">畢業典禮目標日：2027年6月11日</span>
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40">
+              <i class="fa-solid fa-graduation-cap text-amber-300"></i> <span id="bannerTitleTag">目標：2027年6月11日</span>
             </span>
-            <span class="text-xs text-slate-400">(點擊切換模式)</span>
+            <span class="text-[10px] text-slate-400">(點擊切換)</span>
           </div>
-          <h2 id="bannerMainHeading" class="text-2xl md:text-3xl font-black text-white tracking-wide">
-            照南國中 905 · 奔向未來的倒數
+          <h2 id="bannerMainHeading" class="text-xl md:text-2xl font-black text-white tracking-wide">
+            905 · 畢業倒數計時
           </h2>
-          <p id="bannerSubHeading" class="text-xs md:text-sm text-slate-300 mt-1">
+          <p id="bannerSubHeading" class="text-xs text-slate-300 mt-1">
             每一個今天，都是我們往後日子最珍貴的昨天。
           </p>
         </div>
 
-        <!-- 大型倒數數字卡片群 -->
-        <div id="countdownBoxes" class="flex items-center gap-2 md:gap-3 shrink-0">
-          <div class="bg-slate-900/90 border border-purple-500/30 rounded-2xl px-3 py-2 md:px-5 md:py-3 text-center min-w-[62px] md:min-w-[80px] shadow-lg">
-            <span id="cDays" class="text-2xl md:text-4xl font-extrabold text-white block">0</span>
-            <span class="text-[10px] md:text-xs text-purple-300 font-semibold uppercase">天 (Days)</span>
+        <!-- 倒數數字卡片 -->
+        <div id="countdownBoxes" class="flex items-center justify-between gap-1.5 md:gap-2 my-5">
+          <div class="bg-slate-900/90 border border-purple-500/30 rounded-xl px-2 py-2 text-center flex-1 shadow-lg">
+            <span id="cDays" class="text-xl md:text-3xl font-extrabold text-white block">0</span>
+            <span class="text-[9px] md:text-[10px] text-purple-300 font-semibold uppercase">天</span>
           </div>
-          <span class="text-xl md:text-2xl font-bold text-purple-400/80">:</span>
-          <div class="bg-slate-900/90 border border-purple-500/30 rounded-2xl px-3 py-2 md:px-5 md:py-3 text-center min-w-[62px] md:min-w-[80px] shadow-lg">
-            <span id="cHours" class="text-2xl md:text-4xl font-extrabold text-white block">0</span>
-            <span class="text-[10px] md:text-xs text-purple-300 font-semibold uppercase">時 (Hours)</span>
+          <span class="text-lg font-bold text-purple-400/80">:</span>
+          <div class="bg-slate-900/90 border border-purple-500/30 rounded-xl px-2 py-2 text-center flex-1 shadow-lg">
+            <span id="cHours" class="text-xl md:text-3xl font-extrabold text-white block">0</span>
+            <span class="text-[9px] md:text-[10px] text-purple-300 font-semibold uppercase">時</span>
           </div>
-          <span class="text-xl md:text-2xl font-bold text-purple-400/80">:</span>
-          <div class="bg-slate-900/90 border border-purple-500/30 rounded-2xl px-3 py-2 md:px-5 md:py-3 text-center min-w-[62px] md:min-w-[80px] shadow-lg">
-            <span id="cMinutes" class="text-2xl md:text-4xl font-extrabold text-white block">0</span>
-            <span class="text-[10px] md:text-xs text-purple-300 font-semibold uppercase">分 (Mins)</span>
+          <span class="text-lg font-bold text-purple-400/80">:</span>
+          <div class="bg-slate-900/90 border border-purple-500/30 rounded-xl px-2 py-2 text-center flex-1 shadow-lg">
+            <span id="cMinutes" class="text-xl md:text-3xl font-extrabold text-white block">0</span>
+            <span class="text-[9px] md:text-[10px] text-purple-300 font-semibold uppercase">分</span>
           </div>
-          <span class="text-xl md:text-2xl font-bold text-purple-400/80">:</span>
-          <div class="bg-slate-900/90 border border-purple-500/30 rounded-2xl px-3 py-2 md:px-5 md:py-3 text-center min-w-[62px] md:min-w-[80px] shadow-lg">
-            <span id="cSeconds" class="text-2xl md:text-4xl font-extrabold text-amber-300 block">0</span>
-            <span class="text-[10px] md:text-xs text-amber-300 font-semibold uppercase">秒 (Secs)</span>
+          <span class="text-lg font-bold text-purple-400/80">:</span>
+          <div class="bg-slate-900/90 border border-purple-500/30 rounded-xl px-2 py-2 text-center flex-1 shadow-lg">
+            <span id="cSeconds" class="text-xl md:text-3xl font-extrabold text-amber-300 block">0</span>
+            <span class="text-[9px] md:text-[10px] text-amber-300 font-semibold uppercase">秒</span>
           </div>
         </div>
 
-        <!-- 相伴天數模式（點擊切換顯示） -->
-        <div id="togetherBox" class="hidden text-center bg-slate-900/90 border border-purple-500/30 rounded-2xl px-6 py-3 shadow-lg">
-          <span id="tDays" class="text-3xl md:text-5xl font-black text-amber-300 block">0</span>
-          <span class="text-xs text-purple-300 font-semibold">我們在一起走過的第幾天</span>
+        <!-- 相伴天數模式 -->
+        <div id="togetherBox" class="hidden text-center bg-slate-900/90 border border-purple-500/30 rounded-2xl py-4 my-5 shadow-lg">
+          <span id="tDays" class="text-3xl md:text-4xl font-black text-amber-300 block">0</span>
+          <span class="text-xs text-purple-300 font-semibold">905 班一起走過的第幾天</span>
         </div>
-      </div>
-    </section>
+
+        <p class="text-[11px] text-slate-400 flex items-center justify-between">
+          <span>照南國中 905 專屬紀念</span>
+          <span class="text-purple-300">永遠的 905 ✨</span>
+        </p>
+      </section>
+
+      <!-- 【右】9年級第一學期青春里程碑大時間軸（依據行事曆） -->
+      <section class="lg:col-span-7 bg-slate-900/90 border border-purple-500/30 rounded-3xl p-6 shadow-2xl backdrop-blur-xl flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <span class="w-8 h-8 rounded-lg bg-purple-600/30 text-purple-400 flex items-center justify-center font-bold text-sm border border-purple-500/40">
+              <i class="fa-solid fa-route"></i>
+            </span>
+            <div>
+              <h3 class="font-bold text-base text-white">9年級第一學期 · 青春里程碑</h3>
+              <p class="text-xs text-slate-400">照南國中 115學年度行事曆大事件</p>
+            </div>
+          </div>
+          <span class="text-[11px] px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">9上限定 🎯</span>
+        </div>
+
+        <!-- 橫向滾動時間節點 -->
+        <div id="timelineTrack" class="flex items-center gap-4 overflow-x-auto pb-3 pt-2">
+          
+          <!-- 節點 1: 畢冊拍照 -->
+          <div class="shrink-0 w-36 bg-slate-800/80 border border-slate-700 rounded-2xl p-3 relative group hover:border-purple-500/60 transition">
+            <div class="text-[10px] font-bold text-purple-400 mb-1">10/1 ~ 10/2</div>
+            <div class="text-xs font-bold text-white truncate">📷 畢冊拍照日</div>
+            <div class="text-[10px] text-slate-400 mt-1">團體照與沙龍照</div>
+            <span class="mt-2 inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold bg-emerald-950 text-emerald-300 border border-emerald-500/30">已達成</span>
+          </div>
+
+          <!-- 節點 2: 第一次段考 -->
+          <div class="shrink-0 w-36 bg-slate-800/80 border border-slate-700 rounded-2xl p-3 relative group hover:border-purple-500/60 transition">
+            <div class="text-[10px] font-bold text-purple-400 mb-1">10/13 ~ 10/14</div>
+            <div class="text-xs font-bold text-white truncate">📝 第一次段考</div>
+            <div class="text-[10px] text-slate-400 mt-1">國三初試啼聲</div>
+            <span class="mt-2 inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold bg-emerald-950 text-emerald-300 border border-emerald-500/30">已達成</span>
+          </div>
+
+          <!-- 節點 3: 1-3冊模考 -->
+          <div class="shrink-0 w-36 bg-slate-800/80 border border-slate-700 rounded-2xl p-3 relative group hover:border-purple-500/60 transition">
+            <div class="text-[10px] font-bold text-purple-400 mb-1">10/29 ~ 10/30</div>
+            <div class="text-xs font-bold text-white truncate">📊 1-3冊模擬考</div>
+            <div class="text-[10px] text-slate-400 mt-1">第一階段實力檢核</div>
+            <span class="mt-2 inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold bg-emerald-950 text-emerald-300 border border-emerald-500/30">已達成</span>
+          </div>
+
+          <!-- 節點 4: 校慶運動會 -->
+          <div class="shrink-0 w-36 bg-slate-800/80 border border-purple-500/60 rounded-2xl p-3 relative group bg-gradient-to-b from-purple-950/40 to-slate-800/80">
+            <div class="text-[10px] font-bold text-amber-300 mb-1">11/4 ~ 11/6</div>
+            <div class="text-xs font-bold text-white truncate">🏃 57週年運動會</div>
+            <div class="text-[10px] text-slate-300 mt-1">大隊接力拼第一</div>
+            <span class="mt-2 inline-block px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-500 text-slate-950">熱血進行</span>
+          </div>
+
+          <!-- 節點 5: 第二次段考 -->
+          <div class="shrink-0 w-36 bg-slate-800/80 border border-slate-700 rounded-2xl p-3 relative group hover:border-purple-500/60 transition">
+            <div class="text-[10px] font-bold text-purple-400 mb-1">11/25 ~ 11/26</div>
+            <div class="text-xs font-bold text-white truncate">📝 第二次段考</div>
+            <div class="text-[10px] text-slate-400 mt-1">學期期中關鍵考</div>
+            <span class="mt-2 inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold bg-slate-700 text-slate-300">倒數中</span>
+          </div>
+
+          <!-- 節點 6: 畢業旅行 -->
+          <div class="shrink-0 w-36 bg-slate-800/80 border border-pink-500/50 rounded-2xl p-3 relative group bg-gradient-to-b from-pink-950/30 to-slate-800/80">
+            <div class="text-[10px] font-bold text-pink-300 mb-1">12/2 ~ 12/5</div>
+            <div class="text-xs font-bold text-white truncate">🚌 九年級畢旅</div>
+            <div class="text-[10px] text-slate-300 mt-1">4天3夜狂歡回憶</div>
+            <span class="mt-2 inline-block px-1.5 py-0.5 rounded text-[9px] font-bold bg-pink-500 text-white">最期待 🎉</span>
+          </div>
+
+          <!-- 節點 7: 竹苗區模考 -->
+          <div class="shrink-0 w-36 bg-slate-800/80 border border-slate-700 rounded-2xl p-3 relative group hover:border-purple-500/60 transition">
+            <div class="text-[10px] font-bold text-purple-400 mb-1">12/23 ~ 12/24</div>
+            <div class="text-xs font-bold text-white truncate">🎯 1-4冊模考</div>
+            <div class="text-[10px] text-slate-400 mt-1">竹苗區大會考考場</div>
+            <span class="mt-2 inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold bg-slate-700 text-slate-300">倒數中</span>
+          </div>
+
+          <!-- 節點 8: 期末段考與結業 -->
+          <div class="shrink-0 w-36 bg-slate-800/80 border border-slate-700 rounded-2xl p-3 relative group hover:border-purple-500/60 transition">
+            <div class="text-[10px] font-bold text-purple-400 mb-1">1/19 ~ 1/20</div>
+            <div class="text-xs font-bold text-white truncate">🎉 第三次段考</div>
+            <div class="text-[10px] text-slate-400 mt-1">結業式、放寒假！</div>
+            <span class="mt-2 inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold bg-slate-700 text-slate-300">倒數中</span>
+          </div>
+
+        </div>
+        <p class="text-[11px] text-slate-500 mt-2 text-right">← 左右滑動查看 9年級上學期各項大活動 →</p>
+      </section>
+
+    </div>
 
     <!-- 管理面板 -->
     <section id="adminPanel" class="hidden mb-8 bg-slate-900 border border-amber-500/40 rounded-2xl p-5">
@@ -415,11 +554,7 @@
         </div>
       </div>
       <div class="extra-controls flex items-center gap-2 md:gap-3 w-full md:w-1/4 md:justify-end text-xs overflow-x-auto whitespace-nowrap py-1">
-        <!-- 下課鐘聲前奏開關 -->
-        <button id="schoolBellBtn" class="text-xs transition flex items-center gap-1 px-2 py-1 rounded-md border border-slate-700 bg-slate-800 text-purple-400" title="點擊開關下課鐘聲轉場">
-          <i class="fa-solid fa-bell"></i> 鐘聲：開
-        </button>
-        <button id="ktvOpenBtn" class="text-xs text-purple-300 hover:text-white font-semibold transition flex items-center gap-1 bg-purple-900/60 px-2 py-1 rounded-md border border-purple-500/40" title="開啟全螢幕 KTV 沉浸模式 (按 F)">
+        <button id="ktvOpenBtn" class="text-xs text-purple-300 hover:text-white font-semibold transition flex items-center gap-1 bg-purple-900/60 px-2.5 py-1 rounded-md border border-purple-500/40" title="開啟全螢幕 KTV 沉浸模式 (按 F)">
           <i class="fa-solid fa-expand"></i> 全螢幕
         </button>
         <select id="speedSel" title="播放速度" class="bg-slate-800 border border-slate-700 rounded px-1 py-0.5 text-xs text-slate-200">
@@ -460,7 +595,6 @@
     let waveOn = true;
     let lyricsOn = false;
     let isKtvMode = false;
-    let schoolBellOn = true; // 下課鐘聲前奏模式預設開啟
     let currentLyrics = [];
     let activeLyric = -1;
     const LOOP_MODES = ["off", "all", "one"];
@@ -492,7 +626,7 @@
     const adminToggleBtn = document.getElementById('adminToggleBtn');
     const adminPanel = document.getElementById('adminPanel');
 
-    // ===== 畢業倒數（大看板）設定：2027年6月11日 09:00 =====
+    // ===== 畢業倒數設定：2027年6月11日 09:00 =====
     const GRAD_DATE = new Date('2027-06-11T09:00:00+08:00');
     const START_DATE = new Date('2024-09-01T08:00:00+08:00');
     let showCountdown = true;
@@ -531,7 +665,7 @@
       if (showCountdown) {
         countBox.classList.remove('hidden');
         togBox.classList.add('hidden');
-        tag.textContent = '畢業典禮目標日：2027年6月11日';
+        tag.textContent = '目標：2027年6月11日';
       } else {
         countBox.classList.add('hidden');
         togBox.classList.remove('hidden');
@@ -541,66 +675,6 @@
     document.getElementById('gradHeroBanner').addEventListener('click', toggleHeroTimerMode);
     setInterval(updateBigGradCountdown, 1000);
     updateBigGradCountdown();
-
-    // ===== 下課鐘聲前奏合成器（Web Audio 原生西敏寺 4 拍鐘聲） =====
-    let audioCtx = null;
-    function playSchoolChime() {
-      return new Promise(resolve => {
-        try {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          if (!AudioContext) return resolve();
-          if (!audioCtx) audioCtx = new AudioContext();
-          if (audioCtx.state === 'suspended') audioCtx.resume();
-
-          // 西敏寺鐘聲頻率: Sol(392) - Do(261.63) - Re(293.66) - Mi(329.63)
-          const notes = [329.63, 261.63, 293.66, 392.00]; 
-          const noteDuration = 0.55;
-
-          notes.forEach((freq, idx) => {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * noteDuration);
-
-            gain.gain.setValueAtTime(0, audioCtx.currentTime + idx * noteDuration);
-            gain.gain.linearRampToValueAtTime(0.25, audioCtx.currentTime + idx * noteDuration + 0.05);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (idx + 1) * noteDuration);
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            osc.start(audioCtx.currentTime + idx * noteDuration);
-            osc.stop(audioCtx.currentTime + (idx + 1) * noteDuration);
-          });
-
-          setTimeout(resolve, (notes.length * noteDuration) * 1000);
-        } catch (e) {
-          console.warn('鐘聲播放失敗：', e);
-          resolve();
-        }
-      });
-    }
-
-    // 讀取/切換鐘聲記憶
-    try {
-      const savedBell = localStorage.getItem('sg_school_bell');
-      if (savedBell !== null) schoolBellOn = savedBell === '1';
-    } catch (e) {}
-
-    const schoolBellBtn = document.getElementById('schoolBellBtn');
-    function updateBellBtn() {
-      schoolBellBtn.innerHTML = schoolBellOn
-        ? '<i class="fa-solid fa-bell"></i> 鐘聲：開'
-        : '<i class="fa-solid fa-bell-slash"></i> 鐘聲：關';
-      schoolBellBtn.classList.toggle('text-purple-400', schoolBellOn);
-      schoolBellBtn.classList.toggle('text-slate-500', !schoolBellOn);
-    }
-    schoolBellBtn.addEventListener('click', () => {
-      schoolBellOn = !schoolBellOn;
-      try { localStorage.setItem('sg_school_bell', schoolBellOn ? '1' : '0'); } catch (e) {}
-      updateBellBtn();
-    });
-    updateBellBtn();
 
     // ===== 儲存（瀏覽器本機） =====
     function load() {
@@ -851,7 +925,6 @@
       currentGenre.innerText = `${s.genre}`;
       renderLyrics(s);
 
-      // 手機通知欄與鎖定螢幕 MediaSession
       if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
           title: s.title,
@@ -1879,11 +1952,6 @@
     async function loadSong(id, startAt = 0) {
       const target = Number(volumeBar.value);
       if (!audio.paused && audio.src && currentId !== id) await fadeVolume(0, 300);
-
-      // 若開啟了下課鐘聲，切歌前先響起 4 拍下課鐘聲
-      if (schoolBellOn && currentId !== id && startAt === 0) {
-        await playSchoolChime();
-      }
 
       await loadSongNow(id, startAt || savedProgress(id));
       audio.volume = 0;
