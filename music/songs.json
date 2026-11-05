@@ -39,9 +39,10 @@
     "id": 5,
     "title": "如果以後不常見",
     "intro": "",
-    "genre": "溫柔抒情",
+    "genre": "畢業歌",
     "cover": "music/covers/cover-05.png",
-    "src": "music/mp3/song-05.mp3",
+    "src_enc": "music/locked/song-05.enc",
+    "locked": true,
     "lyrics_file": "music/lyrics/song-05.json"
   }
 ]
