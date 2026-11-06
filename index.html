@@ -221,96 +221,6 @@
     .aura-1 { background: var(--aura-color-1) !important; }
     .aura-2 { background: var(--aura-color-2) !important; }
 
-    /* ===== 照南國中行事曆 10 大全螢幕 KTV 模板風格 ===== */
-    /* 1. ktv-tpl-aurora: 開學典禮 */
-    #ktvModal.ktv-tpl-aurora { background: #030712 !important; }
-
-    /* 2. ktv-tpl-photo: 畢冊拍照 */
-    #ktvModal.ktv-tpl-photo {
-      background: radial-gradient(circle at 50% 50%, #1c1917 0%, #0c0a09 100%) !important;
-    }
-    #ktvModal.ktv-tpl-photo .ktv-line.on {
-      color: #fde047 !important;
-      text-shadow: 0 0 35px rgba(234, 179, 8, 0.9), 0 0 15px rgba(253, 224, 71, 0.8) !important;
-    }
-
-    /* 3. ktv-tpl-chalk: 第一次段考 */
-    #ktvModal.ktv-tpl-chalk {
-      background: radial-gradient(circle at center, #064e3b 0%, #022c22 80%) !important;
-    }
-    #ktvModal.ktv-tpl-chalk .ktv-line {
-      font-family: "PingFang TC", "Noto Sans TC", sans-serif;
-      letter-spacing: 2px;
-    }
-    #ktvModal.ktv-tpl-chalk .ktv-line.on {
-      color: #6ee7b7 !important;
-      text-shadow: 0 0 25px rgba(110, 231, 183, 0.9), 0 0 10px #ffffff !important;
-    }
-
-    /* 4. ktv-tpl-sports: 57週年運動會 */
-    #ktvModal.ktv-tpl-sports {
-      background: radial-gradient(circle at 60% 40%, #7c2d12 0%, #180803 90%) !important;
-    }
-    #ktvModal.ktv-tpl-sports .ktv-line.on {
-      color: #fed7aa !important;
-      text-shadow: 0 0 35px rgba(249, 115, 22, 0.95), 0 0 20px rgba(239, 68, 68, 0.8) !important;
-    }
-
-    /* 5. ktv-tpl-ocean: 1-3冊模擬考 */
-    #ktvModal.ktv-tpl-ocean {
-      background: radial-gradient(circle at top, #1e3a8a 0%, #091026 85%) !important;
-    }
-    #ktvModal.ktv-tpl-ocean .ktv-line.on {
-      color: #e0f2fe !important;
-      text-shadow: 0 0 35px rgba(56, 189, 248, 0.9), 0 0 15px rgba(96, 165, 250, 0.8) !important;
-    }
-
-    /* 6. ktv-tpl-trip: 畢業旅行 */
-    #ktvModal.ktv-tpl-trip {
-      background: radial-gradient(circle at 30% 70%, #831843 0%, #15051a 90%) !important;
-    }
-    #ktvModal.ktv-tpl-trip .ktv-line.on {
-      color: #fbcfe8 !important;
-      text-shadow: 0 0 40px rgba(236, 72, 153, 0.95), 0 0 20px rgba(217, 70, 239, 0.9) !important;
-    }
-
-    /* 7. ktv-tpl-mock: 1-4冊模擬考 */
-    #ktvModal.ktv-tpl-mock {
-      background: radial-gradient(circle at bottom right, #4c1d95 0%, #0b0517 85%) !important;
-    }
-    #ktvModal.ktv-tpl-mock .ktv-line.on {
-      color: #f3e8ff !important;
-      text-shadow: 0 0 35px rgba(168, 85, 247, 0.9), 0 0 18px rgba(192, 132, 252, 0.8) !important;
-    }
-
-    /* 8. ktv-tpl-night: 第三次段考 */
-    #ktvModal.ktv-tpl-night {
-      background: #000000 !important;
-    }
-    #ktvModal.ktv-tpl-night .aura-blob { opacity: 0.15 !important; }
-    #ktvModal.ktv-tpl-night .ktv-line.on {
-      color: #ffffff !important;
-      text-shadow: 0 0 25px rgba(255, 255, 255, 0.8) !important;
-    }
-
-    /* 9. ktv-tpl-cap: 國中教育會考 */
-    #ktvModal.ktv-tpl-cap {
-      background: radial-gradient(circle at center, #991b1b 0%, #150505 85%) !important;
-    }
-    #ktvModal.ktv-tpl-cap .ktv-line.on {
-      color: #fee2e2 !important;
-      text-shadow: 0 0 40px rgba(239, 68, 68, 0.95), 0 0 20px rgba(248, 113, 113, 0.85) !important;
-    }
-
-    /* 10. ktv-tpl-grad: 畢業典禮 */
-    #ktvModal.ktv-tpl-grad {
-      background: radial-gradient(circle at 50% 20%, #312e81 0%, #030712 90%) !important;
-    }
-    #ktvModal.ktv-tpl-grad .ktv-line.on {
-      color: #fef08a !important;
-      text-shadow: 0 0 45px rgba(250, 204, 21, 0.95), 0 0 20px rgba(253, 224, 71, 0.9) !important;
-    }
-
     /* KTV 歌詞字級切換 (大 / 中 / 小) */
     #ktvLyricsBox.size-sm .ktv-line { font-size: 1.25rem !important; line-height: 1.6 !important; padding: 6px 14px !important; }
     @media (min-width: 768px) { #ktvLyricsBox.size-sm .ktv-line { font-size: 1.65rem !important; } }
@@ -718,7 +628,7 @@
   </div>
 
   <!-- Apple Music 動態流動光暈全螢幕 KTV 沉浸模式 Modal（升級完整播放器控制列） -->
-  <div id="ktvModal" class="hidden fixed inset-0 z-[100] flex flex-col justify-between p-4 md:p-10 transition-all duration-500">
+  <div id="ktvModal" class="hidden fixed inset-0 z-[100] flex flex-col justify-between p-4 md:p-8 pb-8 sm:pb-12 md:pb-16 transition-all duration-500">
     <div class="aura-blob aura-1"></div>
     <div class="aura-blob aura-2"></div>
     <div class="aura-blob aura-3"></div>
@@ -733,22 +643,6 @@
         </div>
       </div>
       <div class="flex items-center gap-2 sm:gap-3">
-        <!-- 10 大 KTV 模板切換選單 -->
-        <div class="relative">
-          <button id="ktvTplMenuBtn" class="px-3 py-1.5 rounded-full bg-slate-800/90 hover:bg-slate-700 text-xs text-white/90 border border-slate-700 flex items-center gap-1.5 shadow-sm" title="切換 10 種行事曆 KTV 模式模板">
-            <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i>
-            <span id="ktvTplNameLabel" class="hidden sm:inline">開學典禮</span>
-            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
-          </button>
-          <div id="ktvTplDropdown" class="hidden absolute right-0 mt-2 w-64 bg-slate-900/95 border border-purple-500/40 backdrop-blur-xl rounded-2xl p-2.5 shadow-2xl z-50 text-xs">
-            <div class="px-2 py-1.5 font-bold text-white border-b border-slate-800 flex items-center justify-between mb-1.5">
-              <span>🎤 10 大行事曆 KTV 模板</span>
-              <span class="text-[10px] text-purple-400">氛圍切換</span>
-            </div>
-            <div class="space-y-1 max-h-72 overflow-y-auto pr-1" id="ktvTplOptionsList"></div>
-          </div>
-        </div>
-
         <!-- KTV 歌詞字級切換 (小 / 中 / 大) -->
         <div class="flex items-center bg-slate-800/90 backdrop-blur rounded-full p-1 border border-slate-700 text-xs text-white/80">
           <span class="text-[10px] text-slate-400 px-2 hidden sm:inline"><i class="fa-solid fa-font"></i> 字級</span>
@@ -768,7 +662,7 @@
     </div>
 
     <!-- 底部完整控制列（進度條、切歌、音量控制一應俱全） -->
-    <div class="w-full max-w-3xl mx-auto bg-slate-900/90 backdrop-blur-2xl border border-purple-500/40 rounded-3xl p-4 shadow-2xl z-10 flex flex-col gap-2">
+    <div class="w-full max-w-3xl mx-auto bg-slate-900/95 backdrop-blur-2xl border border-purple-500/40 rounded-3xl p-4 shadow-2xl z-10 flex flex-col gap-2 mb-4 sm:mb-6 md:mb-10">
       <!-- 進度條軌跡 -->
       <div class="w-full flex items-center gap-3 text-xs text-slate-300">
         <span id="ktvCurrentTime" class="w-10 text-right font-mono">0:00</span>
@@ -1965,72 +1859,6 @@
     } catch (e) {
       applyPresetTheme('blue');
     }
-
-    // ===== 照南國中行事曆 · 10 大全螢幕 KTV 模式模板 (純事件命名) =====
-    const ktvTemplatesList = [
-      { id: 'ktv-tpl-aurora', name: '開學典禮', desc: '8月31日 · 啟航典禮光暈', icon: 'fa-solid fa-door-open text-blue-400' },
-      { id: 'ktv-tpl-photo', name: '畢冊拍照', desc: '10月1日~2日 · 證件沙龍照', icon: 'fa-solid fa-camera text-yellow-400' },
-      { id: 'ktv-tpl-chalk', name: '第一次段考', desc: '10月13日~14日 · 第一次定期評量', icon: 'fa-solid fa-pen-nib text-cyan-400' },
-      { id: 'ktv-tpl-ocean', name: '1-3冊模擬考', desc: '10月29日~30日 · 第一次學力複習', icon: 'fa-solid fa-file-lines text-emerald-400' },
-      { id: 'ktv-tpl-sports', name: '57週年校慶運動會', desc: '11月4日~6日 · 預賽與運動會', icon: 'fa-solid fa-person-running text-orange-400' },
-      { id: 'ktv-tpl-trip', name: '九年級畢業旅行', desc: '12月2日~5日 · 四天三夜活動', icon: 'fa-solid fa-bus text-pink-400' },
-      { id: 'ktv-tpl-mock', name: '1-4冊模擬考', desc: '12月23日~24日 · 竹苗大會考', icon: 'fa-solid fa-bullseye text-violet-400' },
-      { id: 'ktv-tpl-night', name: '第三次段考', desc: '1月19日~20日 · 期末評量與結業', icon: 'fa-solid fa-flag-checkered text-slate-400' },
-      { id: 'ktv-tpl-cap', name: '國中教育會考', desc: '5月中旬 · 國中會考衝刺', icon: 'fa-solid fa-fire text-red-500' },
-      { id: 'ktv-tpl-grad', name: '畢業典禮', desc: '2027年6月11日 · 迎向未來', icon: 'fa-solid fa-graduation-cap text-amber-300' }
-    ];
-
-    let currentKtvTplId = 'ktv-tpl-aurora';
-    function applyKtvTemplate(id) {
-      currentKtvTplId = id;
-      const t = ktvTemplatesList.find(x => x.id === id) || ktvTemplatesList[0];
-      const modal = document.getElementById('ktvModal');
-      if (modal) {
-        ktvTemplatesList.forEach(item => modal.classList.remove(item.id));
-        modal.classList.add(t.id);
-      }
-      const lbl = document.getElementById('ktvTplNameLabel');
-      if (lbl) lbl.textContent = t.name;
-      try { localStorage.setItem('sg_ktv_tpl', id); } catch (e) {}
-      renderKtvTplOptions();
-    }
-
-    function renderKtvTplOptions() {
-      const container = document.getElementById('ktvTplOptionsList');
-      if (!container) return;
-      container.innerHTML = ktvTemplatesList.map(t => `
-        <div onclick="applyKtvTemplate('${t.id}'); document.getElementById('ktvTplDropdown').classList.add('hidden');" class="flex items-center justify-between p-2 rounded-xl cursor-pointer hover:bg-slate-800 transition ${t.id === currentKtvTplId ? 'bg-purple-900/40 border border-purple-500/40' : ''}">
-          <div class="flex items-center gap-2.5">
-            <i class="${t.icon} text-sm"></i>
-            <div>
-              <p class="font-bold text-white text-xs">${t.name}</p>
-              <p class="text-[10px] text-slate-400">${t.desc}</p>
-            </div>
-          </div>
-          ${t.id === currentKtvTplId ? '<i class="fa-solid fa-check text-purple-400 text-xs"></i>' : ''}
-        </div>
-      `).join('');
-    }
-
-    const ktvTplMenuBtn = document.getElementById('ktvTplMenuBtn');
-    const ktvTplDropdown = document.getElementById('ktvTplDropdown');
-    if (ktvTplMenuBtn && ktvTplDropdown) {
-      ktvTplMenuBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        ktvTplDropdown.classList.toggle('hidden');
-      });
-      document.addEventListener('click', (e) => {
-        if (!ktvTplDropdown.contains(e.target) && !ktvTplMenuBtn.contains(e.target)) {
-          ktvTplDropdown.classList.add('hidden');
-        }
-      });
-    }
-
-    try {
-      const savedTpl = localStorage.getItem('sg_ktv_tpl');
-      if (savedTpl) applyKtvTemplate(savedTpl);
-      else applyKtvTemplate('ktv-tpl-aurora');
-    } catch (e) { renderKtvTplOptions(); }
 
     // ===== ⏩ ⏪ 快進 5 秒 / 後退 5 秒 =====
     function seekDelta(seconds) {
