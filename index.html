@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -23,7 +22,7 @@
     body.is-guest .login-only { display: none !important; }
     body.login-off .login-only { display: none !important; }
 
-    /* ===== 底部播放器釘選 ===== */
+    /* ===== 底部播放器永遠釘選，隨時隨地可播放 ===== */
     #playerBar {
       position: fixed !important;
       bottom: 0 !important;
@@ -76,11 +75,11 @@
       100% { transform: translate(-40px, 60px) scale(0.95) rotate(180deg); }
     }
     
-    /* KTV 歌詞滾動區塊：上下充足留白，確保歌詞完美置中且完全不被頂底遮擋 */
+    /* KTV 歌詞滾動區域：大幅留白確保正唱的那句在視野正中央 */
     #ktvLyricsBox {
       scrollbar-width: none;
-      padding-top: 35vh !important;
-      padding-bottom: 35vh !important;
+      padding-top: 36vh !important;
+      padding-bottom: 36vh !important;
     }
     #ktvLyricsBox::-webkit-scrollbar { display: none; }
     .ktv-line {
@@ -199,26 +198,6 @@
 
   <main class="max-w-7xl mx-auto px-4 py-6">
 
-    <!-- 🎒 905 校園晨讀自習問候小卡 -->
-    <div class="mb-4 bg-gradient-to-r from-slate-900 via-purple-950/40 to-slate-900 border border-purple-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-lg">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-purple-600/20 text-purple-300 flex items-center justify-center text-xl shrink-0 border border-purple-500/30">
-          <i id="greetingIcon" class="fa-solid fa-graduation-cap text-amber-300"></i>
-        </div>
-        <div>
-          <span class="text-xs font-bold text-amber-300 block">照南國中 905 班 · 校園時光信箱</span>
-          <p id="greetingText" class="text-xs text-purple-200 mt-0.5 font-medium">
-            早安 905！早自修深呼吸，今天也是發光發熱的一天 🎒
-          </p>
-        </div>
-      </div>
-      <div class="flex items-center gap-2 shrink-0">
-        <span class="text-[11px] px-3 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
-          <i class="fa-regular fa-calendar-check text-purple-400"></i> 115 學年度 9年級上
-        </span>
-      </div>
-    </div>
-
     <!-- 📢 905 每日回憶金句跑馬燈 -->
     <div class="mb-6 bg-slate-900/90 border border-purple-500/30 rounded-2xl px-4 py-2.5 flex items-center gap-3 overflow-hidden shadow-lg backdrop-blur">
       <span class="shrink-0 flex items-center gap-1.5 text-xs font-bold text-amber-300 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/30">
@@ -313,7 +292,7 @@
           <span class="text-[11px] px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">9上限定 🎯</span>
         </div>
 
-        <!-- 橫向滾動時間節點 -->
+        <!-- 橫向滾動時間節點（支援滑動與自動聚焦） -->
         <div id="timelineTrack" class="flex items-center gap-4 overflow-x-auto pb-3 pt-2 scroll-smooth">
           
           <!-- 節點 1: 畢冊拍照 -->
@@ -510,61 +489,75 @@
     </div>
   </div>
 
-  <!-- Apple Music 動態流動光暈全螢幕 KTV 沉浸模式 Modal（升級完整播放器控制列） -->
-  <div id="ktvModal" class="hidden fixed inset-0 z-[100] flex flex-col justify-between p-4 md:p-10 transition-all duration-500">
+  <!-- Apple Music 動態流動光暈全螢幕 KTV 沉浸模式 Modal（整合全方位播放控制） -->
+  <div id="ktvModal" class="hidden fixed inset-0 z-[100] flex flex-col justify-between p-4 md:p-8 transition-all duration-500">
     <div class="aura-blob aura-1"></div>
     <div class="aura-blob aura-2"></div>
     <div class="aura-blob aura-3"></div>
 
-    <!-- 頂部資訊與退出按鈕 -->
-    <div class="flex items-center justify-between w-full max-w-5xl mx-auto z-10 backdrop-blur-md bg-slate-900/50 p-3 rounded-2xl border border-slate-700/60">
-      <div class="flex items-center gap-3">
-        <img id="ktvCover" src="" alt="" class="w-12 h-12 md:w-14 md:h-14 rounded-xl object-cover shadow-xl border border-purple-400/40">
-        <div>
-          <h2 id="ktvTitle" class="text-base md:text-xl font-black text-white tracking-wide truncate max-w-[200px] sm:max-w-md">曲名</h2>
+    <!-- 頂部資訊與關閉按鈕 -->
+    <div class="flex items-center justify-between w-full max-w-5xl mx-auto z-10 backdrop-blur-md bg-slate-900/60 p-3 rounded-2xl border border-purple-500/30 shadow-xl">
+      <div class="flex items-center gap-3 md:gap-4 overflow-hidden">
+        <img id="ktvCover" src="" alt="" class="w-12 h-12 md:w-14 md:h-14 rounded-xl object-cover shadow-2xl border border-purple-400/40 shrink-0">
+        <div class="truncate">
+          <h2 id="ktvTitle" class="text-base md:text-xl font-black text-white tracking-wide truncate">曲名</h2>
           <p id="ktvGenre" class="text-[11px] md:text-xs text-purple-300 font-semibold"></p>
         </div>
       </div>
-      <button id="ktvCloseBtn" class="w-10 h-10 md:w-11 md:h-11 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white flex items-center justify-center text-lg transition shadow-xl border border-slate-600" title="退出全螢幕 (Esc)">
+      <button id="ktvCloseBtn" class="w-10 h-10 md:w-11 md:h-11 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white flex items-center justify-center text-base md:text-lg transition shadow-xl border border-slate-700 shrink-0" title="退出全螢幕 (Esc)">
         <i class="fa-solid fa-compress"></i>
       </button>
     </div>
 
-    <!-- 中間超大滾動歌詞（擴大安全呼吸距，歌詞完美置中防遮擋） -->
+    <!-- 中間超大滾動歌詞（擴大留白垂直置中） -->
     <div id="ktvLyricsBox" class="flex-1 w-full max-w-4xl mx-auto my-2 overflow-y-auto text-center space-y-10 md:space-y-14 scroll-smooth z-10">
       <!-- 歌詞由 JS 動態生成 -->
     </div>
 
-    <!-- 底部完整控制列（進度條、切歌、音量控制一應俱全） -->
-    <div class="w-full max-w-3xl mx-auto bg-slate-900/90 backdrop-blur-2xl border border-purple-500/40 rounded-3xl p-4 shadow-2xl z-10 flex flex-col gap-2">
-      <!-- 進度條軌跡 -->
-      <div class="w-full flex items-center gap-3 text-xs text-slate-300">
-        <span id="ktvCurrentTime" class="w-10 text-right font-mono">0:00</span>
-        <input type="range" id="ktvProgressBar" min="0" max="100" value="0" class="flex-1 h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500">
-        <span id="ktvDurationTime" class="w-10 text-left font-mono">0:00</span>
+    <!-- 底部全面控制列（含進度條、音量、速度控制） -->
+    <div class="w-full max-w-3xl mx-auto bg-slate-900/90 backdrop-blur-xl border border-purple-500/40 rounded-3xl px-4 py-3 md:px-6 md:py-4 flex flex-col gap-2.5 shadow-2xl z-10">
+      
+      <!-- KTV 進度條與時間 -->
+      <div class="w-full flex items-center gap-3 text-xs text-slate-400">
+        <span id="ktvCurrentTime" class="w-10 text-right font-medium">0:00</span>
+        <input type="range" id="ktvProgressBar" min="0" max="100" value="0" class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500">
+        <span id="ktvDurationTime" class="w-10 font-medium">0:00</span>
       </div>
-      <!-- 控制按鈕群組 -->
-      <div class="flex items-center justify-between pt-1">
-        <div class="text-[11px] text-purple-300 font-medium hidden sm:block">
-          <i class="fa-solid fa-microphone-lines"></i> 905 KTV 伴唱模式
+
+      <!-- KTV 播放控制按鈕群 -->
+      <div class="flex items-center justify-between gap-2 pt-1">
+        
+        <!-- 播放速度調整 -->
+        <div class="flex items-center gap-1.5">
+          <select id="ktvSpeedSel" class="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-xs text-purple-200 focus:outline-none">
+            <option value="0.75">0.75x</option>
+            <option value="1" selected>1.0x</option>
+            <option value="1.25">1.25x</option>
+            <option value="1.5">1.5x</option>
+            <option value="2">2.0x</option>
+          </select>
         </div>
-        <div class="flex items-center gap-6 mx-auto sm:mx-0">
-          <button id="ktvPrevBtn" class="text-slate-300 hover:text-white text-xl transition"><i class="fa-solid fa-backward-step"></i></button>
-          <button id="ktvPlayPauseBtn" class="w-12 h-12 rounded-full bg-purple-600 hover:bg-purple-500 text-white flex items-center justify-center shadow-lg shadow-purple-600/50 transition">
-            <i class="fa-solid fa-play" id="ktvPlayIcon"></i>
+
+        <!-- 核心切歌控制 -->
+        <div class="flex items-center gap-5 md:gap-7">
+          <button id="ktvPrevBtn" class="text-slate-300 hover:text-white text-lg md:text-xl transition active:scale-90"><i class="fa-solid fa-backward-step"></i></button>
+          <button id="ktvPlayPauseBtn" class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-purple-600 hover:bg-purple-500 text-white flex items-center justify-center shadow-lg shadow-purple-600/50 transition transform active:scale-95">
+            <i class="fa-solid fa-play text-lg md:text-xl" id="ktvPlayIcon"></i>
           </button>
-          <button id="ktvNextBtn" class="text-slate-300 hover:text-white text-xl transition"><i class="fa-solid fa-forward-step"></i></button>
+          <button id="ktvNextBtn" class="text-slate-300 hover:text-white text-lg md:text-xl transition active:scale-90"><i class="fa-solid fa-forward-step"></i></button>
         </div>
-        <!-- KTV 音量滑桿 -->
-        <div class="hidden sm:flex items-center gap-2">
+
+        <!-- 音量微調 -->
+        <div class="flex items-center gap-2">
           <button id="ktvMuteBtn" class="text-slate-400 hover:text-white text-xs"><i class="fa-solid fa-volume-high"></i></button>
-          <input type="range" id="ktvVolumeBar" min="0" max="1" step="0.05" value="0.8" class="w-20 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500">
+          <input type="range" id="ktvVolumeBar" min="0" max="1" step="0.05" value="0.8" class="w-16 md:w-20 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500">
         </div>
+
       </div>
     </div>
   </div>
 
-  <!-- 底部播放器（全域釘選，隨時隨地可播放） -->
+  <!-- 底部播放器（全域釘選，隨時可播歌） -->
   <div id="playerBar" class="fixed bottom-0 left-0 right-0 bg-slate-900/95 border-t border-slate-800 backdrop-blur-md px-4 py-3 z-50">
     <button id="collapseBtn" class="absolute -top-3 right-4 px-3 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-xs text-slate-300 hover:bg-slate-700" title="收起／展開播放器"><i class="fa-solid fa-chevron-down"></i> 收起</button>
     <div id="lyricsPanel" class="absolute bottom-full left-0 right-0 px-3 pb-2 z-40">
@@ -681,33 +674,6 @@
     const sortModeSel = document.getElementById('sortMode');
     const adminToggleBtn = document.getElementById('adminToggleBtn');
     const adminPanel = document.getElementById('adminPanel');
-
-    // ===== 🎒 905 校園時光問候小語（純本地判斷時間，免 API） =====
-    function updateSchoolGreeting() {
-      const h = new Date().getHours();
-      const textEl = document.getElementById('greetingText');
-      const iconEl = document.getElementById('greetingIcon');
-      if (h >= 5 && h < 8) {
-        textEl.textContent = "早安 905！迎著竹南微風走進校園，今天也要全力以赴 🎒";
-        iconEl.className = "fa-solid fa-cloud-sun text-amber-300";
-      } else if (h >= 8 && h < 12) {
-        textEl.textContent = "早自修與課堂專注中！段考與模考倒數，我們一起闖關 ✍️";
-        iconEl.className = "fa-solid fa-book-open-reader text-purple-300";
-      } else if (h >= 12 && h < 14) {
-        textEl.textContent = "午休時間到！吃飽合上眼休息一下，下午更有精神 🍱";
-        iconEl.className = "fa-solid fa-utensils text-amber-300";
-      } else if (h >= 14 && h < 17) {
-        textEl.textContent = "下午操場奔馳、揮灑汗水！為 905 青春留下最美回憶 🏃";
-        iconEl.className = "fa-solid fa-person-running text-amber-400";
-      } else if (h >= 17 && h < 21) {
-        textEl.textContent = "第八節輔導課結束！天邊有夕陽，聽首溫柔的歌再回家 🌇";
-        iconEl.className = "fa-solid fa-school text-indigo-300";
-      } else {
-        textEl.textContent = "深夜晚自習刷題辛苦了，願你的努力都在會考開花結果，早點休息 🌙";
-        iconEl.className = "fa-solid fa-moon text-indigo-200";
-      }
-    }
-    updateSchoolGreeting();
 
     // ===== 畢業倒數設定：2027年6月11日 09:00 =====
     const GRAD_DATE = new Date('2027-06-11T09:00:00+08:00');
@@ -1238,7 +1204,7 @@
       activeLyric = -1;
       if (!currentLyrics.length) {
         box.innerHTML = `<p class="text-slate-500 text-sm pt-16">尚無歌詞</p>`;
-        ktvBox.innerHTML = `<p class="text-slate-500 text-2xl font-light">這首歌暫無歌詞</p>`;
+        ktvBox.innerHTML = `<p class="text-slate-500 text-2xl pt-24 font-light">這首歌暫無歌詞</p>`;
         return;
       }
       box.innerHTML = currentLyrics.map((l, i) =>
@@ -1252,7 +1218,7 @@
       applyLyricStyle();
     }
 
-    // 歌詞置中更新（KTV 模式專屬防遮擋精確居中計算）
+    // 精確將正在唱的句子滾動到正中間，留白防遮擋
     function updateLyrics() {
       if (!currentLyrics.length) return;
       const t = audio.currentTime;
@@ -1281,13 +1247,14 @@
       }
     }
 
-    // ===== 全螢幕 KTV 控制（含完整進度條與音量調整） =====
+    // ===== 全螢幕 KTV 控制整合 =====
     const ktvModal = document.getElementById('ktvModal');
     const ktvOpenBtn = document.getElementById('ktvOpenBtn');
     const ktvCloseBtn = document.getElementById('ktvCloseBtn');
     const ktvPlayPauseBtn = document.getElementById('ktvPlayPauseBtn');
     const ktvProgressBar = document.getElementById('ktvProgressBar');
     const ktvVolumeBar = document.getElementById('ktvVolumeBar');
+    const ktvSpeedSel = document.getElementById('ktvSpeedSel');
     const ktvMuteBtn = document.getElementById('ktvMuteBtn');
 
     function toggleKtvMode(show) {
@@ -1301,6 +1268,7 @@
           document.getElementById('ktvCover').src = s.cover;
         }
         ktvVolumeBar.value = audio.volume;
+        ktvSpeedSel.value = String(audio.playbackRate);
         updateLyrics();
       }
     }
@@ -1311,19 +1279,30 @@
     document.getElementById('ktvPrevBtn').addEventListener('click', playPrev);
     document.getElementById('ktvNextBtn').addEventListener('click', playNext);
 
+    // KTV 進度條拖曳
     ktvProgressBar.addEventListener('input', e => {
       if (!isNaN(audio.duration)) {
         audio.currentTime = (e.target.value / 100) * audio.duration;
       }
     });
 
+    // KTV 音量與靜音
     ktvVolumeBar.addEventListener('input', e => {
       audio.volume = e.target.value;
       volumeBar.value = e.target.value;
     });
+    ktvMuteBtn.addEventListener('click', () => {
+      document.getElementById('muteBtn').click();
+      ktvMuteBtn.innerHTML = audio.muted ? '<i class="fa-solid fa-volume-xmark"></i>' : '<i class="fa-solid fa-volume-high"></i>';
+    });
 
-    ktvMuteBtn.addEventListener('click', () => document.getElementById('muteBtn').click());
+    // KTV 速度切換
+    ktvSpeedSel.addEventListener('change', e => {
+      audio.playbackRate = Number(e.target.value);
+      document.getElementById('speedSel').value = e.target.value;
+    });
 
+    // 點擊 KTV 歌詞直接跳轉時間
     document.getElementById('ktvLyricsBox').addEventListener('click', e => {
       const p = e.target.closest('.ktv-line');
       if (!p) return;
@@ -1501,13 +1480,17 @@
     // ===== 快捷鍵 =====
     document.getElementById('speedSel').addEventListener('change', e => {
       audio.playbackRate = Number(e.target.value);
+      ktvSpeedSel.value = e.target.value;
     });
 
     document.getElementById('muteBtn').addEventListener('click', () => {
       audio.muted = !audio.muted;
-      const icon = audio.muted ? '<i class="fa-solid fa-volume-xmark"></i>' : '<i class="fa-solid fa-volume-high"></i>';
-      document.getElementById('muteBtn').innerHTML = icon;
-      ktvMuteBtn.innerHTML = icon;
+      document.getElementById('muteBtn').innerHTML = audio.muted
+        ? '<i class="fa-solid fa-volume-xmark"></i>'
+        : '<i class="fa-solid fa-volume-high"></i>';
+      ktvMuteBtn.innerHTML = audio.muted
+        ? '<i class="fa-solid fa-volume-xmark"></i>'
+        : '<i class="fa-solid fa-volume-high"></i>';
     });
 
     let sleepAfterSong = false;
@@ -1537,9 +1520,10 @@
       else if (e.code === 'ArrowUp' || e.code === 'ArrowDown') {
         e.preventDefault();
         const d = e.code === 'ArrowUp' ? 0.05 : -0.05;
-        volumeBar.value = Math.max(0, Math.min(1, Number(volumeBar.value) + d)).toFixed(2);
-        ktvVolumeBar.value = volumeBar.value;
-        audio.volume = Number(volumeBar.value);
+        const nv = Math.max(0, Math.min(1, Number(volumeBar.value) + d)).toFixed(2);
+        volumeBar.value = nv;
+        ktvVolumeBar.value = nv;
+        audio.volume = Number(nv);
       }
       else if (e.key === 'm' || e.key === 'M') document.getElementById('muteBtn').click();
       else if (e.key === 'f' || e.key === 'F') toggleKtvMode();
@@ -1582,7 +1566,11 @@
     // ===== 音量記憶 =====
     try {
       const v = localStorage.getItem('sg_volume');
-      if (v !== null) { volumeBar.value = v; ktvVolumeBar.value = v; audio.volume = Number(v); }
+      if (v !== null) {
+        volumeBar.value = v;
+        ktvVolumeBar.value = v;
+        audio.volume = Number(v);
+      }
     } catch (e) {}
     volumeBar.addEventListener('input', e => {
       try { localStorage.setItem('sg_volume', e.target.value); } catch (err) {}
