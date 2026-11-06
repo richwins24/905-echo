@@ -22,7 +22,7 @@
     body.is-guest .login-only { display: none !important; }
     body.login-off .login-only { display: none !important; }
 
-    /* ===== 底部播放器永遠釘選，隨時隨地可播放 ===== */
+    /* ===== 底部播放器釘選 ===== */
     #playerBar {
       position: fixed !important;
       bottom: 0 !important;
@@ -75,11 +75,11 @@
       100% { transform: translate(-40px, 60px) scale(0.95) rotate(180deg); }
     }
     
-    /* KTV 歌詞滾動區域：大幅留白確保正唱的那句在視野正中央 */
+    /* KTV 歌詞滾動區塊：上下充足留白，確保歌詞完美置中且完全不被頂底遮擋 */
     #ktvLyricsBox {
       scrollbar-width: none;
-      padding-top: 36vh !important;
-      padding-bottom: 36vh !important;
+      padding-top: 35vh !important;
+      padding-bottom: 35vh !important;
     }
     #ktvLyricsBox::-webkit-scrollbar { display: none; }
     .ktv-line {
@@ -189,6 +189,9 @@
             class="w-full bg-slate-800/80 border border-slate-700 rounded-full pl-10 pr-4 py-2 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-purple-500 transition">
         </div>
         <button id="loginBtn" class="hidden shrink-0 px-4 py-2 rounded-full text-xs font-medium bg-slate-800 hover:bg-slate-700 border border-slate-700 transition">Google 登入</button>
+        <button id="siteIntroBtn" class="shrink-0 px-3.5 py-2 rounded-full text-xs font-semibold bg-purple-900/40 hover:bg-purple-800/60 text-purple-200 border border-purple-500/40 transition flex items-center gap-1.5 shadow-sm" title="查看 905 專屬網站簡介">
+          <i class="fa-solid fa-circle-info text-amber-300"></i> <span>網站簡介</span>
+        </button>
         <button id="adminToggleBtn" class="shrink-0 px-4 py-2 rounded-full text-xs font-medium bg-slate-800 hover:bg-slate-700 border border-slate-700 transition">
           <i class="fa-solid fa-lock"></i> 管理
         </button>
@@ -197,6 +200,14 @@
   </header>
 
   <main class="max-w-7xl mx-auto px-4 py-6">
+
+    
+      <div class="flex items-center gap-2 shrink-0">
+        <span class="text-[11px] px-3 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+          <i class="fa-regular fa-calendar-check text-purple-400"></i> 115 學年度 9年級上
+        </span>
+      </div>
+    </div>
 
     <!-- 📢 905 每日回憶金句跑馬燈 -->
     <div class="mb-6 bg-slate-900/90 border border-purple-500/30 rounded-2xl px-4 py-2.5 flex items-center gap-3 overflow-hidden shadow-lg backdrop-blur">
@@ -292,7 +303,7 @@
           <span class="text-[11px] px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">9上限定 🎯</span>
         </div>
 
-        <!-- 橫向滾動時間節點（支援滑動與自動聚焦） -->
+        <!-- 橫向滾動時間節點 -->
         <div id="timelineTrack" class="flex items-center gap-4 overflow-x-auto pb-3 pt-2 scroll-smooth">
           
           <!-- 節點 1: 畢冊拍照 -->
@@ -460,6 +471,83 @@
     </div>
   </div>
 
+    <!-- 905 專屬網站簡介視窗（首次進入自動跳出，可勾選不再跳出） -->
+  <div id="siteIntroModal" class="hidden fixed inset-0 z-[120] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-300">
+    <div class="w-full max-w-lg bg-gradient-to-b from-slate-900 via-slate-900 to-purple-950/90 border border-purple-500/50 rounded-3xl p-6 sm:p-7 shadow-2xl relative overflow-hidden">
+      <div class="absolute -top-10 -right-10 w-36 h-36 bg-purple-500/20 rounded-full blur-2xl pointer-events-none"></div>
+      
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/30 shrink-0">
+            <i class="fa-solid fa-compact-disc text-xl animate-spin" style="animation-duration: 8s;"></i>
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+              905 · 青春的回聲
+              <span class="text-[10px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full border border-purple-500/30">班級專屬典藏</span>
+            </h3>
+            <p class="text-xs text-purple-300/80">照南國中 905 班 · 把最好的時光唱成歌</p>
+          </div>
+        </div>
+        <button id="closeSiteIntroBtn" class="text-slate-400 hover:text-white w-8 h-8 rounded-full bg-slate-800/80 hover:bg-slate-700 flex items-center justify-center text-sm transition" title="關閉">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs text-slate-300 max-h-[55vh] overflow-y-auto pr-1 leading-relaxed">
+        <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-3 flex items-start gap-3">
+          <div class="w-7 h-7 rounded-lg bg-purple-600/30 text-purple-300 flex items-center justify-center shrink-0 mt-0.5 text-sm">
+            <i class="fa-solid fa-music"></i>
+          </div>
+          <div>
+            <p class="font-bold text-white text-xs sm:text-sm mb-0.5">班級歌曲點播與常駐播放</p>
+            <p class="text-slate-400">收錄 905 專屬歌曲與特別解鎖曲目，底部播放器隨滑隨聽、不論滑到哪都不會消失！</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-3 flex items-start gap-3">
+          <div class="w-7 h-7 rounded-lg bg-pink-600/30 text-pink-300 flex items-center justify-center shrink-0 mt-0.5 text-sm">
+            <i class="fa-solid fa-microphone-lines"></i>
+          </div>
+          <div>
+            <p class="font-bold text-white text-xs sm:text-sm mb-0.5">Apple Music 風格全螢幕 KTV 沉浸模式</p>
+            <p class="text-slate-400">點擊播放器「全螢幕」或按快速鍵 <kbd class="px-1.5 py-0.5 bg-slate-900 border border-slate-700 rounded text-purple-300 font-mono">F</kbd>，享受超大動態滾動歌詞與流動光暈，全螢幕內亦可輕鬆調整進度與音量。</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-3 flex items-start gap-3">
+          <div class="w-7 h-7 rounded-lg bg-amber-600/30 text-amber-300 flex items-center justify-center shrink-0 mt-0.5 text-sm">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div>
+            <p class="font-bold text-white text-xs sm:text-sm mb-0.5">青春里程碑＆畢業倒數看板</p>
+            <p class="text-slate-400">依據 9年級上學期 行事曆紀錄段考、模擬考、57週年運動會與畢旅，並即時鎖定當前重點活動！</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-3 flex items-start gap-3">
+          <div class="w-7 h-7 rounded-lg bg-indigo-600/30 text-indigo-300 flex items-center justify-center shrink-0 mt-0.5 text-sm">
+            <i class="fa-solid fa-sliders"></i>
+          </div>
+          <div>
+            <p class="font-bold text-white text-xs sm:text-sm mb-0.5">播放控制面板展開（倍速、睡眠、波形、循環）</p>
+            <p class="text-slate-400">將波形、0.75x~2x 倍速、定時關閉、單曲/全部循環等整合為「更多設定」彈出按鈕，版面清爽俐落！</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 pt-3.5 border-t border-slate-800 flex items-center justify-between gap-3">
+        <label class="flex items-center gap-2 cursor-pointer select-none text-xs text-slate-400 hover:text-slate-200 transition">
+          <input type="checkbox" id="dontShowIntroAgain" class="w-4 h-4 rounded bg-slate-800 border-slate-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-slate-900 cursor-pointer">
+          <span>下次造訪不再自動跳出</span>
+        </label>
+        <button id="startExploreBtn" class="px-5 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 shadow-lg shadow-purple-600/30 transition">
+          開始探索 🎵
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- 歌曲簡介視窗 -->
   <div id="introModal" class="hidden fixed inset-0 z-[60] bg-black/70 flex items-center justify-center p-4">
     <div class="w-full max-w-md bg-slate-900 border border-purple-500/40 rounded-2xl p-5 shadow-2xl">
@@ -489,75 +577,61 @@
     </div>
   </div>
 
-  <!-- Apple Music 動態流動光暈全螢幕 KTV 沉浸模式 Modal（整合全方位播放控制） -->
-  <div id="ktvModal" class="hidden fixed inset-0 z-[100] flex flex-col justify-between p-4 md:p-8 transition-all duration-500">
+  <!-- Apple Music 動態流動光暈全螢幕 KTV 沉浸模式 Modal（升級完整播放器控制列） -->
+  <div id="ktvModal" class="hidden fixed inset-0 z-[100] flex flex-col justify-between p-4 md:p-10 transition-all duration-500">
     <div class="aura-blob aura-1"></div>
     <div class="aura-blob aura-2"></div>
     <div class="aura-blob aura-3"></div>
 
-    <!-- 頂部資訊與關閉按鈕 -->
-    <div class="flex items-center justify-between w-full max-w-5xl mx-auto z-10 backdrop-blur-md bg-slate-900/60 p-3 rounded-2xl border border-purple-500/30 shadow-xl">
-      <div class="flex items-center gap-3 md:gap-4 overflow-hidden">
-        <img id="ktvCover" src="" alt="" class="w-12 h-12 md:w-14 md:h-14 rounded-xl object-cover shadow-2xl border border-purple-400/40 shrink-0">
-        <div class="truncate">
-          <h2 id="ktvTitle" class="text-base md:text-xl font-black text-white tracking-wide truncate">曲名</h2>
+    <!-- 頂部資訊與退出按鈕 -->
+    <div class="flex items-center justify-between w-full max-w-5xl mx-auto z-10 backdrop-blur-md bg-slate-900/50 p-3 rounded-2xl border border-slate-700/60">
+      <div class="flex items-center gap-3">
+        <img id="ktvCover" src="" alt="" class="w-12 h-12 md:w-14 md:h-14 rounded-xl object-cover shadow-xl border border-purple-400/40">
+        <div>
+          <h2 id="ktvTitle" class="text-base md:text-xl font-black text-white tracking-wide truncate max-w-[200px] sm:max-w-md">曲名</h2>
           <p id="ktvGenre" class="text-[11px] md:text-xs text-purple-300 font-semibold"></p>
         </div>
       </div>
-      <button id="ktvCloseBtn" class="w-10 h-10 md:w-11 md:h-11 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white flex items-center justify-center text-base md:text-lg transition shadow-xl border border-slate-700 shrink-0" title="退出全螢幕 (Esc)">
+      <button id="ktvCloseBtn" class="w-10 h-10 md:w-11 md:h-11 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white flex items-center justify-center text-lg transition shadow-xl border border-slate-600" title="退出全螢幕 (Esc)">
         <i class="fa-solid fa-compress"></i>
       </button>
     </div>
 
-    <!-- 中間超大滾動歌詞（擴大留白垂直置中） -->
+    <!-- 中間超大滾動歌詞（擴大安全呼吸距，歌詞完美置中防遮擋） -->
     <div id="ktvLyricsBox" class="flex-1 w-full max-w-4xl mx-auto my-2 overflow-y-auto text-center space-y-10 md:space-y-14 scroll-smooth z-10">
       <!-- 歌詞由 JS 動態生成 -->
     </div>
 
-    <!-- 底部全面控制列（含進度條、音量、速度控制） -->
-    <div class="w-full max-w-3xl mx-auto bg-slate-900/90 backdrop-blur-xl border border-purple-500/40 rounded-3xl px-4 py-3 md:px-6 md:py-4 flex flex-col gap-2.5 shadow-2xl z-10">
-      
-      <!-- KTV 進度條與時間 -->
-      <div class="w-full flex items-center gap-3 text-xs text-slate-400">
-        <span id="ktvCurrentTime" class="w-10 text-right font-medium">0:00</span>
-        <input type="range" id="ktvProgressBar" min="0" max="100" value="0" class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500">
-        <span id="ktvDurationTime" class="w-10 font-medium">0:00</span>
+    <!-- 底部完整控制列（進度條、切歌、音量控制一應俱全） -->
+    <div class="w-full max-w-3xl mx-auto bg-slate-900/90 backdrop-blur-2xl border border-purple-500/40 rounded-3xl p-4 shadow-2xl z-10 flex flex-col gap-2">
+      <!-- 進度條軌跡 -->
+      <div class="w-full flex items-center gap-3 text-xs text-slate-300">
+        <span id="ktvCurrentTime" class="w-10 text-right font-mono">0:00</span>
+        <input type="range" id="ktvProgressBar" min="0" max="100" value="0" class="flex-1 h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500">
+        <span id="ktvDurationTime" class="w-10 text-left font-mono">0:00</span>
       </div>
-
-      <!-- KTV 播放控制按鈕群 -->
-      <div class="flex items-center justify-between gap-2 pt-1">
-        
-        <!-- 播放速度調整 -->
-        <div class="flex items-center gap-1.5">
-          <select id="ktvSpeedSel" class="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-xs text-purple-200 focus:outline-none">
-            <option value="0.75">0.75x</option>
-            <option value="1" selected>1.0x</option>
-            <option value="1.25">1.25x</option>
-            <option value="1.5">1.5x</option>
-            <option value="2">2.0x</option>
-          </select>
+      <!-- 控制按鈕群組 -->
+      <div class="flex items-center justify-between pt-1">
+        <div class="text-[11px] text-purple-300 font-medium hidden sm:block">
+          <i class="fa-solid fa-microphone-lines"></i> 905 KTV 伴唱模式
         </div>
-
-        <!-- 核心切歌控制 -->
-        <div class="flex items-center gap-5 md:gap-7">
-          <button id="ktvPrevBtn" class="text-slate-300 hover:text-white text-lg md:text-xl transition active:scale-90"><i class="fa-solid fa-backward-step"></i></button>
-          <button id="ktvPlayPauseBtn" class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-purple-600 hover:bg-purple-500 text-white flex items-center justify-center shadow-lg shadow-purple-600/50 transition transform active:scale-95">
-            <i class="fa-solid fa-play text-lg md:text-xl" id="ktvPlayIcon"></i>
+        <div class="flex items-center gap-6 mx-auto sm:mx-0">
+          <button id="ktvPrevBtn" class="text-slate-300 hover:text-white text-xl transition"><i class="fa-solid fa-backward-step"></i></button>
+          <button id="ktvPlayPauseBtn" class="w-12 h-12 rounded-full bg-purple-600 hover:bg-purple-500 text-white flex items-center justify-center shadow-lg shadow-purple-600/50 transition">
+            <i class="fa-solid fa-play" id="ktvPlayIcon"></i>
           </button>
-          <button id="ktvNextBtn" class="text-slate-300 hover:text-white text-lg md:text-xl transition active:scale-90"><i class="fa-solid fa-forward-step"></i></button>
+          <button id="ktvNextBtn" class="text-slate-300 hover:text-white text-xl transition"><i class="fa-solid fa-forward-step"></i></button>
         </div>
-
-        <!-- 音量微調 -->
-        <div class="flex items-center gap-2">
+        <!-- KTV 音量滑桿 -->
+        <div class="hidden sm:flex items-center gap-2">
           <button id="ktvMuteBtn" class="text-slate-400 hover:text-white text-xs"><i class="fa-solid fa-volume-high"></i></button>
-          <input type="range" id="ktvVolumeBar" min="0" max="1" step="0.05" value="0.8" class="w-16 md:w-20 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500">
+          <input type="range" id="ktvVolumeBar" min="0" max="1" step="0.05" value="0.8" class="w-20 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500">
         </div>
-
       </div>
     </div>
   </div>
 
-  <!-- 底部播放器（全域釘選，隨時可播歌） -->
+  <!-- 底部播放器（全域釘選，隨時隨地可播放） -->
   <div id="playerBar" class="fixed bottom-0 left-0 right-0 bg-slate-900/95 border-t border-slate-800 backdrop-blur-md px-4 py-3 z-50">
     <button id="collapseBtn" class="absolute -top-3 right-4 px-3 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-xs text-slate-300 hover:bg-slate-700" title="收起／展開播放器"><i class="fa-solid fa-chevron-down"></i> 收起</button>
     <div id="lyricsPanel" class="absolute bottom-full left-0 right-0 px-3 pb-2 z-40">
@@ -602,22 +676,104 @@
           <span id="durationTime">0:00</span>
         </div>
       </div>
-      <div class="extra-controls flex items-center gap-2 md:gap-3 w-full md:w-1/4 md:justify-end text-xs overflow-x-auto whitespace-nowrap py-1">
-        <button id="ktvOpenBtn" class="text-xs text-purple-300 hover:text-white font-semibold transition flex items-center gap-1 bg-purple-900/60 px-2.5 py-1 rounded-md border border-purple-500/40" title="開啟全螢幕 KTV 沉浸模式 (按 F)">
-          <i class="fa-solid fa-expand"></i> 全螢幕
+      <div class="extra-controls relative flex items-center gap-2 md:gap-3 w-full md:w-1/4 justify-end text-xs whitespace-nowrap py-1">
+        <!-- 全螢幕 KTV 按鈕 -->
+        <button id="ktvOpenBtn" class="text-xs text-purple-200 hover:text-white font-semibold transition flex items-center gap-1.5 bg-gradient-to-r from-purple-900/80 to-pink-900/80 hover:from-purple-800 hover:to-pink-800 px-3 py-1.5 rounded-lg border border-purple-500/50 shadow-md" title="開啟全螢幕 KTV 沉浸模式 (按 F)">
+          <i class="fa-solid fa-expand text-pink-400"></i> <span class="hidden sm:inline">全螢幕</span> KTV
         </button>
-        <select id="speedSel" title="播放速度" class="bg-slate-800 border border-slate-700 rounded px-1 py-0.5 text-xs text-slate-200">
-          <option value="0.75">0.75x</option><option value="1" selected>1x</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option><option value="2">2x</option>
-        </select>
-        <select id="sleepSel" title="睡眠定時" class="bg-slate-800 border border-slate-700 rounded px-1 py-0.5 text-xs text-slate-200">
-          <option value="off">定時：關</option><option value="15">15 分鐘</option><option value="30">30 分鐘</option><option value="60">60 分鐘</option><option value="end">播完此首</option>
-        </select>
-        <button id="lyricsBtn" class="text-xs text-slate-400 hover:text-purple-400 transition" title="顯示歌詞"><i class="fa-solid fa-align-center"></i> 歌詞</button>
-        <button id="loopBtn" class="text-xs text-slate-400 hover:text-purple-400 transition" title="循環模式"><i class="fa-solid fa-repeat"></i> <span id="loopLabel">循環：關</span></button>
-        <button id="waveToggleBtn" class="text-xs text-purple-400 transition" title="開關波形動畫"><i class="fa-solid fa-wave-square"></i> 波形</button>
-        <button id="muteBtn" class="text-slate-400 hover:text-white text-xs" title="靜音（按 M）"><i class="fa-solid fa-volume-high"></i></button>
-        <input type="range" id="volumeBar" min="0" max="1" step="0.05" value="0.8" class="w-16 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500">
-        <a id="downloadBtn" href="#" download class="login-only text-slate-400 hover:text-purple-400 transition ml-1" title="下載此 MP3"><i class="fa-solid fa-arrow-down-to-line"></i></a>
+
+        <!-- 歌詞切換按鈕 -->
+        <button id="lyricsBtn" class="text-xs text-slate-400 hover:text-purple-400 px-2 py-1.5 rounded-lg hover:bg-slate-800 transition flex items-center gap-1" title="顯示歌詞">
+          <i class="fa-solid fa-align-center"></i> 歌詞
+        </button>
+
+        <!-- 更多設定展開按鈕 -->
+        <button id="moreSettingsBtn" class="text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 px-2.5 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow-sm" title="展開更多播放設定（倍速、睡眠、波形、循環等）">
+          <i class="fa-solid fa-sliders text-purple-400"></i>
+          <span>更多設定</span>
+          <i id="moreSettingsArrow" class="fa-solid fa-chevron-up text-[10px] transition-transform duration-200"></i>
+        </button>
+
+        <!-- 更多設定彈出選單 Popover -->
+        <div id="moreSettingsPanel" class="hidden absolute bottom-full right-0 mb-3 w-72 sm:w-80 bg-slate-900/95 border border-purple-500/40 backdrop-blur-xl rounded-2xl p-4 shadow-2xl z-50 text-xs">
+          <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-800">
+            <span class="font-bold text-white flex items-center gap-1.5">
+              <i class="fa-solid fa-sliders text-purple-400"></i> 播放控制與設定
+            </span>
+            <span class="text-[10px] text-slate-400">即時生效</span>
+          </div>
+
+          <div class="space-y-3">
+            <!-- 播放速度 -->
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-slate-300 flex items-center gap-1.5">
+                <i class="fa-solid fa-gauge-high text-indigo-400"></i> 播放倍速
+              </span>
+              <select id="speedSel" title="播放速度" class="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-slate-200 focus:outline-none focus:border-purple-500">
+                <option value="0.75">0.75x</option>
+                <option value="1" selected>1.0x (正常)</option>
+                <option value="1.25">1.25x</option>
+                <option value="1.5">1.5x</option>
+                <option value="2">2.0x</option>
+              </select>
+            </div>
+
+            <!-- 睡眠定時 -->
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-slate-300 flex items-center gap-1.5">
+                <i class="fa-solid fa-moon text-blue-400"></i> 睡眠定時
+              </span>
+              <select id="sleepSel" title="睡眠定時" class="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-slate-200 focus:outline-none focus:border-purple-500">
+                <option value="off">定時：關閉</option>
+                <option value="15">15 分鐘後停止</option>
+                <option value="30">30 分鐘後停止</option>
+                <option value="60">60 分鐘後停止</option>
+                <option value="end">播完目前這首</option>
+              </select>
+            </div>
+
+            <!-- 循環模式 -->
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-slate-300 flex items-center gap-1.5">
+                <i class="fa-solid fa-repeat text-emerald-400"></i> 播放模式
+              </span>
+              <button id="loopBtn" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-slate-200 transition flex items-center gap-1.5" title="切換循環模式">
+                <i class="fa-solid fa-repeat"></i> <span id="loopLabel">循環：關</span>
+              </button>
+            </div>
+
+            <!-- 動態波形開關 -->
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-slate-300 flex items-center gap-1.5">
+                <i class="fa-solid fa-wave-square text-purple-400"></i> 聲波波形動畫
+              </span>
+              <button id="waveToggleBtn" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-purple-400 font-semibold transition flex items-center gap-1.5" title="開關波形動畫">
+                <i class="fa-solid fa-toggle-on"></i> <span id="waveToggleText">已開啟</span>
+              </button>
+            </div>
+
+            <!-- 音量與靜音 -->
+            <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between gap-2">
+              <div class="flex items-center gap-1.5 text-slate-300">
+                <button id="muteBtn" class="text-slate-400 hover:text-white transition" title="靜音（快捷鍵 M）">
+                  <i class="fa-solid fa-volume-high"></i>
+                </button>
+                <span>音量調節</span>
+              </div>
+              <input type="range" id="volumeBar" min="0" max="1" step="0.05" value="0.8" class="w-28 h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500">
+            </div>
+
+            <!-- 下載功能（登入後專屬） -->
+            <div class="login-only pt-2 border-t border-slate-800/80 flex items-center justify-between gap-2">
+              <span class="text-slate-400 flex items-center gap-1.5">
+                <i class="fa-solid fa-arrow-down-to-line"></i> 下載本曲 MP3
+              </span>
+              <a id="downloadBtn" href="#" download class="px-2.5 py-1 rounded-lg bg-purple-900/40 hover:bg-purple-800/60 border border-purple-500/40 text-purple-200 transition text-xs flex items-center gap-1" title="下載此 MP3">
+                <i class="fa-solid fa-download"></i> 下載
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1204,7 +1360,7 @@
       activeLyric = -1;
       if (!currentLyrics.length) {
         box.innerHTML = `<p class="text-slate-500 text-sm pt-16">尚無歌詞</p>`;
-        ktvBox.innerHTML = `<p class="text-slate-500 text-2xl pt-24 font-light">這首歌暫無歌詞</p>`;
+        ktvBox.innerHTML = `<p class="text-slate-500 text-2xl font-light">這首歌暫無歌詞</p>`;
         return;
       }
       box.innerHTML = currentLyrics.map((l, i) =>
@@ -1218,7 +1374,7 @@
       applyLyricStyle();
     }
 
-    // 精確將正在唱的句子滾動到正中間，留白防遮擋
+    // 歌詞置中更新（KTV 模式專屬防遮擋精確居中計算）
     function updateLyrics() {
       if (!currentLyrics.length) return;
       const t = audio.currentTime;
@@ -1247,14 +1403,13 @@
       }
     }
 
-    // ===== 全螢幕 KTV 控制整合 =====
+    // ===== 全螢幕 KTV 控制（含完整進度條與音量調整） =====
     const ktvModal = document.getElementById('ktvModal');
     const ktvOpenBtn = document.getElementById('ktvOpenBtn');
     const ktvCloseBtn = document.getElementById('ktvCloseBtn');
     const ktvPlayPauseBtn = document.getElementById('ktvPlayPauseBtn');
     const ktvProgressBar = document.getElementById('ktvProgressBar');
     const ktvVolumeBar = document.getElementById('ktvVolumeBar');
-    const ktvSpeedSel = document.getElementById('ktvSpeedSel');
     const ktvMuteBtn = document.getElementById('ktvMuteBtn');
 
     function toggleKtvMode(show) {
@@ -1268,7 +1423,6 @@
           document.getElementById('ktvCover').src = s.cover;
         }
         ktvVolumeBar.value = audio.volume;
-        ktvSpeedSel.value = String(audio.playbackRate);
         updateLyrics();
       }
     }
@@ -1279,30 +1433,19 @@
     document.getElementById('ktvPrevBtn').addEventListener('click', playPrev);
     document.getElementById('ktvNextBtn').addEventListener('click', playNext);
 
-    // KTV 進度條拖曳
     ktvProgressBar.addEventListener('input', e => {
       if (!isNaN(audio.duration)) {
         audio.currentTime = (e.target.value / 100) * audio.duration;
       }
     });
 
-    // KTV 音量與靜音
     ktvVolumeBar.addEventListener('input', e => {
       audio.volume = e.target.value;
       volumeBar.value = e.target.value;
     });
-    ktvMuteBtn.addEventListener('click', () => {
-      document.getElementById('muteBtn').click();
-      ktvMuteBtn.innerHTML = audio.muted ? '<i class="fa-solid fa-volume-xmark"></i>' : '<i class="fa-solid fa-volume-high"></i>';
-    });
 
-    // KTV 速度切換
-    ktvSpeedSel.addEventListener('change', e => {
-      audio.playbackRate = Number(e.target.value);
-      document.getElementById('speedSel').value = e.target.value;
-    });
+    ktvMuteBtn.addEventListener('click', () => document.getElementById('muteBtn').click());
 
-    // 點擊 KTV 歌詞直接跳轉時間
     document.getElementById('ktvLyricsBox').addEventListener('click', e => {
       const p = e.target.closest('.ktv-line');
       if (!p) return;
@@ -1397,6 +1540,12 @@
       waveBar.classList.toggle('hidden', !waveOn);
       waveToggleBtn.classList.toggle('text-purple-400', waveOn);
       waveToggleBtn.classList.toggle('text-slate-500', !waveOn);
+      const wtText = document.getElementById('waveToggleText');
+      if (wtText) wtText.textContent = waveOn ? '已開啟' : '已關閉';
+      const icon = waveToggleBtn.querySelector('i');
+      if (icon) {
+        icon.className = waveOn ? 'fa-solid fa-toggle-on' : 'fa-solid fa-toggle-off';
+      }
       renderSongs(getFilteredSongs());
     });
 
@@ -1480,17 +1629,13 @@
     // ===== 快捷鍵 =====
     document.getElementById('speedSel').addEventListener('change', e => {
       audio.playbackRate = Number(e.target.value);
-      ktvSpeedSel.value = e.target.value;
     });
 
     document.getElementById('muteBtn').addEventListener('click', () => {
       audio.muted = !audio.muted;
-      document.getElementById('muteBtn').innerHTML = audio.muted
-        ? '<i class="fa-solid fa-volume-xmark"></i>'
-        : '<i class="fa-solid fa-volume-high"></i>';
-      ktvMuteBtn.innerHTML = audio.muted
-        ? '<i class="fa-solid fa-volume-xmark"></i>'
-        : '<i class="fa-solid fa-volume-high"></i>';
+      const icon = audio.muted ? '<i class="fa-solid fa-volume-xmark"></i>' : '<i class="fa-solid fa-volume-high"></i>';
+      document.getElementById('muteBtn').innerHTML = icon;
+      ktvMuteBtn.innerHTML = icon;
     });
 
     let sleepAfterSong = false;
@@ -1520,10 +1665,9 @@
       else if (e.code === 'ArrowUp' || e.code === 'ArrowDown') {
         e.preventDefault();
         const d = e.code === 'ArrowUp' ? 0.05 : -0.05;
-        const nv = Math.max(0, Math.min(1, Number(volumeBar.value) + d)).toFixed(2);
-        volumeBar.value = nv;
-        ktvVolumeBar.value = nv;
-        audio.volume = Number(nv);
+        volumeBar.value = Math.max(0, Math.min(1, Number(volumeBar.value) + d)).toFixed(2);
+        ktvVolumeBar.value = volumeBar.value;
+        audio.volume = Number(volumeBar.value);
       }
       else if (e.key === 'm' || e.key === 'M') document.getElementById('muteBtn').click();
       else if (e.key === 'f' || e.key === 'F') toggleKtvMode();
@@ -1566,11 +1710,7 @@
     // ===== 音量記憶 =====
     try {
       const v = localStorage.getItem('sg_volume');
-      if (v !== null) {
-        volumeBar.value = v;
-        ktvVolumeBar.value = v;
-        audio.volume = Number(v);
-      }
+      if (v !== null) { volumeBar.value = v; ktvVolumeBar.value = v; audio.volume = Number(v); }
     } catch (e) {}
     volumeBar.addEventListener('input', e => {
       try { localStorage.setItem('sg_volume', e.target.value); } catch (err) {}
@@ -2290,6 +2430,59 @@
         songs = songs.filter(s => remoteIds.includes(s.id));
         autoUnlockVault();
       } catch (e) { console.warn('無法讀取 songs.json', e); }
+    }
+
+
+    // ===== 網站介紹彈窗控制 =====
+    const siteIntroModal = document.getElementById('siteIntroModal');
+    const siteIntroBtn = document.getElementById('siteIntroBtn');
+    const closeSiteIntroBtn = document.getElementById('closeSiteIntroBtn');
+    const startExploreBtn = document.getElementById('startExploreBtn');
+    const dontShowIntroAgain = document.getElementById('dontShowIntroAgain');
+
+    function openSiteIntro() {
+      siteIntroModal.classList.remove('hidden');
+    }
+    function closeSiteIntro() {
+      siteIntroModal.classList.add('hidden');
+      if (dontShowIntroAgain.checked) {
+        try { localStorage.setItem('sg_hide_intro', 'true'); } catch (e) {}
+      }
+    }
+
+    if (siteIntroBtn) siteIntroBtn.addEventListener('click', openSiteIntro);
+    if (closeSiteIntroBtn) closeSiteIntroBtn.addEventListener('click', closeSiteIntro);
+    if (startExploreBtn) startExploreBtn.addEventListener('click', closeSiteIntro);
+
+    // 首次進入自動彈出檢查
+    try {
+      const hideIntro = localStorage.getItem('sg_hide_intro');
+      if (hideIntro !== 'true') {
+        setTimeout(() => { openSiteIntro(); }, 600);
+      }
+    } catch (e) {}
+
+    // ===== 更多設定彈窗 (波形、倍速、定時、循環) =====
+    const moreSettingsBtn = document.getElementById('moreSettingsBtn');
+    const moreSettingsPanel = document.getElementById('moreSettingsPanel');
+    const moreSettingsArrow = document.getElementById('moreSettingsArrow');
+    const waveToggleText = document.getElementById('waveToggleText');
+
+    if (moreSettingsBtn && moreSettingsPanel) {
+      moreSettingsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isHidden = moreSettingsPanel.classList.toggle('hidden');
+        if (moreSettingsArrow) {
+          moreSettingsArrow.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!moreSettingsPanel.contains(e.target) && !moreSettingsBtn.contains(e.target)) {
+          moreSettingsPanel.classList.add('hidden');
+          if (moreSettingsArrow) moreSettingsArrow.style.transform = 'rotate(0deg)';
+        }
+      });
     }
 
     load();
