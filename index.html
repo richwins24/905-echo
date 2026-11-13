@@ -225,7 +225,16 @@
       --aura-color-2: radial-gradient(circle, #ec4899 0%, #8b5cf6 70%, transparent 100%);
     }
 
-    /* 響應主題色覆蓋全站組件 (包含自訂義、藍色、綠色、經典紫) */
+    /* 心事主題：夜色藍紫與柔和暖光，呼應歌詞中的失落、理解與自我接納 */
+    body.theme-song {
+      --primary-color: #818cf8; --primary-hover: #6366f1; --primary-border: #818cf8; --primary-text: #c4b5fd;
+      --primary-gradient: linear-gradient(135deg, rgba(49, 46, 129, 0.72), rgba(15, 23, 42, 0.96));
+      --bg-radial: radial-gradient(circle at 50% 0%, rgba(129, 140, 248, 0.22) 0%, rgba(15, 23, 42, 0) 72%);
+      --aura-color-1: radial-gradient(circle, #6366f1 0%, #818cf8 58%, transparent 100%);
+      --aura-color-2: radial-gradient(circle, #c08497 0%, #a78bfa 62%, transparent 100%);
+    }
+
+    /* 響應主題色覆蓋全站組件 (包含自訂義、預設與歌曲主題) */
     .bg-purple-600 { background-color: var(--primary-color) !important; }
     .hover\:bg-purple-500:hover { background-color: var(--primary-hover) !important; }
     .hover\:bg-purple-800\/60:hover { background-color: color-mix(in srgb, var(--primary-hover) 35%, transparent) !important; }
@@ -321,6 +330,16 @@
                   </div>
                 </div>
                 <i class="fa-solid fa-check text-purple-400 text-xs check-icon hidden" id="check-purple"></i>
+              </div>
+              <div onclick="applyPresetTheme('song')" id="themeBtn-song" class="flex items-center justify-between p-2 rounded-xl cursor-pointer hover:bg-slate-800 transition">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-3.5 h-3.5 rounded-full bg-indigo-400 shadow-sm shadow-indigo-400/50"></span>
+                  <div>
+                    <p class="font-bold text-white text-xs">心事・溫柔陪伴</p>
+                    <p class="text-[10px] text-slate-400">夜色藍紫與暖光，獻給這首歌</p>
+                  </div>
+                </div>
+                <i class="fa-solid fa-check text-indigo-300 text-xs check-icon hidden" id="check-song"></i>
               </div>
             </div>
             <!-- 自訂義主題色區塊 -->
@@ -496,7 +515,7 @@
           <div id="m-6" data-start="2026-12-02" data-end="2026-12-05" class="timeline-node shrink-0 w-36 bg-slate-800/80 border border-slate-700 rounded-2xl p-3 relative group transition">
             <div class="text-[10px] font-bold text-pink-300 mb-1">12/2 ~ 12/5</div>
             <div class="text-xs font-bold text-white truncate">🚌 九年級畢旅</div>
-            <div class="text-[10px] text-slate-300 mt-1">4天3夜狂歡回憶</div>
+            <div class="text-[10px] text-slate-300 mt-1">3天2夜狂歡回憶</div>
             <span class="tag-status mt-2 inline-block px-1.5 py-0.5 rounded text-[9px] font-bold bg-pink-500/30 text-pink-300 border border-pink-500/40">最期待 🎉</span>
           </div>
 
@@ -1770,7 +1789,7 @@
     function applyCustomColor(hex) {
       currentThemeMode = 'custom';
       currentCustomHex = hex;
-      document.body.classList.remove('theme-blue', 'theme-green', 'theme-purple');
+      document.body.classList.remove('theme-blue', 'theme-green', 'theme-purple', 'theme-song');
 
       const { r, g, b } = hexToRgb(hex);
       const hoverHex = '#' + [
@@ -1815,11 +1834,11 @@
         document.documentElement.style.removeProperty(p);
       });
 
-      document.body.classList.remove('theme-blue', 'theme-green', 'theme-purple');
+      document.body.classList.remove('theme-blue', 'theme-green', 'theme-purple', 'theme-song');
       document.body.classList.add('theme-' + theme);
 
       const lbl = document.getElementById('themeNameLabel');
-      const names = { blue: '藍色主題', green: '綠色主題', purple: '經典紫色' };
+      const names = { blue: '藍色主題', green: '綠色主題', purple: '經典紫色', song: '心事・溫柔陪伴' };
       if (lbl) lbl.textContent = names[theme] || '主題風格';
 
       try {
@@ -1830,7 +1849,7 @@
     }
 
     function updateThemeUISelection() {
-      ['blue', 'green', 'purple'].forEach(t => {
+      ['blue', 'green', 'purple', 'song'].forEach(t => {
         const check = document.getElementById('check-' + t);
         const btn = document.getElementById('themeBtn-' + t);
         if (check) check.classList.toggle('hidden', currentThemeMode !== t);
@@ -1866,7 +1885,7 @@
 
     // 初始化載入使用者偏好主題
     try {
-      const savedMode = localStorage.getItem('sg_theme_mode') || 'blue';
+      const savedMode = localStorage.getItem('sg_theme_mode') || 'song';
       const savedHex = localStorage.getItem('sg_custom_hex') || '#3b82f6';
       if (savedMode === 'custom') {
         applyCustomColor(savedHex);
@@ -1874,7 +1893,7 @@
         applyPresetTheme(savedMode);
       }
     } catch (e) {
-      applyPresetTheme('blue');
+      applyPresetTheme('song');
     }
 
     // ===== ⏩ ⏪ 快進 5 秒 / 後退 5 秒 =====
