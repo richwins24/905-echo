@@ -590,6 +590,80 @@
       body.theme-song .heart-inner-caption { font-size: .64rem; }
     }
 
+
+    /* 三個心情內容改為同層獨立收合；收起時只保留小型可見標題列 */
+    body.theme-song .heart-compact-disclosure {
+      margin: 0 0 .55rem;
+      overflow: hidden;
+      border: 1px solid rgba(196,181,253,.15);
+      border-radius: .9rem;
+      background: rgba(15,23,42,.56);
+    }
+    body.theme-song .heart-compact-summary {
+      min-height: 2.85rem !important;
+      display: flex !important;
+      align-items: center;
+      gap: .65rem;
+      padding: .55rem .8rem !important;
+      border-radius: .85rem !important;
+      list-style: none;
+      cursor: pointer;
+      background: rgba(15,23,42,.3);
+    }
+    body.theme-song .heart-compact-summary::-webkit-details-marker { display: none; }
+    body.theme-song .heart-compact-summary::marker { content: ''; }
+    body.theme-song .heart-compact-summary:hover,
+    body.theme-song .heart-compact-summary:focus-visible { outline: none; background: rgba(129,140,248,.1); }
+    body.theme-song .heart-compact-label {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      flex: 1 1 auto;
+      color: #f8fafc;
+      font-size: .82rem;
+      line-height: 1.25;
+      font-weight: 800;
+    }
+    body.theme-song .heart-compact-label > i {
+      display: grid;
+      place-items: center;
+      width: 1.55rem;
+      height: 1.55rem;
+      flex: 0 0 auto;
+      border-radius: .55rem;
+      color: #fbcfe8;
+      background: rgba(129,140,248,.16);
+      font-size: .72rem;
+    }
+    body.theme-song .heart-compact-meta {
+      flex: 0 0 auto;
+      padding: .18rem .45rem;
+      border: 1px solid rgba(196,181,253,.12);
+      border-radius: 999px;
+      color: rgba(226,232,240,.62);
+      font-size: .62rem;
+      line-height: 1.3;
+    }
+    body.theme-song .heart-compact-chevron {
+      flex: 0 0 auto;
+      color: #f9a8d4;
+      font-size: .7rem;
+      transition: transform .2s ease;
+    }
+    body.theme-song .heart-compact-disclosure[open] .heart-compact-chevron { transform: rotate(180deg); }
+    body.theme-song .heart-compact-disclosure[open] > .heart-compact-summary { border-bottom: 1px solid rgba(196,181,253,.12); }
+    body.theme-song .heart-compact-disclosure[open] > .heart-story-shell,
+    body.theme-song .heart-compact-disclosure[open] > .heart-lyric-story,
+    body.theme-song .heart-compact-disclosure[open] > .heart-companion-content { animation: heartInnerReveal .22s ease-out both; }
+    body.theme-song .heart-story-shell { padding: 1rem !important; }
+    @media (max-width: 480px) {
+      body.theme-song .heart-compact-disclosure { margin-bottom: .45rem; }
+      body.theme-song .heart-compact-summary { min-height: 2.65rem !important; padding: .45rem .65rem !important; }
+      body.theme-song .heart-compact-label { font-size: .76rem; }
+      body.theme-song .heart-compact-meta { font-size: .58rem; }
+    }
+
   </style>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-database-compat.js"></script>
@@ -736,20 +810,14 @@
 
   <!-- 歌詞導讀可收合；只在「心事單曲企劃」主題下顯示 -->
   <section id="heartStorySection" class="max-w-7xl mx-auto px-4 pt-5" aria-label="歌曲心情九宮格與歌詞導讀">
-    <details class="heart-story-disclosure" id="heartStoryDisclosure">
-      <summary class="heart-story-summary">
-        <span class="min-w-0">
-          <span class="block text-[9px] md:text-[10px] font-bold tracking-[0.3em] text-pink-200/80">心情導讀</span>
-          <span class="mt-1 block text-base md:text-xl font-black tracking-wide text-white">九種心情，九句心聲</span>
-          <span class="mt-1 block text-[11px] md:text-xs leading-5 text-indigo-100/65">點選一格心情，看看哪一句歌詞，剛好替此刻的你說出心裡話。</span>
-        </span>
-        <span class="flex shrink-0 items-center gap-2 text-[11px] font-bold text-indigo-100/85">
-          <span class="heart-story-toggle-label hidden sm:inline">展開導讀</span>
-          <i class="heart-story-chevron fa-solid fa-chevron-down text-pink-200" aria-hidden="true"></i>
-        </span>
+    <details class="heart-story-disclosure heart-compact-disclosure" id="heartStoryDisclosure">
+      <summary class="heart-story-summary heart-compact-summary">
+        <span class="heart-compact-label"><i class="fa-solid fa-heart-pulse" aria-hidden="true"></i><span>九種心情，九句心聲</span></span>
+        <span class="heart-compact-meta">9 種</span>
+        <i class="heart-compact-chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
       </summary>
-      <div class="heart-story-shell rounded-[2rem] p-5 md:p-8">
-      <div class="heart-mood-summary mb-5 rounded-2xl p-4 md:p-5">
+      <div class="heart-story-shell rounded-[2rem] p-4 md:p-6">
+<div class="heart-mood-summary mb-5 rounded-2xl p-4 md:p-5">
         <div class="flex items-start justify-between gap-3">
           <div class="min-w-0"><p class="text-[9px] font-bold tracking-[0.28em] text-indigo-200/60">此刻的心情</p><p id="moodCurrentTitle" class="mt-1 text-sm md:text-base font-black text-white" aria-live="polite">選一格，聽聽心裡的聲音</p></div>
           <span id="moodSelectedLabel" class="shrink-0 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[10px] font-semibold text-pink-100">點選一種心情</span>
@@ -767,15 +835,13 @@
         <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="想要安心" data-mood-quote="我也想有個能放心的地方" aria-pressed="false"><i class="fa-solid fa-house-chimney-heart" aria-hidden="true"></i><span class="heart-mood-title">想要安心</span><span class="heart-mood-desc">想有個不用假裝堅強的地方。</span></button>
         <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="接納自己" data-mood-quote="至少我會慢慢學著接受" aria-pressed="false"><i class="fa-regular fa-sun" aria-hidden="true"></i><span class="heart-mood-title">接納自己</span><span class="heart-mood-desc">不完美的現在，也值得被接納。</span></button>
       </div>
-
-            <details class="heart-inner-disclosure mt-6">
-              <summary class="heart-inner-summary">
-                <span class="min-w-0">
-                  <span class="heart-inner-kicker">逐段讀歌詞</span>
-                  <span class="heart-inner-title">歌詞裡的故事</span>
-                  <span class="heart-inner-caption">8 段歌詞解析，點擊展開閱讀</span>
-                </span>
-                <i class="heart-inner-chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+      </div>
+    </details>
+            <details class="heart-inner-disclosure heart-compact-disclosure" id="heartLyricsDisclosure">
+              <summary class="heart-compact-summary">
+                <span class="heart-compact-label"><i class="fa-solid fa-book-open" aria-hidden="true"></i><span>歌詞裡的故事</span></span>
+                <span class="heart-compact-meta">8 段</span>
+                <i class="heart-compact-chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
               </summary>
               <section class="heart-lyric-story mt-4" aria-labelledby="heartLyricStoryTitle">
                 <h3 id="heartLyricStoryTitle" class="sr-only">歌詞裡的故事</h3>
@@ -823,15 +889,11 @@
         </div>
               </section>
             </details>
-
-      <details class="heart-inner-disclosure mt-3">
-        <summary class="heart-inner-summary">
-          <span class="min-w-0">
-            <span class="heart-inner-kicker">給此刻的你</span>
-            <span class="heart-inner-title">也許你需要聽見</span>
-            <span class="heart-inner-caption">3 則陪伴文字，點擊展開</span>
-          </span>
-          <i class="heart-inner-chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+      <details class="heart-inner-disclosure heart-compact-disclosure" id="heartSupportDisclosure">
+        <summary class="heart-compact-summary">
+          <span class="heart-compact-label"><i class="fa-regular fa-heart" aria-hidden="true"></i><span>給此刻的陪伴文字</span></span>
+          <span class="heart-compact-meta">3 則</span>
+          <i class="heart-compact-chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
         </summary>
         <div class="heart-companion-content mt-3 rounded-2xl border border-pink-200/10 bg-gradient-to-r from-indigo-950/30 via-slate-950/30 to-pink-950/20 p-3 md:p-5">
           <div class="flex flex-col gap-2">
@@ -842,8 +904,6 @@
           <p class="mt-4 text-center text-[11px] md:text-xs leading-6 text-indigo-100/60">這些心情沒有標準答案。願你在其中找到一小句，剛好替此刻的自己說出心裡話。</p>
         </div>
       </details>
-      </div>
-    </details>
   </section>
 
   <main class="max-w-7xl mx-auto px-4 py-6">
