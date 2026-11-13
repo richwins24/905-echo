@@ -321,40 +321,50 @@
       border: 1px solid rgba(196, 181, 253, 0.16);
       box-shadow: 0 20px 65px rgba(15, 23, 42, 0.22);
     }
-    body.theme-song .heart-story-card {
-      background: linear-gradient(150deg, rgba(30, 41, 59, 0.76), rgba(30, 27, 75, 0.43));
-      border: 1px solid rgba(199, 210, 254, 0.12);
-      transition: transform .25s ease, border-color .25s ease, background .25s ease;
+    body.theme-song .heart-mood-summary {
+      border: 1px solid rgba(199, 210, 254, .16);
+      background: radial-gradient(ellipse at 90% 0%, rgba(192,132,252,.16), transparent 42%), linear-gradient(135deg, rgba(15,23,42,.92), rgba(49,46,129,.38) 64%, rgba(76,29,88,.32));
     }
-    body.theme-song .heart-story-card:hover {
-      transform: translateY(-3px); border-color: rgba(244, 114, 182, 0.32);
-      background: linear-gradient(150deg, rgba(49, 46, 129, 0.6), rgba(76, 29, 88, 0.36));
+    body.theme-song .heart-mood-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: .7rem; }
+    body.theme-song .heart-mood-tile {
+      min-width: 0; min-height: 9.5rem; display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+      gap: .45rem; padding: 1rem; text-align: left; border: 1px solid rgba(199,210,254,.14); border-radius: 1.25rem;
+      color: #e2e8f0; background: linear-gradient(145deg,rgba(30,41,59,.82),rgba(49,46,129,.27));
+      transition: transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
     }
-    body.theme-song .heart-story-quote { border-left: 2px solid rgba(244, 114, 182, 0.62); color: #fbcfe8; }
-    body.theme-song .heart-story-chapters {
-      position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem;
-      padding-left: 2rem;
+    body.theme-song .heart-mood-tile:nth-child(3n+2) { background: linear-gradient(145deg,rgba(49,46,129,.48),rgba(30,41,59,.6)); }
+    body.theme-song .heart-mood-tile:nth-child(3n) { background: linear-gradient(145deg,rgba(76,29,88,.34),rgba(30,41,59,.65)); }
+    body.theme-song .heart-mood-tile > i { color: #c4b5fd; font-size: 1rem; }
+    body.theme-song .heart-mood-tile:nth-child(3n+2) > i { color: #f9a8d4; }
+    body.theme-song .heart-mood-tile:nth-child(3n) > i { color: #fcd34d; }
+    body.theme-song .heart-mood-title { color: #fff; font-size: .88rem; font-weight: 800; line-height: 1.45; }
+    body.theme-song .heart-mood-desc { color: rgba(226,232,240,.74); font-size: .72rem; line-height: 1.65; }
+    body.theme-song .heart-mood-tile:hover { transform: translateY(-2px); border-color: rgba(244,114,182,.42); }
+    body.theme-song .heart-mood-tile.is-selected { border-color: rgba(251,207,232,.78); background: linear-gradient(145deg,rgba(129,140,248,.38),rgba(190,24,93,.22)); box-shadow: 0 0 0 2px rgba(244,114,182,.12), 0 14px 36px rgba(79,70,229,.18); }
+    body.theme-song .heart-mood-tile.is-selected > i { color: #fbcfe8; }
+    body.theme-song .heart-mood-tile:focus-visible { outline: 2px solid #fbcfe8; outline-offset: 3px; }
+    @media (max-width: 640px) {
+      body.theme-song .heart-mood-grid { gap: .45rem; }
+      body.theme-song .heart-mood-tile { min-height: 8.5rem; padding: .7rem; border-radius: 1rem; gap: .35rem; }
+      body.theme-song .heart-mood-title { font-size: .8rem; }
+      body.theme-song .heart-mood-desc { font-size: .68rem; line-height: 1.55; }
+      body.theme-song .heart-mood-summary { padding: 1rem; }
     }
-    body.theme-song .heart-story-chapters::before {
-      content: ''; position: absolute; left: .62rem; top: 1.5rem; bottom: 1.5rem; width: 2px;
-      border-radius: 99px; background: linear-gradient(to bottom, #64748b 0%, #818cf8 35%, #c084fc 65%, #fbbf24 100%);
-      opacity: .65;
+    body.theme-song .heart-lyric-story-list { position: relative; display: flex; flex-direction: column; gap: .85rem; padding-left: 1.8rem; }
+    body.theme-song .heart-lyric-story-list::before { content: ''; position: absolute; left: .48rem; top: .9rem; bottom: .9rem; width: 1px; background: linear-gradient(to bottom,rgba(129,140,248,.7),rgba(244,114,182,.55),rgba(251,191,36,.55)); }
+    body.theme-song .heart-lyric-story-part { position: relative; padding: 1rem 1.1rem; border: 1px solid rgba(199,210,254,.12); border-radius: 1.15rem; background: linear-gradient(120deg,rgba(30,41,59,.76),rgba(49,46,129,.22)); }
+    body.theme-song .heart-lyric-story-part::before { content: ''; position: absolute; left: -1.58rem; top: 1.35rem; width: .6rem; height: .6rem; border-radius: 50%; background: #c4b5fd; border: 2px solid #1e1b4b; box-shadow: 0 0 12px rgba(196,181,253,.35); }
+    body.theme-song .heart-lyric-story-label { display: flex; align-items: center; gap: .55rem; margin-bottom: .55rem; color: #fbcfe8; font-size: .75rem; font-weight: 800; }
+    body.theme-song .heart-lyric-story-label span:first-child { display: grid; place-items: center; width: 1.55rem; height: 1.55rem; flex: 0 0 auto; border-radius: 50%; color: #e0e7ff; background: rgba(129,140,248,.2); font-size: .65rem; }
+    body.theme-song .heart-lyric-story-part p { color: rgba(226,232,240,.82); font-size: .82rem; line-height: 1.8; }
+    body.theme-song .heart-lyric-story-part blockquote { margin-top: .65rem; padding-left: .75rem; border-left: 2px solid rgba(244,114,182,.52); color: #fbcfe8; font-size: .78rem; font-style: italic; line-height: 1.8; }
+    @media (max-width: 640px) {
+      body.theme-song .heart-lyric-story-list { padding-left: 1.45rem; gap: .7rem; }
+      body.theme-song .heart-lyric-story-part { padding: .85rem; }
+      body.theme-song .heart-lyric-story-part::before { left: -1.3rem; }
+      body.theme-song .heart-lyric-story-part p { font-size: .8rem; }
+      body.theme-song .heart-lyric-story-part blockquote { font-size: .76rem; }
     }
-    body.theme-song .heart-story-card {
-      position: relative; overflow: visible; border-radius: 1.5rem; padding: 1.2rem 1.35rem;
-    }
-    body.theme-song .heart-story-card::before {
-      content: ''; position: absolute; left: -1.82rem; top: 1.45rem; width: .78rem; height: .78rem;
-      border-radius: 50%; background: #818cf8; border: 2px solid #c7d2fe;
-      box-shadow: 0 0 16px rgba(129, 140, 248, .6);
-    }
-    body.theme-song .heart-story-card:nth-child(1) { background: linear-gradient(120deg, rgba(30,41,59,.92), rgba(49,46,129,.38)); }
-    body.theme-song .heart-story-card:nth-child(1)::before { background: #64748b; border-color: #cbd5e1; }
-    body.theme-song .heart-story-card:nth-child(2) { background: linear-gradient(120deg, rgba(49,46,129,.58), rgba(67,56,202,.28)); }
-    body.theme-song .heart-story-card:nth-child(3) { background: linear-gradient(120deg, rgba(67,56,202,.32), rgba(131,24,67,.34)); }
-    body.theme-song .heart-story-card:nth-child(3)::before { background: #e879a9; border-color: #fbcfe8; box-shadow: 0 0 16px rgba(244,114,182,.55); }
-    body.theme-song .heart-story-card:nth-child(4) { background: linear-gradient(120deg, rgba(76,29,149,.32), rgba(120,53,15,.25)); }
-    body.theme-song .heart-story-card:nth-child(4)::before { background: #fbbf24; border-color: #fef3c7; box-shadow: 0 0 18px rgba(251,191,36,.48); }
     body.theme-song .heart-story-disclosure { border-radius: 2rem; overflow: hidden; }
     body.theme-song .heart-story-summary {
       min-height: 4.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
@@ -376,44 +386,12 @@
     body.theme-song .heart-story-disclosure[open] .heart-story-toggle-label::after { content: '收合導讀'; font-size: 11px; }
     body.theme-song .heart-story-disclosure[open] .heart-story-summary { border-radius: 1.5rem; }
     body.theme-song .heart-story-disclosure[open] .heart-story-shell { margin-top: .75rem; }
-    body.theme-song .heart-journey-step { position: relative; min-width: 0; }
-    body.theme-song .heart-journey-step:not(:last-child)::after {
-      content: ''; position: absolute; top: 1rem; left: calc(100% - .25rem); width: .5rem;
-      border-top: 1px solid rgba(196, 181, 253, 0.35);
-    }
-    body.theme-song .heart-step-dot {
-      width: 2.25rem; height: 2.25rem; border-radius: 999px; display: grid; place-items: center;
-      color: #fce7f3; border: 1px solid rgba(244, 114, 182, 0.38);
-      background: radial-gradient(circle at 30% 25%, rgba(244, 114, 182, 0.34), rgba(99, 102, 241, 0.23));
-      box-shadow: 0 0 20px rgba(129, 140, 248, 0.14);
-    }
-    body.theme-song .heart-story-card.is-active {
-      transform: translateY(-3px); border-color: rgba(251, 207, 232, 0.68);
-      box-shadow: 0 15px 42px rgba(99, 102, 241, 0.2), 0 0 0 1px rgba(244, 114, 182, 0.12);
-    }
-    body.theme-song .heart-story-card.is-active::before { transform: scale(1.35); }
-    body.theme-song .heart-step-dot { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
-    body.theme-song .heart-journey-step.is-active .heart-step-dot {
-      transform: scale(1.14); border-color: #fbcfe8; color: #fff;
-      box-shadow: 0 0 0 5px rgba(244, 114, 182, .11), 0 0 24px rgba(244, 114, 182, .48);
-    }
-    body.theme-song .heart-journey-step.is-active p:first-child { color: #fbcfe8 !important; text-shadow: 0 0 16px rgba(244,114,182,.35); }
-    body.theme-song .heart-journey-step.is-active p:last-child { color: #e0e7ff !important; }
     @media (max-width: 767px) {
-      body.theme-song .heart-journey-step:not(:last-child)::after { display: none; }
       body.theme-song #heartStorySection .heart-story-shell { padding: 1rem !important; }
-      body.theme-song #heartStorySection .heart-story-card p { font-size: .875rem; line-height: 1.8; }
-      body.theme-song #heartStorySection .heart-story-card blockquote { font-size: .875rem; line-height: 1.8; }
-      body.theme-song #heartStorySection .heart-journey-step p:first-child { font-size: .875rem !important; }
-      body.theme-song #heartStorySection .heart-journey-step p:last-child { font-size: .75rem; line-height: 1.6; }
       body.theme-song #heartStorySection .heart-message-card h4 { font-size: .875rem; }
       body.theme-song #heartStorySection .heart-message-card p { font-size: .8rem; line-height: 1.7; }
       body.theme-song #heartStorySection .heart-story-summary { padding: .95rem 1rem; }
     }
-    @media (min-width: 768px) {
-      body.theme-song .heart-journey-step:not(:last-child)::after { display: block; }
-    }
-
     /* 心事企劃動態：光影流動、唱片緩轉、歌詞卡片淡入 */
     body.theme-song .heart-event-card::before {
       content: ''; position: absolute; z-index: 1; inset: -45% -70%; pointer-events: none;
@@ -428,7 +406,7 @@
     body.theme-song .event-lyric-one { left: -2%; top: 18%; }
     body.theme-song .event-lyric-two { right: -1%; top: 11%; }
     body.theme-song .heart-message-card {
-      min-height: 9rem; border: 1px solid rgba(199, 210, 254, 0.14);
+      min-height: 0; border: 1px solid rgba(199, 210, 254, 0.14);
       background: linear-gradient(145deg, rgba(49, 46, 129, 0.38), rgba(15, 23, 42, 0.36));
       transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
     }
@@ -443,10 +421,6 @@
       body.theme-song .event-lyric-float { animation: eventFloat 5s ease-in-out infinite; }
       body.theme-song .event-lyric-two { animation-delay: -2.4s; }
       body.theme-song .heart-story-shell { animation: storyAppear .8s ease-out both; }
-      body.theme-song .heart-story-card { animation: storyCardAppear .75s ease-out both; }
-      body.theme-song .heart-story-card:nth-child(2) { animation-delay: .10s; }
-      body.theme-song .heart-story-card:nth-child(3) { animation-delay: .20s; }
-      body.theme-song .heart-story-card:nth-child(4) { animation-delay: .30s; }
       body.theme-song .heart-journey-step.is-active .heart-step-dot { animation: heartDotPulse 1.8s ease-in-out infinite; }
       @keyframes eventLightSweep { 0%, 18% { transform: translateX(-55%) rotate(8deg); } 65%, 100% { transform: translateX(55%) rotate(8deg); } }
       @keyframes eventVinylTurn { to { transform: rotate(360deg); } }
@@ -465,6 +439,156 @@
 
     #ktvLyricsBox.size-lg .ktv-line { font-size: 2.1rem !important; line-height: 2.0 !important; padding: 14px 26px !important; }
     @media (min-width: 768px) { #ktvLyricsBox.size-lg .ktv-line { font-size: 3.1rem !important; } }
+
+
+
+    /* ===== 版面精修：只調整視覺與響應式配置，不改動互動功能 ===== */
+    :root {
+      --layout-surface: rgba(15, 23, 42, 0.78);
+      --layout-border: rgba(148, 163, 184, 0.16);
+      --layout-glow: color-mix(in srgb, var(--primary-color) 18%, transparent);
+    }
+
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      line-height: 1.55;
+      background-color: #020617;
+      background-image: var(--bg-radial), radial-gradient(ellipse at 50% 35%, rgba(30, 41, 59, 0.22), transparent 62%);
+      background-attachment: fixed;
+    }
+
+    button, input, select, a { transition-timing-function: cubic-bezier(.2,.75,.25,1); }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid color-mix(in srgb, var(--primary-color) 82%, white);
+      outline-offset: 3px;
+    }
+
+    header {
+      background: rgba(2, 6, 23, 0.82) !important;
+      border-color: rgba(148, 163, 184, 0.14) !important;
+      box-shadow: 0 10px 32px rgba(2, 6, 23, 0.18);
+    }
+    header > div { padding-top: 0.85rem; padding-bottom: 0.85rem; }
+    header input, #vaultBox input, #myListBox input, #commentPanel input {
+      min-height: 42px;
+      border-color: rgba(148, 163, 184, 0.2);
+      background-color: rgba(15, 23, 42, 0.82);
+    }
+
+    main { padding-top: clamp(1.25rem, 2.4vw, 2rem) !important; }
+    #heartEventBanner, #heartStorySection { padding-top: clamp(1rem, 2vw, 1.5rem); }
+    #heartEventBanner .heart-event-card { box-shadow: 0 24px 70px rgba(2, 6, 23, 0.32), inset 0 1px rgba(255,255,255,.06); }
+
+    #gradHeroBanner, main > .grid > section {
+      border-color: color-mix(in srgb, var(--primary-color) 24%, rgba(148,163,184,.18)) !important;
+      box-shadow: 0 18px 48px rgba(2, 6, 23, 0.24);
+    }
+    #gradHeroBanner { min-height: 270px; }
+    #timelineTrack { padding: .75rem .25rem 1rem; scroll-padding-inline: 1rem; }
+    .timeline-node { min-height: 126px; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+    .timeline-node:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--primary-color) 55%, #475569); }
+    .current-milestone { box-shadow: 0 0 0 1px rgba(245,158,11,.15), 0 12px 30px rgba(245,158,11,.12); }
+
+    #playlistChips, #genreFilters, #hotBox, #recentRow { padding-bottom: .7rem; }
+    #playlistChips button, #genreFilters button, #hotBox button { transition: transform .18s ease, border-color .18s ease, background-color .18s ease; }
+    #playlistChips button:hover, #genreFilters button:hover, #hotBox button:hover { transform: translateY(-1px); }
+    #vaultBox, #plBanner, #noticeBox, #voteBox, #newSongBanner, #adminPanel {
+      border-radius: 1rem;
+      box-shadow: 0 10px 26px rgba(2, 6, 23, 0.14);
+    }
+
+    #musicGrid { align-items: stretch; }
+    #musicGrid > div {
+      border-color: rgba(148, 163, 184, 0.14);
+      background: linear-gradient(155deg, rgba(15, 23, 42, .96), rgba(8, 15, 31, .98));
+      box-shadow: 0 10px 28px rgba(2, 6, 23, .16);
+      transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+    }
+    #musicGrid > div:hover {
+      transform: translateY(-3px);
+      border-color: color-mix(in srgb, var(--primary-color) 46%, #334155);
+      box-shadow: 0 18px 38px rgba(2, 6, 23, .32), 0 0 24px var(--layout-glow);
+    }
+    #musicGrid > div > div:first-child img { transition: transform .55s cubic-bezier(.2,.75,.25,1); }
+
+    #playerBar {
+      padding-top: 13px;
+      padding-bottom: max(13px, env(safe-area-inset-bottom, 13px));
+      border-color: rgba(148, 163, 184, 0.18);
+      background: rgba(2, 6, 23, 0.94) !important;
+      box-shadow: 0 -12px 40px rgba(2, 6, 23, 0.32);
+      backdrop-filter: blur(22px);
+    }
+    #playerBar.mini { padding-top: 7px; padding-bottom: max(7px, env(safe-area-inset-bottom, 7px)); }
+    #playerBar .extra-controls button { min-height: 36px; }
+    #playerBar .extra-controls { row-gap: 6px; }
+    #collapseBtn { box-shadow: 0 4px 14px rgba(0,0,0,.24); }
+
+    #lyricsPanel > div, #commentPanel > div, #reviewPanel > div {
+      border-color: color-mix(in srgb, var(--primary-color) 28%, #334155);
+      box-shadow: 0 22px 55px rgba(0,0,0,.38);
+      backdrop-filter: blur(18px);
+    }
+    #introModal > div { box-shadow: 0 28px 80px rgba(0,0,0,.5); }
+
+    #ktvModal { padding-left: clamp(1rem, 3vw, 2.5rem); padding-right: clamp(1rem, 3vw, 2.5rem); }
+    #ktvControlBar { box-shadow: 0 22px 70px rgba(0,0,0,.42); }
+
+    @media (min-width: 520px) and (max-width: 767px) {
+      #musicGrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 1rem; }
+    }
+    @media (min-width: 768px) {
+      main { padding-left: 1.5rem; padding-right: 1.5rem; }
+      #musicGrid { gap: 1.35rem; }
+      #gradHeroBanner, main > .grid > section { min-height: 290px; }
+    }
+    @media (max-width: 767px) {
+      header > div { gap: .75rem; padding-left: 1rem; padding-right: 1rem; }
+      header > div > div:last-child { flex-wrap: wrap; gap: .55rem; justify-content: flex-end; }
+      header > div > div:last-child > .relative.w-full { flex: 1 0 100%; width: 100%; }
+      header #themeMenuBtn, header #adminToggleBtn, header #loginBtn { min-height: 40px; }
+      main { padding-top: 1rem !important; }
+      #playerBar .extra-controls { flex-wrap: wrap; justify-content: center; white-space: normal; }
+      #playerBar .extra-controls #moreSettingsPanel { right: 0; max-width: min(20rem, calc(100vw - 1.5rem)); }
+      #gradHeroBanner, main > .grid > section { padding: 1.15rem; }
+      #heartEventBanner, #heartStorySection { padding-left: .75rem; padding-right: .75rem; }
+      #ktvControlBar { padding: .85rem; border-radius: 1.4rem; }
+      #ktvControlBar .flex.items-center.gap-3.sm\:gap-6 { gap: .55rem; }
+    }
+    @media (max-width: 420px) {
+      #musicGrid { gap: .8rem; }
+      #playerBar { padding-left: .65rem; padding-right: .65rem; }
+      #playerBar .extra-controls { gap: .4rem; }
+      #playerBar .extra-controls button { padding-left: .55rem; padding-right: .55rem; }
+      #ktvTitle { max-width: 125px; }
+      #ktvControlBar .flex.items-center.gap-3.sm\:gap-6 { gap: .35rem; }
+      #ktvRewind5Btn, #ktvForward5Btn { padding-left: .45rem; padding-right: .45rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+
+
+    /* 心情導讀內層收合：把長篇內容整理成清楚的展開入口 */
+    body.theme-song .heart-inner-disclosure { overflow: hidden; border: 1px solid rgba(196,181,253,.15); border-radius: 1.15rem; background: rgba(15,23,42,.38); }
+    body.theme-song .heart-inner-summary { min-height: 4.1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; cursor: pointer; list-style: none; padding: .9rem 1.1rem; }
+    body.theme-song .heart-inner-summary::-webkit-details-marker { display: none; }
+    body.theme-song .heart-inner-summary::marker { content: ''; }
+    body.theme-song .heart-inner-summary:hover, body.theme-song .heart-inner-summary:focus-visible { outline: none; background: rgba(129,140,248,.08); }
+    body.theme-song .heart-inner-kicker { display: block; color: rgba(196,181,253,.68); font-size: .62rem; font-weight: 800; letter-spacing: .18em; }
+    body.theme-song .heart-inner-title { display: block; margin-top: .2rem; color: #f8fafc; font-size: .92rem; font-weight: 800; }
+    body.theme-song .heart-inner-caption { display: block; margin-top: .16rem; color: rgba(226,232,240,.55); font-size: .68rem; line-height: 1.5; }
+    body.theme-song .heart-inner-chevron { flex: 0 0 auto; color: #f9a8d4; font-size: .8rem; transition: transform .22s ease; }
+    body.theme-song .heart-inner-disclosure[open] .heart-inner-chevron { transform: rotate(180deg); }
+    body.theme-song .heart-inner-disclosure[open] > .heart-inner-summary { border-bottom: 1px solid rgba(196,181,253,.12); }
+    body.theme-song .heart-inner-disclosure[open] > .heart-lyric-story,
+    body.theme-song .heart-inner-disclosure[open] > .heart-companion-content { animation: heartInnerReveal .24s ease-out both; }
+    @keyframes heartInnerReveal { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 640px) {
+      body.theme-song .heart-inner-summary { min-height: 3.8rem; padding: .8rem .9rem; }
+      body.theme-song .heart-inner-title { font-size: .86rem; }
+      body.theme-song .heart-inner-caption { font-size: .64rem; }
+    }
 
   </style>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
@@ -611,13 +735,13 @@
   </section>
 
   <!-- 歌詞導讀可收合；只在「心事單曲企劃」主題下顯示 -->
-  <section id="heartStorySection" class="max-w-7xl mx-auto px-4 pt-5" aria-label="歌曲故事與歌詞導讀">
-    <details class="heart-story-disclosure" id="heartStoryDisclosure" open>
+  <section id="heartStorySection" class="max-w-7xl mx-auto px-4 pt-5" aria-label="歌曲心情九宮格與歌詞導讀">
+    <details class="heart-story-disclosure" id="heartStoryDisclosure">
       <summary class="heart-story-summary">
         <span class="min-w-0">
-          <span class="block text-[9px] md:text-[10px] font-bold tracking-[0.3em] text-pink-200/80">LYRIC NOTES <span class="text-indigo-200/50">/</span> SONG STORY</span>
-          <span class="mt-1 block text-base md:text-xl font-black tracking-wide text-white">聽見心事的四個片刻</span>
-          <span class="mt-1 block text-[11px] md:text-xs leading-5 text-indigo-100/65">展開一段從藏起心事、渴望被理解，到慢慢接納自己的情緒旅程。</span>
+          <span class="block text-[9px] md:text-[10px] font-bold tracking-[0.3em] text-pink-200/80">心情導讀</span>
+          <span class="mt-1 block text-base md:text-xl font-black tracking-wide text-white">九種心情，九句心聲</span>
+          <span class="mt-1 block text-[11px] md:text-xs leading-5 text-indigo-100/65">點選一格心情，看看哪一句歌詞，剛好替此刻的你說出心裡話。</span>
         </span>
         <span class="flex shrink-0 items-center gap-2 text-[11px] font-bold text-indigo-100/85">
           <span class="heart-story-toggle-label hidden sm:inline">展開導讀</span>
@@ -625,77 +749,99 @@
         </span>
       </summary>
       <div class="heart-story-shell rounded-[2rem] p-5 md:p-8">
-      <!-- 歌曲情緒路徑 -->
-      <div class="rounded-2xl border border-white/10 bg-slate-950/25 px-4 py-5 md:px-6 mb-5">
-        <div class="flex items-center justify-between gap-3 mb-4">
-          <p class="text-xs font-bold text-indigo-100"><i class="fa-solid fa-route mr-2 text-pink-200"></i>情緒路徑</p>
-          <span class="text-[9px] tracking-[0.2em] text-indigo-200/40">FROM QUIET TO HOPE</span>
+      <div class="heart-mood-summary mb-5 rounded-2xl p-4 md:p-5">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0"><p class="text-[9px] font-bold tracking-[0.28em] text-indigo-200/60">此刻的心情</p><p id="moodCurrentTitle" class="mt-1 text-sm md:text-base font-black text-white" aria-live="polite">選一格，聽聽心裡的聲音</p></div>
+          <span id="moodSelectedLabel" class="shrink-0 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[10px] font-semibold text-pink-100">點選一種心情</span>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 md:gap-2">
-          <div class="heart-journey-step flex items-start gap-2" data-journey-node="1"><span class="heart-step-dot shrink-0 text-xs">01</span><div><p class="text-[11px] font-bold text-white">藏起來</p><p class="mt-1 text-[10px] leading-4 text-slate-400">笑著說招呼，心事留在心裡</p></div></div>
-          <div class="heart-journey-step flex items-start gap-2" data-journey-node="2"><span class="heart-step-dot shrink-0 text-xs">02</span><div><p class="text-[11px] font-bold text-white">說不清</p><p class="mt-1 text-[10px] leading-4 text-slate-400">沒有原因，也可能不快樂</p></div></div>
-          <div class="heart-journey-step flex items-start gap-2" data-journey-node="3"><span class="heart-step-dot shrink-0 text-xs">03</span><div><p class="text-[11px] font-bold text-white">想被懂</p><p class="mt-1 text-[10px] leading-4 text-slate-400">盼望有人看見笑容背後</p></div></div>
-          <div class="heart-journey-step flex items-start gap-2" data-journey-node="4"><span class="heart-step-dot shrink-0 text-xs">04</span><div><p class="text-[11px] font-bold text-white">接住自己</p><p class="mt-1 text-[10px] leading-4 text-slate-400">不必假裝什麼都不怕</p></div></div>
-          <div class="heart-journey-step flex items-start gap-2" data-journey-node="5"><span class="heart-step-dot shrink-0 text-xs">05</span><div><p class="text-[11px] font-bold text-white">找到天空</p><p class="mt-1 text-[10px] leading-4 text-slate-400">帶著不完美，仍走向明天</p></div></div>
-        </div>
+        <div class="mt-4 flex items-start gap-3"><i class="fa-solid fa-quote-left mt-1 text-pink-200/70" aria-hidden="true"></i><div class="min-w-0"><p id="moodFeaturedQuote" class="text-sm md:text-lg font-semibold leading-7 text-white" aria-live="polite">選好一格，這裡會亮起與它相遇的歌詞。</p><p class="mt-1 text-[9px] font-bold tracking-[0.2em] text-indigo-100/45">來自歌詞的一句話</p></div></div>
+      </div>
+      <div class="heart-mood-grid" role="group" aria-label="九種心情，點選後查看對應歌詞">
+        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="藏起話語" data-mood-quote="有些話到了嘴邊又收回去" aria-pressed="false"><i class="fa-regular fa-comment-dots" aria-hidden="true"></i><span class="heart-mood-title">藏起話語</span><span class="heart-mood-desc">想說的話，最後又收回心裡。</span></button>
+        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="表面如常" data-mood-quote="好像沒有人發現我的情緒" aria-pressed="false"><i class="fa-regular fa-face-smile" aria-hidden="true"></i><span class="heart-mood-title">表面如常</span><span class="heart-mood-desc">笑著打招呼，心裡另有感受。</span></button>
+        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="說不清的低落" data-mood-quote="明明沒發生什麼卻不太快樂" aria-pressed="false"><i class="fa-solid fa-cloud" aria-hidden="true"></i><span class="heart-mood-title">說不清的低落</span><span class="heart-mood-desc">沒有明確理由，也可能不快樂。</span></button>
+        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="渴望被理解" data-mood-quote="明明很想找個人說說話" aria-pressed="false"><i class="fa-regular fa-message" aria-hidden="true"></i><span class="heart-mood-title">渴望被理解</span><span class="heart-mood-desc">很想說說話，也希望有人聽懂。</span></button>
+        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="想被重視" data-mood-quote="有時候真的也想被重視" aria-pressed="false"><i class="fa-regular fa-heart" aria-hidden="true"></i><span class="heart-mood-title">想被重視</span><span class="heart-mood-desc">也希望自己的感受有人在乎。</span></button>
+        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="害怕沒人懂" data-mood-quote="只是害怕說了也沒有人懂" aria-pressed="false"><i class="fa-solid fa-volume-low" aria-hidden="true"></i><span class="heart-mood-title">害怕沒人懂</span><span class="heart-mood-desc">不是不想說，只怕沒有人懂。</span></button>
+        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="自我懷疑" data-mood-quote="為什麼努力了還是不夠滿意" aria-pressed="false"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i><span class="heart-mood-title">自我懷疑</span><span class="heart-mood-desc">努力了，還是覺得不夠好。</span></button>
+        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="想要安心" data-mood-quote="我也想有個能放心的地方" aria-pressed="false"><i class="fa-solid fa-house-chimney-heart" aria-hidden="true"></i><span class="heart-mood-title">想要安心</span><span class="heart-mood-desc">想有個不用假裝堅強的地方。</span></button>
+        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="接納自己" data-mood-quote="至少我會慢慢學著接受" aria-pressed="false"><i class="fa-regular fa-sun" aria-hidden="true"></i><span class="heart-mood-title">接納自己</span><span class="heart-mood-desc">不完美的現在，也值得被接納。</span></button>
       </div>
 
-      <!-- 歌詞與故事 -->
-      <div class="heart-story-chapters">
-        <article class="heart-story-card rounded-2xl p-4 md:p-5" data-journey-chapter="1" data-journey-steps="1,2">
-          <div class="flex items-center gap-2 mb-3"><span class="text-[10px] font-black tracking-widest text-pink-200">01 / 起點・日常如常</span><span class="h-px flex-1 bg-white/10"></span><i class="fa-solid fa-cloud-moon text-indigo-200/70"></i></div>
-          <h3 class="text-sm font-bold text-white">看起來一切如常</h3>
-          <p class="mt-2 text-xs leading-6 text-slate-300">主歌一從熟悉的日常開始：仍然打招呼、仍然微笑，卻把想說的話收回去。那種「好像沒發生什麼，卻不太快樂」的情緒，讓說不清的低落有了位置。</p>
-          <blockquote class="heart-story-quote mt-3 pl-3 text-xs italic leading-6">「有些話到了嘴邊又收回去<br>好像沒有人發現我的情緒」</blockquote>
-        </article>
-        <article class="heart-story-card rounded-2xl p-4 md:p-5" data-journey-chapter="2" data-journey-steps="3">
-          <div class="flex items-center gap-2 mb-3"><span class="text-[10px] font-black tracking-widest text-pink-200">02 / 心聲・想被看見</span><span class="h-px flex-1 bg-white/10"></span><i class="fa-solid fa-heart text-pink-200/80"></i></div>
-          <h3 class="text-sm font-bold text-white">真正想說的，是「希望被看見」</h3>
-          <p class="mt-2 text-xs leading-6 text-slate-300">副歌把整首歌最深的願望說出來：不是要別人替自己解決一切，只是想被重視、被理解，也想有人能問一句「你還好嗎？」</p>
-          <blockquote class="heart-story-quote mt-3 pl-3 text-xs italic leading-6">「有時候真的也想被重視<br>也希望有人能懂我的固執」</blockquote>
-        </article>
-        <article class="heart-story-card rounded-2xl p-4 md:p-5" data-journey-chapter="3" data-journey-steps="3,4">
-          <div class="flex items-center gap-2 mb-3"><span class="text-[10px] font-black tracking-widest text-pink-200">03 / 低谷・開始懷疑</span><span class="h-px flex-1 bg-white/10"></span><i class="fa-solid fa-scale-balanced text-indigo-200/70"></i></div>
-          <h3 class="text-sm font-bold text-white">努力比較時，也會懷疑自己</h3>
-          <p class="mt-2 text-xs leading-6 text-slate-300">成績、別人的步伐、一句無心的話，都可能讓人開始懷疑自己。第二段寫出沉默背後的原因：並非不想傾訴，而是害怕說了仍然不被懂。</p>
-          <blockquote class="heart-story-quote mt-3 pl-3 text-xs italic leading-6">「為什麼努力了還是不夠滿意<br>只是害怕說了也沒有人懂」</blockquote>
-        </article>
-        <article class="heart-story-card rounded-2xl p-4 md:p-5" data-journey-chapter="4" data-journey-steps="4,5">
-          <div class="flex items-center gap-2 mb-3"><span class="text-[10px] font-black tracking-widest text-pink-200">04 / 轉折・走向天空</span><span class="h-px flex-1 bg-white/10"></span><i class="fa-solid fa-sun text-amber-200/80"></i></div>
-          <h3 class="text-sm font-bold text-white">不完美，也能慢慢走向明天</h3>
-          <p class="mt-2 text-xs leading-6 text-slate-300">橋段沒有突然變得無所畏懼，而是選擇不再一直躲著。最後的希望很溫柔：答案可以還沒出現，但自己可以慢慢學著接受現在的樣子。</p>
-          <blockquote class="heart-story-quote mt-3 pl-3 text-xs italic leading-6">「至少我會慢慢學著接受<br>現在這個還不完美的我」</blockquote>
-        </article>
-      </div>
+            <details class="heart-inner-disclosure mt-6">
+              <summary class="heart-inner-summary">
+                <span class="min-w-0">
+                  <span class="heart-inner-kicker">逐段讀歌詞</span>
+                  <span class="heart-inner-title">歌詞裡的故事</span>
+                  <span class="heart-inner-caption">8 段歌詞解析，點擊展開閱讀</span>
+                </span>
+                <i class="heart-inner-chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </summary>
+              <section class="heart-lyric-story mt-4" aria-labelledby="heartLyricStoryTitle">
+                <h3 id="heartLyricStoryTitle" class="sr-only">歌詞裡的故事</h3>
+        <div class="heart-lyric-story-list">
+          <article class="heart-lyric-story-part">
+            <div class="heart-lyric-story-label"><span>01</span><span>主歌一・日常如常</span></div>
+            <p>每天走在熟悉的路上，照常和朋友打招呼、照常微笑。日子看起來沒有不同，心裡卻有些感受沒有被說出來。</p>
+            <blockquote>「每天一樣走在熟悉的路上<br>有些話到了嘴邊又收回去」</blockquote>
+          </article>
+          <article class="heart-lyric-story-part">
+            <div class="heart-lyric-story-label"><span>02</span><span>主歌一・說不清的低落</span></div>
+            <p>有時候找不到明確原因，心情還是會低下來。看著周圍的人好像都知道方向，自己卻仍在摸索，這份迷惘被輕輕說了出來。</p>
+            <blockquote>「明明沒發生什麼卻不太快樂<br>只有我還在原地慢慢摸索」</blockquote>
+          </article>
+          <article class="heart-lyric-story-part">
+            <div class="heart-lyric-story-label"><span>03</span><span>預副歌・想說又收回</span></div>
+            <p>心裡其實很想找個人聊聊，卻不知道該怎麼開口。那些難以整理的情緒，最後暫時留在自己心裡。</p>
+            <blockquote>「明明很想找個人說說話<br>最後還是選擇自己收藏」</blockquote>
+          </article>
+          <article class="heart-lyric-story-part">
+            <div class="heart-lyric-story-label"><span>04</span><span>副歌・希望被看見</span></div>
+            <p>藏在笑容後面的心事，化成一個很直接的願望：希望被重視、被理解，也希望有人能看見那份失落。不是要誰解決一切，只是想知道自己的感受有人在乎。</p>
+            <blockquote>「如果有一天有人問起我<br>我想說其實我也需要被在乎」</blockquote>
+          </article>
+          <article class="heart-lyric-story-part">
+            <div class="heart-lyric-story-label"><span>05</span><span>主歌二・比較與懷疑</span></div>
+            <p>成績、努力的結果、別人的步伐，都讓人忍不住重新打量自己。即使心裡受了傷，表面仍可能裝作沒事；沉默裡也藏著「說了會不會有人懂」的擔心。</p>
+            <blockquote>「為什麼努力了還是不夠滿意<br>只是害怕說了也沒有人懂」</blockquote>
+          </article>
+          <article class="heart-lyric-story-part">
+            <div class="heart-lyric-story-label"><span>06</span><span>預副歌・想有安心的地方</span></div>
+            <p>這一段把心願說得更清楚：不想一直逞強，也想擁有一個可以放心、可以坦承害怕的地方。</p>
+            <blockquote>「我也想有個能放心的地方<br>不用假裝自己什麼都不怕」</blockquote>
+          </article>
+          <article class="heart-lyric-story-part">
+            <div class="heart-lyric-story-label"><span>07</span><span>橋段・練習接納自己</span></div>
+            <p>答案不一定立刻出現，人也不必突然變得完美或無所畏懼。歌詞把目光放回自己身上，練習接納那個仍在努力、仍會失落的現在。</p>
+            <blockquote>「至少我會慢慢學著接受<br>現在這個還不完美的我」</blockquote>
+          </article>
+          <article class="heart-lyric-story-part">
+            <div class="heart-lyric-story-label"><span>08</span><span>最後副歌與尾聲・替明天留一點希望</span></div>
+            <p>最後不再只停在無人知曉的心事，而是試著面對自己，願意相信未來仍有屬於自己的天空。尾聲回到最真實的告白：會難過，也想被懂；有些話仍未說出口，但它們已經被好好聽見。</p>
+            <blockquote>「我相信未來的某一天<br>我會找到屬於自己的天空」<br><br>「其實我也會難過<br>其實我也想被懂」</blockquote>
+          </article>
+        </div>
+              </section>
+            </details>
 
-      <!-- 歌曲想傳達的心情 -->
-      <div class="mt-5 rounded-2xl border border-pink-200/10 bg-gradient-to-r from-indigo-950/30 via-slate-950/30 to-pink-950/20 p-4 md:p-6">
-        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-2 mb-4">
-          <div>
-            <p class="text-[9px] font-bold tracking-[0.3em] text-pink-200/70">A NOTE TO YOU</p>
-            <h3 class="mt-1 text-base md:text-lg font-black text-white">這首歌想對你說</h3>
+      <details class="heart-inner-disclosure mt-3">
+        <summary class="heart-inner-summary">
+          <span class="min-w-0">
+            <span class="heart-inner-kicker">給此刻的你</span>
+            <span class="heart-inner-title">也許你需要聽見</span>
+            <span class="heart-inner-caption">3 則陪伴文字，點擊展開</span>
+          </span>
+          <i class="heart-inner-chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+        </summary>
+        <div class="heart-companion-content mt-3 rounded-2xl border border-pink-200/10 bg-gradient-to-r from-indigo-950/30 via-slate-950/30 to-pink-950/20 p-3 md:p-5">
+          <div class="flex flex-col gap-2">
+            <article class="heart-message-card rounded-2xl p-4 flex items-start gap-3"><span class="mt-0.5 shrink-0 text-lg text-indigo-200"><i class="fa-regular fa-eye"></i></span><div><h4 class="text-sm font-bold text-white">你的感受是真的</h4><p class="mt-1 text-xs leading-6 text-slate-300">就算「明明沒發生什麼」，不快樂也不是假的；你不需要先證明難過的理由。</p></div></article>
+            <article class="heart-message-card rounded-2xl p-4 flex items-start gap-3"><span class="mt-0.5 shrink-0 text-lg text-pink-200"><i class="fa-regular fa-heart"></i></span><div><h4 class="text-sm font-bold text-white">想被理解，不是脆弱</h4><p class="mt-1 text-xs leading-6 text-slate-300">希望有人重視、有人聽見，是很自然的心願；你值得被好好在乎。</p></div></article>
+            <article class="heart-message-card rounded-2xl p-4 flex items-start gap-3"><span class="mt-0.5 shrink-0 text-lg text-amber-200"><i class="fa-solid fa-sun"></i></span><div><h4 class="text-sm font-bold text-white">可以慢慢來</h4><p class="mt-1 text-xs leading-6 text-slate-300">還沒有答案也沒關係。帶著現在這個不完美的自己，仍然可以一步步走向明天。</p></div></article>
           </div>
-          <p class="max-w-xl text-[10px] md:text-xs leading-5 text-indigo-100/60">不急著把心情整理好，也不必立刻找到答案；先承認自己的感受，就已經是往前一步。</p>
+          <p class="mt-4 text-center text-[11px] md:text-xs leading-6 text-indigo-100/60">這些心情沒有標準答案。願你在其中找到一小句，剛好替此刻的自己說出心裡話。</p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <article class="heart-message-card rounded-2xl p-4">
-            <span class="text-lg text-indigo-200"><i class="fa-regular fa-eye"></i></span>
-            <h4 class="mt-2 text-xs font-bold text-white">你的感受是真的</h4>
-            <p class="mt-1 text-[10px] leading-5 text-slate-400">就算「明明沒發生什麼」，不快樂也不是假的；你不需要先證明難過的理由。</p>
-          </article>
-          <article class="heart-message-card rounded-2xl p-4">
-            <span class="text-lg text-pink-200"><i class="fa-regular fa-heart"></i></span>
-            <h4 class="mt-2 text-xs font-bold text-white">想被理解，不是脆弱</h4>
-            <p class="mt-1 text-[10px] leading-5 text-slate-400">希望有人重視、有人聽見，是很自然的心願；你值得被好好在乎。</p>
-          </article>
-          <article class="heart-message-card rounded-2xl p-4">
-            <span class="text-lg text-amber-200"><i class="fa-solid fa-sun"></i></span>
-            <h4 class="mt-2 text-xs font-bold text-white">可以慢慢來</h4>
-            <p class="mt-1 text-[10px] leading-5 text-slate-400">還沒有答案也沒關係。帶著現在這個不完美的自己，仍然可以一步步走向明天。</p>
-          </article>
-        </div>
-      </div>
-      <p class="mt-4 text-center text-[11px] md:text-xs leading-6 text-indigo-100/60">如果你也有說不出口的心事，希望這首歌能陪你停一下，聽聽自己真正想說的話。</p>
+      </details>
       </div>
     </details>
   </section>
@@ -2234,53 +2380,24 @@
       applyPresetTheme('song');
     }
 
-    // ===== 隨捲動高亮心事章節與情緒節點 =====
+    // ===== 九宮格心情選擇：各格獨立，不設定情緒順序 =====
     (() => {
-      const story = document.getElementById('heartStorySection');
-      const disclosure = document.getElementById('heartStoryDisclosure');
-      const chapters = [...document.querySelectorAll('[data-journey-chapter]')];
-      const steps = [...document.querySelectorAll('[data-journey-node]')];
-      if (!story || !disclosure || !chapters.length || !steps.length) return;
+      const tiles = [...document.querySelectorAll('[data-mood-card]')];
+      const currentTitle = document.getElementById('moodCurrentTitle');
+      const selectedLabel = document.getElementById('moodSelectedLabel');
+      const featuredQuote = document.getElementById('moodFeaturedQuote');
+      if (!tiles.length || !currentTitle || !featuredQuote) return;
 
-      const activateChapter = (chapter) => {
-        chapters.forEach(card => card.classList.toggle('is-active', card === chapter));
-        const mapped = chapter ? (chapter.dataset.journeySteps || '').split(',').map(x => x.trim()) : [];
-        steps.forEach(step => step.classList.toggle('is-active', mapped.includes(step.dataset.journeyNode)));
-      };
-      const updateCurrentChapter = () => {
-        if (!disclosure.open || !story.getClientRects().length) return;
-        const centerY = window.innerHeight * 0.5;
-        const candidates = chapters.map(card => ({ card, rect: card.getBoundingClientRect() }))
-          .filter(item => item.rect.bottom > window.innerHeight * 0.28 && item.rect.top < window.innerHeight * 0.72);
-        if (!candidates.length) return;
-        candidates.sort((a, b) => {
-          const da = Math.abs((a.rect.top + a.rect.bottom) / 2 - centerY);
-          const db = Math.abs((b.rect.top + b.rect.bottom) / 2 - centerY);
-          return da - db;
+      tiles.forEach(tile => tile.addEventListener('click', () => {
+        tiles.forEach(item => {
+          const selected = item === tile;
+          item.classList.toggle('is-selected', selected);
+          item.setAttribute('aria-pressed', String(selected));
         });
-        activateChapter(candidates[0].card);
-      };
-
-      activateChapter(chapters[0]);
-      if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver(updateCurrentChapter, {
-          root: null, rootMargin: '-28% 0px -28% 0px', threshold: [0, 0.1, 0.4, 0.8]
-        });
-        chapters.forEach(card => observer.observe(card));
-      } else {
-        let scheduled = false;
-        window.addEventListener('scroll', () => {
-          if (scheduled) return;
-          scheduled = true;
-          requestAnimationFrame(() => { scheduled = false; updateCurrentChapter(); });
-        }, { passive: true });
-      }
-      disclosure.addEventListener('toggle', () => {
-        if (disclosure.open) requestAnimationFrame(updateCurrentChapter);
-        else activateChapter(null);
-      });
-      window.addEventListener('resize', updateCurrentChapter, { passive: true });
-      requestAnimationFrame(updateCurrentChapter);
+        currentTitle.textContent = tile.dataset.moodTitle || '此刻的心情';
+        if (selectedLabel) selectedLabel.textContent = '已選擇這種心情';
+        featuredQuote.textContent = `「${tile.dataset.moodQuote || ''}」`;
+      }));
     })();
 
     // ===== ⏩ ⏪ 快進 5 秒 / 後退 5 秒 =====
