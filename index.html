@@ -809,101 +809,19 @@
   </section>
 
   <!-- 歌詞導讀可收合；只在「心事單曲企劃」主題下顯示 -->
-  <section id="heartStorySection" class="max-w-7xl mx-auto px-4 pt-5" aria-label="歌曲心情九宮格與歌詞導讀">
-    <details class="heart-story-disclosure heart-compact-disclosure" id="heartStoryDisclosure">
+  <section id="heartStorySection" class="max-w-7xl mx-auto px-4 pt-5" aria-label="歌曲介紹">
+    <details class="heart-story-disclosure heart-compact-disclosure" id="songIntroDisclosure" open>
       <summary class="heart-story-summary heart-compact-summary">
-        <span class="heart-compact-label"><i class="fa-solid fa-heart-pulse" aria-hidden="true"></i><span>九種心情，九句心聲</span></span>
-        <span class="heart-compact-meta">9 種</span>
+        <span class="heart-compact-label"><i class="fa-solid fa-music" aria-hidden="true"></i><span>歌曲介紹</span></span>
+        <span class="heart-compact-meta">簡介</span>
         <i class="heart-compact-chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
       </summary>
       <div class="heart-story-shell rounded-[2rem] p-4 md:p-6">
-<div class="heart-mood-summary mb-5 rounded-2xl p-4 md:p-5">
-        <div class="flex items-start justify-between gap-3">
-          <div class="min-w-0"><p class="text-[9px] font-bold tracking-[0.28em] text-indigo-200/60">此刻的心情</p><p id="moodCurrentTitle" class="mt-1 text-sm md:text-base font-black text-white" aria-live="polite">選一格，聽聽心裡的聲音</p></div>
-          <span id="moodSelectedLabel" class="shrink-0 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[10px] font-semibold text-pink-100">點選一種心情</span>
+        <div class="rounded-2xl border border-indigo-200/10 bg-slate-950/30 p-4 md:p-6">
+          <p class="text-center text-sm leading-8 text-slate-200 md:text-base md:leading-9">這是一首寫給青春與成長的歌，描寫那些看似平靜的日常裡，藏著沒有說出口的心事。歌曲從孤單、低落與自我懷疑開始，唱出想被理解、被重視，卻又害怕沒有人真正懂自己的心情。隨著旋律慢慢推進，情緒也從沉默與失落，走向勇敢面對自己。這首歌想告訴每一個正在努力生活的人：不快樂並不代表你不夠好，偶爾脆弱也沒有關係。即使答案還沒出現，也可以帶著現在的自己，慢慢走向屬於自己的天空。</p>
         </div>
-        <div class="mt-4 flex items-start gap-3"><i class="fa-solid fa-quote-left mt-1 text-pink-200/70" aria-hidden="true"></i><div class="min-w-0"><p id="moodFeaturedQuote" class="text-sm md:text-lg font-semibold leading-7 text-white" aria-live="polite">選好一格，這裡會亮起與它相遇的歌詞。</p><p class="mt-1 text-[9px] font-bold tracking-[0.2em] text-indigo-100/45">來自歌詞的一句話</p></div></div>
-      </div>
-      <div class="heart-mood-grid" role="group" aria-label="九種心情，點選後查看對應歌詞">
-        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="藏起話語" data-mood-quote="有些話到了嘴邊又收回去" aria-pressed="false"><i class="fa-regular fa-comment-dots" aria-hidden="true"></i><span class="heart-mood-title">藏起話語</span><span class="heart-mood-desc">想說的話，最後又收回心裡。</span></button>
-        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="表面如常" data-mood-quote="好像沒有人發現我的情緒" aria-pressed="false"><i class="fa-regular fa-face-smile" aria-hidden="true"></i><span class="heart-mood-title">表面如常</span><span class="heart-mood-desc">笑著打招呼，心裡另有感受。</span></button>
-        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="說不清的低落" data-mood-quote="明明沒發生什麼卻不太快樂" aria-pressed="false"><i class="fa-solid fa-cloud" aria-hidden="true"></i><span class="heart-mood-title">說不清的低落</span><span class="heart-mood-desc">沒有明確理由，也可能不快樂。</span></button>
-        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="渴望被理解" data-mood-quote="明明很想找個人說說話" aria-pressed="false"><i class="fa-regular fa-message" aria-hidden="true"></i><span class="heart-mood-title">渴望被理解</span><span class="heart-mood-desc">很想說說話，也希望有人聽懂。</span></button>
-        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="想被重視" data-mood-quote="有時候真的也想被重視" aria-pressed="false"><i class="fa-regular fa-heart" aria-hidden="true"></i><span class="heart-mood-title">想被重視</span><span class="heart-mood-desc">也希望自己的感受有人在乎。</span></button>
-        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="害怕沒人懂" data-mood-quote="只是害怕說了也沒有人懂" aria-pressed="false"><i class="fa-solid fa-volume-low" aria-hidden="true"></i><span class="heart-mood-title">害怕沒人懂</span><span class="heart-mood-desc">不是不想說，只怕沒有人懂。</span></button>
-        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="自我懷疑" data-mood-quote="為什麼努力了還是不夠滿意" aria-pressed="false"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i><span class="heart-mood-title">自我懷疑</span><span class="heart-mood-desc">努力了，還是覺得不夠好。</span></button>
-        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="想要安心" data-mood-quote="我也想有個能放心的地方" aria-pressed="false"><i class="fa-solid fa-house-chimney-heart" aria-hidden="true"></i><span class="heart-mood-title">想要安心</span><span class="heart-mood-desc">想有個不用假裝堅強的地方。</span></button>
-        <button type="button" class="heart-mood-tile" data-mood-card data-mood-title="接納自己" data-mood-quote="至少我會慢慢學著接受" aria-pressed="false"><i class="fa-regular fa-sun" aria-hidden="true"></i><span class="heart-mood-title">接納自己</span><span class="heart-mood-desc">不完美的現在，也值得被接納。</span></button>
-      </div>
       </div>
     </details>
-            <details class="heart-inner-disclosure heart-compact-disclosure" id="heartLyricsDisclosure">
-              <summary class="heart-compact-summary">
-                <span class="heart-compact-label"><i class="fa-solid fa-book-open" aria-hidden="true"></i><span>歌詞裡的故事</span></span>
-                <span class="heart-compact-meta">8 段</span>
-                <i class="heart-compact-chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
-              </summary>
-              <section class="heart-lyric-story mt-4" aria-labelledby="heartLyricStoryTitle">
-                <h3 id="heartLyricStoryTitle" class="sr-only">歌詞裡的故事</h3>
-        <div class="heart-lyric-story-list">
-          <article class="heart-lyric-story-part">
-            <div class="heart-lyric-story-label"><span>01</span><span>主歌一・日常如常</span></div>
-            <p>每天走在熟悉的路上，照常和朋友打招呼、照常微笑。日子看起來沒有不同，心裡卻有些感受沒有被說出來。</p>
-            <blockquote>「每天一樣走在熟悉的路上<br>有些話到了嘴邊又收回去」</blockquote>
-          </article>
-          <article class="heart-lyric-story-part">
-            <div class="heart-lyric-story-label"><span>02</span><span>主歌一・說不清的低落</span></div>
-            <p>有時候找不到明確原因，心情還是會低下來。看著周圍的人好像都知道方向，自己卻仍在摸索，這份迷惘被輕輕說了出來。</p>
-            <blockquote>「明明沒發生什麼卻不太快樂<br>只有我還在原地慢慢摸索」</blockquote>
-          </article>
-          <article class="heart-lyric-story-part">
-            <div class="heart-lyric-story-label"><span>03</span><span>預副歌・想說又收回</span></div>
-            <p>心裡其實很想找個人聊聊，卻不知道該怎麼開口。那些難以整理的情緒，最後暫時留在自己心裡。</p>
-            <blockquote>「明明很想找個人說說話<br>最後還是選擇自己收藏」</blockquote>
-          </article>
-          <article class="heart-lyric-story-part">
-            <div class="heart-lyric-story-label"><span>04</span><span>副歌・希望被看見</span></div>
-            <p>藏在笑容後面的心事，化成一個很直接的願望：希望被重視、被理解，也希望有人能看見那份失落。不是要誰解決一切，只是想知道自己的感受有人在乎。</p>
-            <blockquote>「如果有一天有人問起我<br>我想說其實我也需要被在乎」</blockquote>
-          </article>
-          <article class="heart-lyric-story-part">
-            <div class="heart-lyric-story-label"><span>05</span><span>主歌二・比較與懷疑</span></div>
-            <p>成績、努力的結果、別人的步伐，都讓人忍不住重新打量自己。即使心裡受了傷，表面仍可能裝作沒事；沉默裡也藏著「說了會不會有人懂」的擔心。</p>
-            <blockquote>「為什麼努力了還是不夠滿意<br>只是害怕說了也沒有人懂」</blockquote>
-          </article>
-          <article class="heart-lyric-story-part">
-            <div class="heart-lyric-story-label"><span>06</span><span>預副歌・想有安心的地方</span></div>
-            <p>這一段把心願說得更清楚：不想一直逞強，也想擁有一個可以放心、可以坦承害怕的地方。</p>
-            <blockquote>「我也想有個能放心的地方<br>不用假裝自己什麼都不怕」</blockquote>
-          </article>
-          <article class="heart-lyric-story-part">
-            <div class="heart-lyric-story-label"><span>07</span><span>橋段・練習接納自己</span></div>
-            <p>答案不一定立刻出現，人也不必突然變得完美或無所畏懼。歌詞把目光放回自己身上，練習接納那個仍在努力、仍會失落的現在。</p>
-            <blockquote>「至少我會慢慢學著接受<br>現在這個還不完美的我」</blockquote>
-          </article>
-          <article class="heart-lyric-story-part">
-            <div class="heart-lyric-story-label"><span>08</span><span>最後副歌與尾聲・替明天留一點希望</span></div>
-            <p>最後不再只停在無人知曉的心事，而是試著面對自己，願意相信未來仍有屬於自己的天空。尾聲回到最真實的告白：會難過，也想被懂；有些話仍未說出口，但它們已經被好好聽見。</p>
-            <blockquote>「我相信未來的某一天<br>我會找到屬於自己的天空」<br><br>「其實我也會難過<br>其實我也想被懂」</blockquote>
-          </article>
-        </div>
-              </section>
-            </details>
-      <details class="heart-inner-disclosure heart-compact-disclosure" id="heartSupportDisclosure">
-        <summary class="heart-compact-summary">
-          <span class="heart-compact-label"><i class="fa-regular fa-heart" aria-hidden="true"></i><span>給此刻的陪伴文字</span></span>
-          <span class="heart-compact-meta">3 則</span>
-          <i class="heart-compact-chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
-        </summary>
-        <div class="heart-companion-content mt-3 rounded-2xl border border-pink-200/10 bg-gradient-to-r from-indigo-950/30 via-slate-950/30 to-pink-950/20 p-3 md:p-5">
-          <div class="flex flex-col gap-2">
-            <article class="heart-message-card rounded-2xl p-4 flex items-start gap-3"><span class="mt-0.5 shrink-0 text-lg text-indigo-200"><i class="fa-regular fa-eye"></i></span><div><h4 class="text-sm font-bold text-white">你的感受是真的</h4><p class="mt-1 text-xs leading-6 text-slate-300">就算「明明沒發生什麼」，不快樂也不是假的；你不需要先證明難過的理由。</p></div></article>
-            <article class="heart-message-card rounded-2xl p-4 flex items-start gap-3"><span class="mt-0.5 shrink-0 text-lg text-pink-200"><i class="fa-regular fa-heart"></i></span><div><h4 class="text-sm font-bold text-white">想被理解，不是脆弱</h4><p class="mt-1 text-xs leading-6 text-slate-300">希望有人重視、有人聽見，是很自然的心願；你值得被好好在乎。</p></div></article>
-            <article class="heart-message-card rounded-2xl p-4 flex items-start gap-3"><span class="mt-0.5 shrink-0 text-lg text-amber-200"><i class="fa-solid fa-sun"></i></span><div><h4 class="text-sm font-bold text-white">可以慢慢來</h4><p class="mt-1 text-xs leading-6 text-slate-300">還沒有答案也沒關係。帶著現在這個不完美的自己，仍然可以一步步走向明天。</p></div></article>
-          </div>
-          <p class="mt-4 text-center text-[11px] md:text-xs leading-6 text-indigo-100/60">這些心情沒有標準答案。願你在其中找到一小句，剛好替此刻的自己說出心裡話。</p>
-        </div>
-      </details>
   </section>
 
   <main class="max-w-7xl mx-auto px-4 py-6">
