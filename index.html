@@ -134,7 +134,9 @@
       justify-content: space-around;
       min-width: 100%;
       gap: 2rem;
-      animation: marqueeScroll 28s linear infinite;
+      animation: marqueeScroll 28s linear infinite !important;
+      animation-play-state: running !important;
+      will-change: transform;
     }
     .marquee-container:hover .marquee-content {
       animation-play-state: paused;
@@ -845,17 +847,27 @@
       <div class="marquee-container flex-1 text-xs text-slate-300 font-medium">
         <div class="marquee-content">
           <span>🎵 沒有人知道的心事｜一首寫給青春與成長的歌</span>
+          <span>🌙 有些心事藏在笑容背後，只有旋律知道</span>
           <span>💭 有些話到了嘴邊，最後還是輕輕收回去</span>
-          <span>🌙 藏在笑容背後的失落，也值得被好好聽見</span>
-          <span>💛 想被理解、被重視，不代表你不夠堅強</span>
-          <span>🌤️ 帶著不完美的自己，慢慢走向屬於自己的天空</span>
+          <span>🫧 明明沒發生什麼，心裡卻不太快樂</span>
+          <span>💛 想被理解、被重視，是很自然的心願</span>
+          <span>🌧️ 偶爾感到失落，也不代表自己不夠好</span>
+          <span>🎧 戴上耳機，讓這首歌陪你聽見自己的心</span>
+          <span>🌱 不完美的現在，也值得被好好接納</span>
+          <span>🕊️ 有些難過不用急著說明，可以慢慢整理</span>
+          <span>🌤️ 願我們都能帶著勇氣，走向屬於自己的天空</span>
         </div>
         <div class="marquee-content" aria-hidden="true">
           <span>🎵 沒有人知道的心事｜一首寫給青春與成長的歌</span>
+          <span>🌙 有些心事藏在笑容背後，只有旋律知道</span>
           <span>💭 有些話到了嘴邊，最後還是輕輕收回去</span>
-          <span>🌙 藏在笑容背後的失落，也值得被好好聽見</span>
-          <span>💛 想被理解、被重視，不代表你不夠堅強</span>
-          <span>🌤️ 帶著不完美的自己，慢慢走向屬於自己的天空</span>
+          <span>🫧 明明沒發生什麼，心裡卻不太快樂</span>
+          <span>💛 想被理解、被重視，是很自然的心願</span>
+          <span>🌧️ 偶爾感到失落，也不代表自己不夠好</span>
+          <span>🎧 戴上耳機，讓這首歌陪你聽見自己的心</span>
+          <span>🌱 不完美的現在，也值得被好好接納</span>
+          <span>🕊️ 有些難過不用急著說明，可以慢慢整理</span>
+          <span>🌤️ 願我們都能帶著勇氣，走向屬於自己的天空</span>
         </div>
       </div>
     </div>
