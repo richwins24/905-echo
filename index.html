@@ -1345,7 +1345,7 @@
     </div>
   </div>
 
-  <audio id="audioPlayer"></audio>
+  <audio id="audioPlayer" autoplay></audio>
 
   <script>
     // ===== 設定 =====
@@ -1727,6 +1727,7 @@
       if (playHistory.length > 200) playHistory.shift();
 
       audio.src = s.locked ? unlockedUrls[id] : s.src;
+      audio.autoplay = true;
       audio.playbackRate = Number(document.getElementById('speedSel').value);
       if (startAt > 0) {
         audio.addEventListener('loadedmetadata', function seekOnce() {
