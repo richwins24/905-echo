@@ -178,7 +178,6 @@
       #lyricsPanel, #commentPanel, #reviewPanel { bottom: 9.5rem; }
       #lyricsBox { height: 26vh !important; }
       #lyricsPanel { max-height: 40vh; }
-      #songIntro { display: none !important; }
       #commentList { height: 11rem; }
       #adminPanel .grid { gap: 1rem; }
     }
@@ -1210,7 +1209,6 @@
             </select>
           </div>
         </div>
-        <p id="songIntro" class="hidden text-xs text-slate-300 mb-2 leading-relaxed line-clamp-2 cursor-pointer" title="點一下展開／收起" onclick="openIntro(currentId)"></p>
         <div id="lyricsBox" class="h-48 overflow-y-auto text-center space-y-3 scroll-smooth"></div>
       </div>
     </div>
@@ -1917,10 +1915,6 @@
       const box = document.getElementById('lyricsBox');
       const ktvBox = document.getElementById('ktvLyricsBox');
       document.getElementById('lyricsTitle').textContent = song ? song.title : '';
-      const introEl = document.getElementById('songIntro');
-      introEl.textContent = '📖 查看簡介';
-      introEl.classList.toggle('hidden', !(song && song.intro));
-
       if (song) {
         document.getElementById('ktvTitle').textContent = song.title;
         document.getElementById('ktvGenre').textContent = song.genre;
