@@ -3234,6 +3234,18 @@
       genres = [...new Set(songs.map(s => s.genre))];
       nextId = songs.reduce((m, s) => Math.max(m, Number(s.id) || 0), 0) + 1;
       refreshAll();
+
+      // 頁面進入時預設播放「沒有人知道的心事」；若瀏覽器阻擋自動播放，仍先載入歌曲資訊。
+      const defaultSong = songs.find(s => String(s.title || '').includes('沒有人知道'));
+      if (defaultSong) {
+        loadSong(defaultSong.id).catch(() => {
+          currentId = defaultSong.id;
+          currentCover.src = defaultSong.cover || DEFAULT_COVER;
+          currentTitle.innerText = defaultSong.title;
+          currentGenre.innerText = `${defaultSong.genre || ''}`;
+          renderLyrics(defaultSong);
+        });
+      }
     });
   </script>
 </body>
