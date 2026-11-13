@@ -1345,7 +1345,7 @@
     </div>
   </div>
 
-  <audio id="audioPlayer" autoplay></audio>
+  <audio id="audioPlayer"></audio>
 
   <script>
     // ===== 設定 =====
@@ -1713,7 +1713,7 @@
       }
     }
 
-    async function loadSongNow(id, startAt = 0) {
+    async function loadSongNow(id, startAt = 0, shouldPlay = true) {
       const s = songs.find(x => x.id === id);
       if (!s) return;
       if (s.locked && !unlockedUrls[id]) {
@@ -1727,7 +1727,7 @@
       if (playHistory.length > 200) playHistory.shift();
 
       audio.src = s.locked ? unlockedUrls[id] : s.src;
-      audio.autoplay = true;
+      audio.autoplay = false;
       audio.playbackRate = Number(document.getElementById('speedSel').value);
       if (startAt > 0) {
         audio.addEventListener('loadedmetadata', function seekOnce() {
@@ -1759,8 +1759,13 @@
         st(id).plays++; save(); remoteInc(id, 'plays');
         if (currentUser && sharedDb) sharedDb.ref('userPlays/' + currentUser.uid + '/' + new Date().getFullYear() + '/' + id).transaction(n => (n || 0) + 1);
       }
-      audio.play();
-      setPlayingUI(true);
+      if (shouldPlay) {
+        audio.play();
+        setPlayingUI(true);
+      } else {
+        audio.pause();
+        setPlayingUI(false);
+      }
     }
 
     if ('mediaSession' in navigator) {
@@ -3002,11 +3007,11 @@
       });
     }
 
-    async function loadSong(id, startAt = 0) {
+    async function loadSong(id, startAt = 0, shouldPlay = true) {
       const target = Number(volumeBar.value);
       if (!audio.paused && audio.src && currentId !== id) await fadeVolume(0, 300);
 
-      await loadSongNow(id, startAt || savedProgress(id));
+      await loadSongNow(id, startAt || savedProgress(id), shouldPlay);
       audio.volume = 0;
       fadeVolume(target, 500);
     }
@@ -3239,7 +3244,7 @@
       // 頁面進入時預設播放「沒有人知道的心事」；若瀏覽器阻擋自動播放，仍先載入歌曲資訊。
       const defaultSong = songs.find(s => String(s.title || '').includes('沒有人知道'));
       if (defaultSong) {
-        loadSong(defaultSong.id).catch(() => {
+        loadSong(defaultSong.id, 0, false).catch(() => {
           currentId = defaultSong.id;
           currentCover.src = defaultSong.cover || DEFAULT_COVER;
           currentTitle.innerText = defaultSong.title;
