@@ -249,6 +249,149 @@
     .aura-1 { background: var(--aura-color-1) !important; }
     .aura-2 { background: var(--aura-color-2) !important; }
 
+    /* 心事主題限定的活動視覺，切換其他主題時不顯示 */
+    #heartEventBanner { display: none; }
+    body.theme-song #heartEventBanner { display: block; }
+    body.theme-song .heart-event-card {
+      background:
+        radial-gradient(ellipse at 88% 18%, rgba(244, 114, 182, 0.20), transparent 34%),
+        radial-gradient(ellipse at 12% 100%, rgba(129, 140, 248, 0.24), transparent 46%),
+        linear-gradient(120deg, rgba(15, 23, 42, 0.98), rgba(30, 27, 75, 0.95) 58%, rgba(76, 29, 88, 0.82));
+      border-color: rgba(196, 181, 253, 0.38);
+      box-shadow: 0 18px 55px rgba(49, 46, 129, 0.28), inset 0 1px rgba(255,255,255,0.08);
+    }
+    body.theme-song .event-orbit {
+      position: absolute; width: 15rem; height: 15rem; border: 1px solid rgba(221, 214, 254, 0.15);
+      border-radius: 50%; right: -3rem; top: -5rem; pointer-events: none;
+    }
+    body.theme-song .event-orbit::before, body.theme-song .event-orbit::after {
+      content: ''; position: absolute; inset: 1.5rem; border: 1px solid rgba(244, 114, 182, 0.16); border-radius: 50%;
+    }
+    body.theme-song .event-orbit::after { inset: 3.2rem; border-color: rgba(199, 210, 254, 0.16); }
+    @media (prefers-reduced-motion: no-preference) {
+      body.theme-song .event-orbit { animation: heartOrbit 24s linear infinite; }
+      @keyframes heartOrbit { to { transform: rotate(360deg); } }
+    }
+
+    body.theme-song .heart-event-card { isolation: isolate; }
+    body.theme-song .event-layout { position: relative; z-index: 2; }
+    body.theme-song .event-poster-art {
+      min-height: 17rem; display: flex; align-items: center; justify-content: center; position: relative;
+    }
+    body.theme-song .event-poster-disc {
+      width: min(15rem, 62vw); aspect-ratio: 1; position: relative; border-radius: 50%;
+      display: grid; place-items: center;
+      background: repeating-radial-gradient(circle at center, rgba(9, 12, 30, 0.98) 0 2px, rgba(42, 43, 82, 0.96) 3px 4px, rgba(12, 15, 35, 0.98) 5px 7px);
+      border: 1px solid rgba(226, 232, 255, 0.2);
+      box-shadow: 0 0 0 12px rgba(199, 210, 254, 0.035), 0 0 60px rgba(129, 140, 248, 0.3), 0 28px 55px rgba(0,0,0,0.45);
+    }
+    body.theme-song .event-poster-disc::before {
+      content: ''; position: absolute; inset: 36%; border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #fbcfe8, #a78bfa 48%, #312e81 100%);
+      box-shadow: 0 0 30px rgba(244, 114, 182, 0.32);
+    }
+    body.theme-song .event-poster-disc::after {
+      content: ''; position: absolute; left: 50%; top: 50%; width: 7px; height: 7px; border-radius: 50%;
+      transform: translate(-50%, -50%); background: #0f172a; box-shadow: 0 0 0 1px rgba(255,255,255,0.55);
+    }
+    body.theme-song .event-poster-heart { position: relative; z-index: 1; color: #fff1f2; font-size: 1.5rem; text-shadow: 0 0 18px rgba(244,114,182,0.85); }
+    body.theme-song .event-poster-stamp {
+      position: absolute; right: 2%; bottom: 7%; transform: rotate(8deg);
+      border: 1px solid rgba(251, 207, 232, 0.35); border-radius: 999px;
+      background: rgba(15, 23, 42, 0.65); padding: .55rem .8rem;
+      color: rgba(255, 228, 240, 0.88); font-size: .58rem; letter-spacing: .2em;
+    }
+    body.theme-song .event-soundwave { height: 2rem; display: flex; align-items: center; justify-content: center; gap: 4px; }
+    body.theme-song .event-soundwave span {
+      width: 3px; height: var(--bar, 35%); border-radius: 99px;
+      background: linear-gradient(to top, #818cf8, #f9a8d4); opacity: .8;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      body.theme-song .event-soundwave span { animation: eventSound 1.15s ease-in-out infinite alternate; }
+      body.theme-song .event-soundwave span:nth-child(3n) { animation-delay: .2s; }
+      body.theme-song .event-soundwave span:nth-child(3n + 1) { animation-delay: .4s; }
+      @keyframes eventSound { from { transform: scaleY(.45); opacity: .5; } to { transform: scaleY(1.15); opacity: 1; } }
+    }
+
+    /* 心事單曲企劃：歌曲故事卡與情緒旅程 */
+    #heartStorySection { display: none; }
+    body.theme-song #heartStorySection { display: block; }
+    body.theme-song .heart-story-shell {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.78), rgba(30, 27, 75, 0.55));
+      border: 1px solid rgba(196, 181, 253, 0.16);
+      box-shadow: 0 20px 65px rgba(15, 23, 42, 0.22);
+    }
+    body.theme-song .heart-story-card {
+      background: linear-gradient(150deg, rgba(30, 41, 59, 0.76), rgba(30, 27, 75, 0.43));
+      border: 1px solid rgba(199, 210, 254, 0.12);
+      transition: transform .25s ease, border-color .25s ease, background .25s ease;
+    }
+    body.theme-song .heart-story-card:hover {
+      transform: translateY(-3px); border-color: rgba(244, 114, 182, 0.32);
+      background: linear-gradient(150deg, rgba(49, 46, 129, 0.6), rgba(76, 29, 88, 0.36));
+    }
+    body.theme-song .heart-story-quote { border-left: 2px solid rgba(244, 114, 182, 0.62); color: #fbcfe8; }
+    body.theme-song .heart-journey-step { position: relative; }
+    body.theme-song .heart-journey-step:not(:last-child)::after {
+      content: ''; position: absolute; top: 1rem; left: calc(100% - .25rem); width: .5rem;
+      border-top: 1px solid rgba(196, 181, 253, 0.35);
+    }
+    body.theme-song .heart-step-dot {
+      width: 2rem; height: 2rem; border-radius: 999px; display: grid; place-items: center;
+      color: #fce7f3; border: 1px solid rgba(244, 114, 182, 0.38);
+      background: radial-gradient(circle at 30% 25%, rgba(244, 114, 182, 0.34), rgba(99, 102, 241, 0.23));
+      box-shadow: 0 0 20px rgba(129, 140, 248, 0.14);
+    }
+    @media (max-width: 767px) {
+      body.theme-song .heart-journey-step:not(:last-child)::after { display: none; }
+    }
+
+    /* 心事企劃動態：光影流動、唱片緩轉、歌詞卡片淡入 */
+    body.theme-song .heart-event-card::before {
+      content: ''; position: absolute; z-index: 1; inset: -45% -70%; pointer-events: none;
+      background: linear-gradient(108deg, transparent 43%, rgba(224, 231, 255, 0.045) 49%, rgba(251, 207, 232, 0.11) 51%, transparent 57%);
+      transform: translateX(-45%) rotate(8deg);
+    }
+    body.theme-song .event-lyric-float {
+      position: absolute; z-index: 2; padding: .45rem .7rem; border: 1px solid rgba(255,255,255,.12);
+      border-radius: 999px; color: rgba(255, 228, 240, .82); background: rgba(15,23,42,.45);
+      font-size: .65rem; letter-spacing: .12em; backdrop-filter: blur(8px); white-space: nowrap;
+    }
+    body.theme-song .event-lyric-one { left: -2%; top: 18%; }
+    body.theme-song .event-lyric-two { right: -1%; top: 11%; }
+    body.theme-song .heart-message-card {
+      min-height: 9rem; border: 1px solid rgba(199, 210, 254, 0.14);
+      background: linear-gradient(145deg, rgba(49, 46, 129, 0.38), rgba(15, 23, 42, 0.36));
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+    body.theme-song .heart-message-card:hover {
+      transform: translateY(-4px); border-color: rgba(244, 114, 182, 0.4);
+      box-shadow: 0 12px 35px rgba(129, 140, 248, 0.12);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      body.theme-song .heart-event-card::before { animation: eventLightSweep 12s ease-in-out infinite; }
+      body.theme-song .event-poster-disc { animation: eventVinylTurn 42s linear infinite; }
+      body.theme-song .event-poster-stamp { animation: eventFloat 4.5s ease-in-out infinite; }
+      body.theme-song .event-lyric-float { animation: eventFloat 5s ease-in-out infinite; }
+      body.theme-song .event-lyric-two { animation-delay: -2.4s; }
+      body.theme-song .heart-story-shell { animation: storyAppear .8s ease-out both; }
+      body.theme-song .heart-story-card { animation: storyCardAppear .75s ease-out both; }
+      body.theme-song .heart-story-card:nth-child(2) { animation-delay: .10s; }
+      body.theme-song .heart-story-card:nth-child(3) { animation-delay: .20s; }
+      body.theme-song .heart-story-card:nth-child(4) { animation-delay: .30s; }
+      body.theme-song .heart-step-dot { animation: heartDotPulse 2.8s ease-in-out infinite; }
+      body.theme-song .heart-journey-step:nth-child(2) .heart-step-dot { animation-delay: .35s; }
+      body.theme-song .heart-journey-step:nth-child(3) .heart-step-dot { animation-delay: .7s; }
+      body.theme-song .heart-journey-step:nth-child(4) .heart-step-dot { animation-delay: 1.05s; }
+      body.theme-song .heart-journey-step:nth-child(5) .heart-step-dot { animation-delay: 1.4s; }
+      @keyframes eventLightSweep { 0%, 18% { transform: translateX(-55%) rotate(8deg); } 65%, 100% { transform: translateX(55%) rotate(8deg); } }
+      @keyframes eventVinylTurn { to { transform: rotate(360deg); } }
+      @keyframes eventFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+      @keyframes storyAppear { from { opacity: 0; translate: 0 14px; } to { opacity: 1; translate: 0 0; } }
+      @keyframes storyCardAppear { from { opacity: 0; filter: blur(5px); } to { opacity: 1; filter: blur(0); } }
+      @keyframes heartDotPulse { 0%, 100% { box-shadow: 0 0 0 rgba(244,114,182,0); } 50% { box-shadow: 0 0 18px rgba(244,114,182,.38); } }
+    }
+
     /* KTV 歌詞字級切換 (大 / 中 / 小) */
     #ktvLyricsBox.size-sm .ktv-line { font-size: 1.25rem !important; line-height: 1.6 !important; padding: 6px 14px !important; }
     @media (min-width: 768px) { #ktvLyricsBox.size-sm .ktv-line { font-size: 1.65rem !important; } }
@@ -335,8 +478,8 @@
                 <div class="flex items-center gap-2.5">
                   <span class="w-3.5 h-3.5 rounded-full bg-indigo-400 shadow-sm shadow-indigo-400/50"></span>
                   <div>
-                    <p class="font-bold text-white text-xs">心事・溫柔陪伴</p>
-                    <p class="text-[10px] text-slate-400">夜色藍紫與暖光，獻給這首歌</p>
+                    <p class="font-bold text-white text-xs">心事單曲企劃</p>
+                    <p class="text-[10px] text-slate-400">專屬這首歌的沉浸式活動介面</p>
                   </div>
                 </div>
                 <i class="fa-solid fa-check text-indigo-300 text-xs check-icon hidden" id="check-song"></i>
@@ -363,6 +506,131 @@
       </div>
     </div>
   </header>
+
+  <!-- 單曲限定的沉浸式聆聽企劃主視覺；切換其他主題時隱藏 -->
+  <section id="heartEventBanner" class="max-w-7xl mx-auto px-4 pt-5" aria-label="單曲主題活動：沒有人知道我的心事">
+    <div class="heart-event-card relative overflow-hidden rounded-[2rem] border px-5 py-6 md:px-10 md:py-9">
+      <div class="event-orbit" aria-hidden="true"></div>
+      <div class="event-layout grid grid-cols-1 md:grid-cols-12 items-center gap-7 md:gap-5">
+        <div class="md:col-span-7">
+          <div class="inline-flex items-center gap-2 rounded-full border border-indigo-200/20 bg-indigo-200/10 px-3 py-1 text-[10px] md:text-xs font-bold tracking-[0.18em] text-indigo-100">
+            <i class="fa-solid fa-headphones-simple text-pink-200"></i>
+            SINGLE EXPERIENCE <span class="opacity-50">/</span> 心事限定聆聽企劃
+          </div>
+          <p class="mt-5 text-[10px] md:text-xs font-bold uppercase tracking-[0.32em] text-pink-200/80">A SONG FOR THE UNSEEN FEELINGS</p>
+          <h2 class="mt-2 text-3xl md:text-5xl xl:text-6xl font-black leading-tight tracking-wide text-white">沒有人知道<br class="hidden sm:block">我的心事</h2>
+          <p class="mt-4 max-w-xl text-sm md:text-base leading-7 text-indigo-100/85">一場關於說不出口的難過、渴望被理解，以及慢慢接納自己的歌曲企劃。</p>
+          <blockquote class="mt-5 border-l-2 border-pink-200/70 pl-4 text-sm md:text-base italic leading-7 text-pink-100">「其實我也會難過，<br class="sm:hidden">其實我也想被懂。」</blockquote>
+          <div class="mt-6 flex flex-wrap items-center gap-2 text-[10px] md:text-xs font-semibold">
+            <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-indigo-100">聽見自己的心</span>
+            <span class="text-pink-200/80">✦</span>
+            <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-indigo-100">允許自己難過</span>
+            <span class="text-pink-200/80">✦</span>
+            <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-indigo-100">相信會找到天空</span>
+          </div>
+        </div>
+        <div class="event-poster-art md:col-span-5" aria-hidden="true">
+          <span class="event-lyric-float event-lyric-one">一直沒有說出口</span>
+          <span class="event-lyric-float event-lyric-two">找到屬於自己的天空</span>
+          <div class="event-poster-disc"><i class="event-poster-heart fa-solid fa-heart-pulse"></i></div>
+          <div class="event-poster-stamp">HEAR · FEEL · HEAL</div>
+        </div>
+      </div>
+      <div class="relative z-10 mt-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-white/10 pt-4">
+        <div class="flex items-center gap-3">
+          <div class="event-soundwave" aria-hidden="true"><span style="--bar:32%"></span><span style="--bar:58%"></span><span style="--bar:82%"></span><span style="--bar:46%"></span><span style="--bar:100%"></span><span style="--bar:64%"></span><span style="--bar:38%"></span><span style="--bar:76%"></span><span style="--bar:52%"></span><span style="--bar:92%"></span><span style="--bar:42%"></span><span style="--bar:68%"></span><span style="--bar:30%"></span><span style="--bar:84%"></span><span style="--bar:55%"></span><span style="--bar:96%"></span><span style="--bar:36%"></span><span style="--bar:72%"></span><span style="--bar:48%"></span><span style="--bar:62%"></span><span style="--bar:88%"></span><span style="--bar:40%"></span><span style="--bar:70%"></span><span style="--bar:50%"></span></div>
+          <span class="text-[10px] md:text-xs tracking-wide text-indigo-100/70">留一段時間，聽聽自己的心</span>
+        </div>
+        <span class="text-[9px] font-bold tracking-[0.24em] text-indigo-200/50">A QUIET MOMENT WITH THIS SONG</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 歌詞導讀：只在「心事單曲企劃」主題下顯示，不改動既有歌詞播放器 -->
+  <section id="heartStorySection" class="max-w-7xl mx-auto px-4 pt-5" aria-label="歌曲故事與歌詞導讀">
+    <div class="heart-story-shell rounded-[2rem] p-5 md:p-8">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-7">
+        <div>
+          <p class="text-[10px] md:text-xs font-bold tracking-[0.3em] text-pink-200/80">LYRIC NOTES <span class="text-indigo-200/50">/</span> SONG STORY</p>
+          <h2 class="mt-2 text-2xl md:text-3xl font-black tracking-wide text-white">聽見心事的四個片刻</h2>
+          <p class="mt-2 max-w-2xl text-xs md:text-sm leading-6 text-indigo-100/65">這首歌從平凡日常裡藏起來的情緒出發，走過渴望被理解的心聲，最後把答案留給慢慢長大的自己。</p>
+        </div>
+        <span class="self-start md:self-auto shrink-0 rounded-full border border-indigo-200/15 bg-indigo-200/5 px-3 py-1.5 text-[10px] font-semibold tracking-wider text-indigo-100/70">一段從「沒說出口」走向「接納自己」的旅程</span>
+      </div>
+
+      <!-- 歌曲情緒路徑 -->
+      <div class="rounded-2xl border border-white/10 bg-slate-950/25 px-4 py-5 md:px-6 mb-5">
+        <div class="flex items-center justify-between gap-3 mb-4">
+          <p class="text-xs font-bold text-indigo-100"><i class="fa-solid fa-route mr-2 text-pink-200"></i>情緒路徑</p>
+          <span class="text-[9px] tracking-[0.2em] text-indigo-200/40">FROM QUIET TO HOPE</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-2">
+          <div class="heart-journey-step flex items-start gap-2"><span class="heart-step-dot shrink-0 text-xs">01</span><div><p class="text-[11px] font-bold text-white">藏起來</p><p class="mt-1 text-[10px] leading-4 text-slate-400">笑著說招呼，心事留在心裡</p></div></div>
+          <div class="heart-journey-step flex items-start gap-2"><span class="heart-step-dot shrink-0 text-xs">02</span><div><p class="text-[11px] font-bold text-white">說不清</p><p class="mt-1 text-[10px] leading-4 text-slate-400">沒有原因，也可能不快樂</p></div></div>
+          <div class="heart-journey-step flex items-start gap-2"><span class="heart-step-dot shrink-0 text-xs">03</span><div><p class="text-[11px] font-bold text-white">想被懂</p><p class="mt-1 text-[10px] leading-4 text-slate-400">盼望有人看見笑容背後</p></div></div>
+          <div class="heart-journey-step flex items-start gap-2"><span class="heart-step-dot shrink-0 text-xs">04</span><div><p class="text-[11px] font-bold text-white">接住自己</p><p class="mt-1 text-[10px] leading-4 text-slate-400">不必假裝什麼都不怕</p></div></div>
+          <div class="heart-journey-step flex items-start gap-2"><span class="heart-step-dot shrink-0 text-xs">05</span><div><p class="text-[11px] font-bold text-white">找到天空</p><p class="mt-1 text-[10px] leading-4 text-slate-400">帶著不完美，仍走向明天</p></div></div>
+        </div>
+      </div>
+
+      <!-- 歌詞與故事 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <article class="heart-story-card rounded-2xl p-4 md:p-5">
+          <div class="flex items-center gap-2 mb-3"><span class="text-[10px] font-black tracking-widest text-pink-200">01 / VERSE</span><span class="h-px flex-1 bg-white/10"></span><i class="fa-solid fa-cloud-moon text-indigo-200/70"></i></div>
+          <h3 class="text-sm font-bold text-white">看起來一切如常</h3>
+          <p class="mt-2 text-xs leading-6 text-slate-300">主歌一從熟悉的日常開始：仍然打招呼、仍然微笑，卻把想說的話收回去。那種「好像沒發生什麼，卻不太快樂」的情緒，讓說不清的低落有了位置。</p>
+          <blockquote class="heart-story-quote mt-3 pl-3 text-xs italic leading-6">「有些話到了嘴邊又收回去<br>好像沒有人發現我的情緒」</blockquote>
+        </article>
+        <article class="heart-story-card rounded-2xl p-4 md:p-5">
+          <div class="flex items-center gap-2 mb-3"><span class="text-[10px] font-black tracking-widest text-pink-200">02 / CHORUS</span><span class="h-px flex-1 bg-white/10"></span><i class="fa-solid fa-heart text-pink-200/80"></i></div>
+          <h3 class="text-sm font-bold text-white">真正想說的，是「希望被看見」</h3>
+          <p class="mt-2 text-xs leading-6 text-slate-300">副歌把整首歌最深的願望說出來：不是要別人替自己解決一切，只是想被重視、被理解，也想有人能問一句「你還好嗎？」</p>
+          <blockquote class="heart-story-quote mt-3 pl-3 text-xs italic leading-6">「有時候真的也想被重視<br>也希望有人能懂我的固執」</blockquote>
+        </article>
+        <article class="heart-story-card rounded-2xl p-4 md:p-5">
+          <div class="flex items-center gap-2 mb-3"><span class="text-[10px] font-black tracking-widest text-pink-200">03 / VERSE 2</span><span class="h-px flex-1 bg-white/10"></span><i class="fa-solid fa-scale-balanced text-indigo-200/70"></i></div>
+          <h3 class="text-sm font-bold text-white">努力比較時，也會懷疑自己</h3>
+          <p class="mt-2 text-xs leading-6 text-slate-300">成績、別人的步伐、一句無心的話，都可能讓人開始懷疑自己。第二段寫出沉默背後的原因：並非不想傾訴，而是害怕說了仍然不被懂。</p>
+          <blockquote class="heart-story-quote mt-3 pl-3 text-xs italic leading-6">「為什麼努力了還是不夠滿意<br>只是害怕說了也沒有人懂」</blockquote>
+        </article>
+        <article class="heart-story-card rounded-2xl p-4 md:p-5">
+          <div class="flex items-center gap-2 mb-3"><span class="text-[10px] font-black tracking-widest text-pink-200">04 / BRIDGE → OUTRO</span><span class="h-px flex-1 bg-white/10"></span><i class="fa-solid fa-sun text-amber-200/80"></i></div>
+          <h3 class="text-sm font-bold text-white">不完美，也能慢慢走向明天</h3>
+          <p class="mt-2 text-xs leading-6 text-slate-300">橋段沒有突然變得無所畏懼，而是選擇不再一直躲著。最後的希望很溫柔：答案可以還沒出現，但自己可以慢慢學著接受現在的樣子。</p>
+          <blockquote class="heart-story-quote mt-3 pl-3 text-xs italic leading-6">「至少我會慢慢學著接受<br>現在這個還不完美的我」</blockquote>
+        </article>
+      </div>
+
+      <!-- 歌曲想傳達的心情 -->
+      <div class="mt-5 rounded-2xl border border-pink-200/10 bg-gradient-to-r from-indigo-950/30 via-slate-950/30 to-pink-950/20 p-4 md:p-6">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-2 mb-4">
+          <div>
+            <p class="text-[9px] font-bold tracking-[0.3em] text-pink-200/70">A NOTE TO YOU</p>
+            <h3 class="mt-1 text-base md:text-lg font-black text-white">這首歌想對你說</h3>
+          </div>
+          <p class="max-w-xl text-[10px] md:text-xs leading-5 text-indigo-100/60">不急著把心情整理好，也不必立刻找到答案；先承認自己的感受，就已經是往前一步。</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <article class="heart-message-card rounded-2xl p-4">
+            <span class="text-lg text-indigo-200"><i class="fa-regular fa-eye"></i></span>
+            <h4 class="mt-2 text-xs font-bold text-white">你的感受是真的</h4>
+            <p class="mt-1 text-[10px] leading-5 text-slate-400">就算「明明沒發生什麼」，不快樂也不是假的；你不需要先證明難過的理由。</p>
+          </article>
+          <article class="heart-message-card rounded-2xl p-4">
+            <span class="text-lg text-pink-200"><i class="fa-regular fa-heart"></i></span>
+            <h4 class="mt-2 text-xs font-bold text-white">想被理解，不是脆弱</h4>
+            <p class="mt-1 text-[10px] leading-5 text-slate-400">希望有人重視、有人聽見，是很自然的心願；你值得被好好在乎。</p>
+          </article>
+          <article class="heart-message-card rounded-2xl p-4">
+            <span class="text-lg text-amber-200"><i class="fa-solid fa-sun"></i></span>
+            <h4 class="mt-2 text-xs font-bold text-white">可以慢慢來</h4>
+            <p class="mt-1 text-[10px] leading-5 text-slate-400">還沒有答案也沒關係。帶著現在這個不完美的自己，仍然可以一步步走向明天。</p>
+          </article>
+        </div>
+      </div>
+      <p class="mt-4 text-center text-[11px] md:text-xs leading-6 text-indigo-100/60">如果你也有說不出口的心事，希望這首歌能陪你停一下，聽聽自己真正想說的話。</p>
+    </div>
+  </section>
 
   <main class="max-w-7xl mx-auto px-4 py-6">
 
@@ -1838,7 +2106,7 @@
       document.body.classList.add('theme-' + theme);
 
       const lbl = document.getElementById('themeNameLabel');
-      const names = { blue: '藍色主題', green: '綠色主題', purple: '經典紫色', song: '心事・溫柔陪伴' };
+      const names = { blue: '藍色主題', green: '綠色主題', purple: '經典紫色', song: '心事單曲企劃' };
       if (lbl) lbl.textContent = names[theme] || '主題風格';
 
       try {
@@ -1885,7 +2153,9 @@
 
     // 初始化載入使用者偏好主題
     try {
-      const savedMode = localStorage.getItem('sg_theme_mode') || 'song';
+      const storedMode = localStorage.getItem('sg_theme_mode');
+      // 將尚未選主題或舊版預設藍色導向「心事」；其他已選主題照常保留。
+      const savedMode = (!storedMode || storedMode === 'blue') ? 'song' : storedMode;
       const savedHex = localStorage.getItem('sg_custom_hex') || '#3b82f6';
       if (savedMode === 'custom') {
         applyCustomColor(savedHex);
