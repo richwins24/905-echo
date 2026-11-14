@@ -1058,9 +1058,26 @@
         <p class="text-xs text-slate-400">播放清單</p>
         <p id="plName" class="font-bold text-lg"></p>
       </div>
-      <button id="playAllBtn" class="px-4 py-2 rounded-full bg-purple-600 hover:bg-purple-500 text-sm font-medium">
-        <i class="fa-solid fa-play"></i> 播放全部
-      </button>
+      <div class="flex items-center gap-2">
+        <button id="playlistAddBtn" class="px-3 py-2 rounded-full bg-slate-700 hover:bg-slate-600 text-sm font-medium">
+          <i class="fa-solid fa-plus"></i> 挑選歌曲
+        </button>
+        <button id="playAllBtn" class="px-4 py-2 rounded-full bg-purple-600 hover:bg-purple-500 text-sm font-medium">
+          <i class="fa-solid fa-play"></i> 播放全部
+        </button>
+      </div>
+    </div>
+
+    <div id="playlistAddPanel" class="hidden mb-4 rounded-xl border border-slate-800 bg-slate-900 p-4">
+      <div class="mb-3 flex flex-wrap items-center gap-2">
+        <div class="mr-auto">
+          <p class="font-semibold text-white">從歌曲庫加入</p>
+          <p class="text-xs text-slate-400">搜尋歌曲，再按「加入」；已在清單中的歌曲不會重複顯示。</p>
+        </div>
+        <input id="playlistAddSearch" type="search" placeholder="搜尋歌名或分類…" class="input max-w-xs">
+        <button id="playlistAddClose" class="rounded-lg bg-slate-700 px-3 py-2 text-sm hover:bg-slate-600">完成</button>
+      </div>
+      <div id="playlistAddList" class="max-h-72 space-y-2 overflow-y-auto"></div>
     </div>
 
     <!-- 班級公告 -->
@@ -1586,6 +1603,8 @@
       }).join('');
     }
 
+    let playlistPickerOpen = false;
+
     function renderPlaylistChips() {
       const userItems = currentUser ? Object.entries(userLists).map(([k, v]) => ({ id: "u:" + k, name: "📁 " + (v.name || "未命名"), n: Object.keys(v.ids || {}).length })) : [];
       const items = [{ id: "all", name: "所有歌曲", n: songs.length }, ...userItems];
@@ -1593,10 +1612,48 @@
         const active = String(p.id) === String(currentPlaylistFilter);
         return `<button onclick="openPlaylist('${p.id}')" class="shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium border transition ${active ? 'bg-slate-100 text-slate-900 border-slate-100' : 'bg-slate-900 text-slate-300 border-slate-700 hover:border-slate-500'}">${esc(p.name)} <span class="opacity-60">${p.n}</span></button>`;
       }).join('');
-      const isUser = activeUserList && userLists[activeUserList];
+      const isUser = !!(activeUserList && userLists[activeUserList]);
       plBanner.classList.toggle('hidden', !isUser);
+      document.getElementById('playlistAddBtn').classList.toggle('hidden', !isUser);
       if (isUser) plName.textContent = `${userLists[activeUserList].name}（${Object.keys(userLists[activeUserList].ids || {}).length} 首）`;
+      else playlistPickerOpen = false;
+      renderPlaylistPicker();
     }
+
+    function renderPlaylistPicker() {
+      const panel = document.getElementById('playlistAddPanel');
+      const listBox = document.getElementById('playlistAddList');
+      const activeList = activeUserList && userLists[activeUserList];
+      const isOpen = !!(activeList && playlistPickerOpen);
+      panel.classList.toggle('hidden', !isOpen);
+      if (!isOpen) return;
+
+      const query = document.getElementById('playlistAddSearch').value.trim().toLocaleLowerCase();
+      const ids = activeList.ids || {};
+      const available = songs.filter(song => {
+        if (ids[song.id]) return false;
+        return !query || `${song.title || ''} ${song.genre || ''}`.toLocaleLowerCase().includes(query);
+      });
+      listBox.innerHTML = available.length ? available.map(song => `
+        <div class="flex items-center justify-between gap-3 rounded-lg bg-slate-800/70 px-3 py-2">
+          <div class="min-w-0">
+            <p class="truncate text-sm font-medium text-white">${esc(song.title)}</p>
+            <p class="text-xs text-slate-400">${esc(song.genre || '未分類')}</p>
+          </div>
+          <button onclick="toggleInUserList(${Number(song.id)})" class="shrink-0 rounded-lg bg-purple-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-purple-500">加入</button>
+        </div>`).join('') : '<p class="py-5 text-center text-sm text-slate-400">沒有符合的歌曲，或歌曲已全部加入。</p>';
+    }
+
+    document.getElementById('playlistAddBtn').addEventListener('click', () => {
+      playlistPickerOpen = !playlistPickerOpen;
+      renderPlaylistPicker();
+      if (playlistPickerOpen) document.getElementById('playlistAddSearch').focus();
+    });
+    document.getElementById('playlistAddSearch').addEventListener('input', renderPlaylistPicker);
+    document.getElementById('playlistAddClose').addEventListener('click', () => {
+      playlistPickerOpen = false;
+      renderPlaylistPicker();
+    });
 
     function isNewSong(song) {
       if (!song.added) return false;
