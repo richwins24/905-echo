@@ -2045,13 +2045,18 @@
     let lyricsToken = 0;
     async function getLyrics(song) {
       if (!song) return [];
-      if (Array.isArray(song.lyrics)) return song.lyrics;
-      if (!song.lyrics_file) return [];
+      // 只有內嵌歌詞非空時才直接使用；空陣列應繼續讀取 lyrics_file。
+      if (Array.isArray(song.lyrics) && song.lyrics.length > 0) return song.lyrics;
+      if (!song.lyrics_file) return Array.isArray(song.lyrics) ? song.lyrics : [];
       if (!lyricsCache[song.id]) {
         try {
-          const r = await fetch(song.lyrics_file);
-          lyricsCache[song.id] = r.ok ? await r.json() : [];
+          const r = await fetch(song.lyrics_file, { cache: 'no-store' });
+          if (!r.ok) throw new Error(`歌詞檔讀取失敗：${r.status} ${song.lyrics_file}`);
+          const data = await r.json();
+          lyricsCache[song.id] = Array.isArray(data) ? data : [];
+          if (!Array.isArray(data)) console.warn('歌詞檔格式錯誤，預期為陣列：', song.lyrics_file);
         } catch (e) {
+          console.warn('無法載入歌詞：', song.title, e);
           lyricsCache[song.id] = [];
         }
       }
