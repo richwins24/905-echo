@@ -1599,6 +1599,14 @@
     // ===== 設定 =====
     const DEFAULT_COVER = "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500";
     const STORE_KEY = "sg_data_v2";
+    const DEFAULT_SONGS = [
+      { id: 1, title: '操場上的青春', intro: '用歌聲記錄青春，以感謝珍藏回憶，願905班帶著努力與感動，迎向未來。', genre: '運動會', cover: 'music/covers/cover-01.png', src: 'music/mp3/song-01.mp3' },
+      { id: 2, title: '那道光', intro: '就算天黑了，心裡那道光依然不熄滅。獻給一起走過這段路的我們，記得曾經的昨天。', genre: '運動會', cover: 'music/covers/cover-02.png', src_enc: 'music/locked/song-02.enc', locked: true },
+      { id: 3, title: '把星星都送給你', intro: '晚風、街燈與星光，都是為了一句簡單的告白：我想把星星都送給你。', genre: '溫柔抒情', cover: 'music/covers/cover-03.png', src_enc: 'music/locked/song-03.enc', locked: true },
+      { id: 4, title: '雨落下以後', intro: '雨落下以後，天空會慢慢放晴。', genre: '特別版', cover: 'music/covers/cover-04.png', src_enc: 'music/locked/song-04.enc', locked: true },
+      { id: 5, title: '如果以後不常見', intro: '', genre: '畢業歌', cover: 'music/covers/cover-05.png', src_enc: 'music/locked/song-05.enc', locked: true },
+      { id: 6, title: '沒有人知道我的心事', intro: '把說不出口的難過藏在笑容裡，也寫下渴望被理解、慢慢接納自己的心情。', genre: '心情療癒', cover: 'music/covers/cover-06.png', src: 'music/mp3/song-06.mp3' }
+    ];
 
     // ===== 狀態 =====
     let songs = [];
@@ -1747,6 +1755,7 @@
           stats = {};
         }
       } catch (e) { console.warn("讀取失敗", e); }
+      if (!songs.length) songs = DEFAULT_SONGS.map(s => ({ ...s }));
       songs.forEach(s => { if (!stats[s.id]) stats[s.id] = { plays: 0, likes: 0 }; });
       playlists.forEach(p => p.ids = p.ids.filter(id => songs.some(s => s.id === id)));
       genres = [...new Set(songs.map(s => s.genre))];
@@ -3765,8 +3774,16 @@
           if (i >= 0) songs[i] = { ...songs[i], ...s };
           else songs.push(s);
         });
-        const remoteIds = list.map(s => s.id);
-        songs = songs.filter(s => remoteIds.includes(s.id));
+        if (list.length) {
+          const remoteIds = list.map(s => s.id);
+          songs = songs.filter(s => remoteIds.includes(s.id));
+        }
+        if (!songs.length) songs = DEFAULT_SONGS.filter(s => !s.locked).map(s => ({ ...s }));
+        genres = [...new Set(songs.map(s => s.genre))];
+        nextId = songs.reduce((m, s) => Math.max(m, s.id), 0) + 1;
+        renderGenreFilters();
+        renderPlaylistChips();
+        renderSongs(getFilteredSongs());
         autoUnlockVault();
       } catch (e) { console.warn('無法讀取 songs.json', e); }
     }
