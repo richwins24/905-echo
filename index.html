@@ -864,11 +864,6 @@
                 <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-purple-900/40 px-2.5 py-1 font-semibold text-purple-200"><i class="fa-solid fa-check"></i>可互動</span></td>
               </tr>
               <tr>
-                <th scope="row" class="px-4 py-3 font-medium text-slate-200"><i class="fa-solid fa-arrow-down-to-line mr-2 text-emerald-300"></i>下載 MP3</th>
-                <td class="px-4 py-3 text-center"><span class="text-slate-500">—</span></td>
-                <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-purple-900/40 px-2.5 py-1 font-semibold text-purple-200"><i class="fa-solid fa-check"></i>每日 1 次</span></td>
-              </tr>
-              <tr>
                 <th scope="row" class="px-4 py-3 font-medium text-slate-200"><i class="fa-solid fa-id-card mr-2 text-indigo-300"></i>自訂顯示暱稱與頭像</th>
                 <td class="px-4 py-3 text-center"><span class="text-slate-500">—</span></td>
                 <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-purple-900/40 px-2.5 py-1 font-semibold text-purple-200"><i class="fa-solid fa-check"></i>可設定</span></td>
@@ -1466,15 +1461,6 @@
               <input type="range" id="volumeBar" min="0" max="1" step="0.05" value="0.8" class="w-28 h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500">
             </div>
 
-            <!-- 下載功能（登入後專屬） -->
-            <div class="login-only pt-2 border-t border-slate-800/80 flex items-center justify-between gap-2">
-              <span class="text-slate-400 flex items-center gap-1.5">
-                <i class="fa-solid fa-arrow-down-to-line"></i> 下載本曲 MP3
-              </span>
-              <a id="downloadBtn" href="#" download class="px-2.5 py-1 rounded-lg bg-purple-900/40 hover:bg-purple-800/60 border border-purple-500/40 text-purple-200 transition text-xs flex items-center gap-1" title="下載此 MP3">
-                <i class="fa-solid fa-download"></i> 下載
-              </a>
-            </div>
           </div>
         </div>
       </div>
@@ -1518,7 +1504,6 @@
     const currentTimeText = document.getElementById('currentTime');
     const durationTimeText = document.getElementById('durationTime');
     const volumeBar = document.getElementById('volumeBar');
-    const downloadBtn = document.getElementById('downloadBtn');
     const currentCover = document.getElementById('currentCover');
     const currentTitle = document.getElementById('currentTitle');
     const currentGenre = document.getElementById('currentGenre');
@@ -1838,9 +1823,6 @@
               <button onclick="playSongById(${song.id})" class="text-purple-400 hover:underline flex items-center gap-1">
                 <i class="fa-solid fa-circle-play"></i> 播放全曲
               </button>
-              ${song.locked
-                ? `<span class="text-amber-300 flex items-center gap-1"><i class="fa-solid fa-lock"></i> 特別版</span>`
-                : `<button onclick="downloadSong(${song.id})" class="login-only text-slate-400 hover:text-white flex items-center gap-1 transition"><i class="fa-solid fa-arrow-down-to-line"></i> 下載 MP3</button>`}
             </div>
           </div>`;
         musicGrid.appendChild(card);
@@ -1925,12 +1907,6 @@
         });
       }
 
-      if (s.locked) {
-        downloadBtn.removeAttribute('href');
-      } else {
-        downloadBtn.href = s.src;
-        downloadBtn.setAttribute('download', `${s.title}.mp3`);
-      }
       if (canCount('play_' + id, 60 * 1000)) {
         st(id).plays++; save(); remoteInc(id, 'plays');
         if (currentUser && sharedDb) sharedDb.ref('userPlays/' + currentUser.uid + '/' + new Date().getFullYear() + '/' + id).transaction(n => (n || 0) + 1);
@@ -2753,41 +2729,6 @@
     }
     document.getElementById('vaultCode').addEventListener('keydown', e => { if (e.key === 'Enter') unlockVault(); });
 
-    // ===== 下載 MP3 =====
-    function todayKey() {
-      const d = new Date();
-      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-    }
-
-    window.downloadSong = async function (id) {
-      const s = songs.find(x => x.id === id);
-      if (!s) return;
-      if (!currentUser || !sharedDb) {
-        return alert('請先按右上角「Google 登入」，登入後每天可下載 1 次 MP3');
-      }
-      const ref = sharedDb.ref('userDownloads/' + currentUser.uid + '/' + todayKey());
-      try {
-        const snap = await ref.once('value');
-        if (snap.exists()) return alert('今天已經下載過了（每天限下載 1 次）');
-        await ref.set(1);
-        bumpActivity();
-        if (sharedDb) sharedDb.ref('daily/' + todayKey() + '/downloads').transaction(n => (n || 0) + 1);
-      } catch (e) {
-        return alert('無法確認下載次數：' + e.message);
-      }
-      const a = document.createElement('a');
-      a.href = s.src;
-      a.download = s.title + '.mp3';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    };
-
-    downloadBtn.addEventListener('click', e => {
-      e.preventDefault();
-      if (currentId !== null) downloadSong(currentId);
-    });
-
     // ===== Firebase 同步 =====
     const FIREBASE_CONFIG = {
       apiKey: "AIzaSyC7zGeYGB9L6g6gOC6uDY-3HGlZPJ4VrkY",
@@ -3300,7 +3241,7 @@
       ]);
       const d = daily.val() || {};
       const rows = Object.keys(d).sort().map(k => `
-        <tr><td class="pr-3">${k}</td><td class="pr-3">${d[k].plays || 0}</td><td class="pr-3">${d[k].likes || 0}</td><td class="pr-3">${d[k].downloads || 0}</td><td>${d[k].comments || 0}</td></tr>`).join('');
+        <tr><td class="pr-3">${k}</td><td class="pr-3">${d[k].plays || 0}</td><td class="pr-3">${d[k].likes || 0}</td><td>${d[k].comments || 0}</td></tr>`).join('');
       const today = todayKey();
       const flags = Object.entries(act.val() || {})
         .map(([uid, days]) => [uid, (days || {})[today] || 0])
@@ -3308,7 +3249,7 @@
         .map(([u, n]) => `<li>帳號 ${esc(u.slice(0, 6))}… 今日操作 ${n} 次</li>`).join('');
       showPanel('管理員報表', `
         <h3 class="font-semibold mb-2">近 14 天數據</h3>
-        <table class="text-xs"><tr><th class="pr-3 text-left">日期</th><th class="pr-3">播放</th><th class="pr-3">讚</th><th class="pr-3">下載</th><th>留言</th></tr>${rows}</table>
+        <table class="text-xs"><tr><th class="pr-3 text-left">日期</th><th class="pr-3">播放</th><th class="pr-3">讚</th><th>留言</th></tr>${rows}</table>
         <h3 class="font-semibold mt-4 mb-2">今日異常活動（操作 30 次以上）</h3>
         ${flags ? '<ul class="text-xs space-y-1">' + flags + '</ul>' : '<p class="text-slate-500 text-xs">沒有</p>'}`);
     });
@@ -3363,9 +3304,9 @@
       const box = document.getElementById('voteBox');
       if (!box) return;
       const uid = currentUser ? currentUser.uid : null;
-      const myVotes = uid ? songs.filter(s => voteRaw[s.id] && voteRaw[s.id][uid]).length : 0;
+      const myVotes = uid ? songs.filter(s => voteRaw[String(s.id)] && voteRaw[String(s.id)][uid]).length : 0;
       const rows = songs.map(s => {
-        const songVotes = voteRaw[s.id] || {};
+        const songVotes = voteRaw[String(s.id)] || {};
         const votes = Object.keys(songVotes).length;
         const mine = uid && songVotes[uid];
         return { s, votes, mine };
@@ -3392,11 +3333,14 @@
               <span class="min-w-0 truncate text-sm font-semibold text-slate-100" title="${esc(r.s.title)}">${esc(r.s.title)}</span>
               <div class="col-start-2 row-start-2 h-1.5 overflow-hidden rounded-full bg-slate-800 sm:col-start-auto sm:row-start-auto" aria-hidden="true"><div class="h-full rounded-full bg-gradient-to-r from-amber-500 to-yellow-200 transition-all" style="width:${barWidth}%"></div></div>
               <span class="col-start-3 row-start-1 justify-self-end whitespace-nowrap text-xs font-bold text-amber-300 sm:col-start-auto sm:row-start-auto">${r.votes} 票</span>
-              <button onclick="toggleVote(${r.s.id})" class="login-only col-start-3 row-start-2 rounded-lg px-3 py-1.5 text-xs font-semibold transition sm:col-start-auto sm:row-start-auto ${r.mine ? 'bg-purple-600 text-white hover:bg-purple-500' : 'bg-slate-800 text-slate-200 hover:bg-purple-700'}">${r.mine ? '已支持' : '投一票'}</button>
+              <button type="button" data-vote-song-id="${esc(String(r.s.id))}" class="login-only col-start-3 row-start-2 rounded-lg px-3 py-1.5 text-xs font-semibold transition sm:col-start-auto sm:row-start-auto ${r.mine ? 'bg-purple-600 text-white hover:bg-purple-500' : 'bg-slate-800 text-slate-200 hover:bg-purple-700'}">${r.mine ? '已支持' : '投一票'}</button>
             </div>`;
           }).join('') : '<p class="rounded-xl bg-slate-950/50 px-4 py-6 text-center text-sm text-slate-500">目前沒有可投票的歌曲。</p>'}
         </div>
         <p class="mt-3 text-[11px] text-slate-500">投票期間每月 1 日開始、月底截止；你的選擇會記錄在帳號中，跨月後自動開新一輪，過往月份紀錄保留。每期可支持 1 首，投錯可取消後改投。</p>`;
+      box.querySelectorAll('[data-vote-song-id]').forEach(button => {
+        button.addEventListener('click', () => window.toggleVote(button.dataset.voteSongId));
+      });
     }
 
     window.toggleVote = async function (songId) {
@@ -3407,9 +3351,9 @@
       const month = voteMonth();
       const songKey = String(songId);
       const mine = voteRaw[songKey] && voteRaw[songKey][uid];
-      const myVotes = songs.filter(s => voteRaw[s.id] && voteRaw[s.id][uid]).length;
+      const myVotes = songs.filter(s => voteRaw[String(s.id)] && voteRaw[String(s.id)][uid]).length;
       if (!mine && myVotes >= VOTE_LIMIT) return alert('本期已支持一首歌曲，若要改投，請先取消原投票。');
-      const ref = sharedDb.ref('votes/' + month + '/' + songId + '/' + uid);
+      const ref = sharedDb.ref('votes/' + month + '/' + songKey + '/' + uid);
       voteWriteInProgress = true;
       try {
         if (mine) await ref.remove();
