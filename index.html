@@ -39,16 +39,16 @@
     #playerBar.mini #currentTitle { font-size: 12px; }
 
     /* ===== 歌詞整句效果 ===== */
-    #lyricsBox { --played: #ffffff; --todo: #64748b; height: 12rem; overflow-y: auto; scroll-behavior: smooth; overscroll-behavior: contain; }
+    #lyricsBox { --played: #ffffff; --todo: #64748b; height: 12rem; overflow-y: auto; scroll-behavior: auto !important; overscroll-behavior: contain; padding-block: 4.5rem; }
     #lyricsBox .lyric-line { transform-origin: center; will-change: color, opacity, transform; }
-    .lyric-line { color: var(--todo); opacity: .48; cursor: pointer; transition: color .58s cubic-bezier(.22,1,.36,1), opacity .58s ease, transform .58s cubic-bezier(.22,1,.36,1), text-shadow .58s ease; }
-    .lyric-line.on { color: #ffffff; opacity: 1; transform: scale(1.045); transform-origin: center; font-weight: 700; }
-    #lyricsBox.fx-glow .lyric-line.on { text-shadow: 0 0 10px var(--played), 0 0 20px var(--played); }
-    #lyricsBox.fx-pop .lyric-line.on { transform: scale(1.14) translateY(-2px); }
-    #lyricsBox.fx-wave .lyric-line.on { animation: lyricWave 1.2s ease-in-out infinite; }
-    @keyframes lyricWave { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-    @keyframes lyricNeon { 0%, 18%, 22%, 62%, 64%, 100% { text-shadow: 0 0 6px var(--played), 0 0 14px var(--played), 0 0 28px var(--played); opacity: 1; } 20%, 63% { text-shadow: none; opacity: .6; } }
-    @keyframes lyricZoom { from { transform: translateY(6px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .lyric-line { color: var(--todo); opacity: .58; cursor: pointer; transition: color .85s cubic-bezier(.22,1,.36,1), opacity .85s ease, transform .85s cubic-bezier(.22,1,.36,1), text-shadow .85s ease; }
+    .lyric-line.on { color: #ffffff; opacity: 1; transform: scale(1.025); transform-origin: center; font-weight: 700; }
+    #lyricsBox.fx-glow .lyric-line.on { text-shadow: 0 0 5px var(--played), 0 0 10px var(--played); }
+    #lyricsBox.fx-pop .lyric-line.on { transform: scale(1.03) translateY(-1px); }
+    #lyricsBox.fx-wave .lyric-line.on { animation: lyricWave 2.4s ease-in-out infinite; }
+    @keyframes lyricWave { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
+    @keyframes lyricNeon { 0%, 100% { text-shadow: 0 0 5px var(--played), 0 0 10px var(--played); opacity: 1; } 50% { text-shadow: 0 0 8px var(--played), 0 0 16px var(--played); opacity: 1; } }
+    @keyframes lyricZoom { from { transform: translateY(2px); opacity: .65; } to { transform: translateY(0); opacity: 1; } }
     #lyricsBox.fx-neon .lyric-line.on { animation: lyricNeon 2s linear infinite; }
     #lyricsBox.fx-zoom .lyric-line.on { animation: lyricZoom .6s ease-out both; }
 
@@ -97,19 +97,19 @@
     /* KTV 歌詞滾動區塊：上下充足留白，確保歌詞完美置中且完全不被頂底遮擋 */
     #ktvLyricsBox {
       scrollbar-width: none;
-      scroll-behavior: smooth;
+      scroll-behavior: auto !important;
       overscroll-behavior: contain;
-      padding-top: 25vh !important;
-      padding-bottom: 25vh !important;
+      padding-top: 50vh !important;
+      padding-bottom: 50vh !important;
     }
     #ktvLyricsBox::-webkit-scrollbar { display: none; }
     .ktv-line {
       color: #94a3b8;
       font-size: 1.6rem;
       line-height: 1.9;
-      opacity: 0.42;
-      transform: scale(0.98);
-      transition: color .62s cubic-bezier(.22,1,.36,1), opacity .62s ease, transform .62s cubic-bezier(.22,1,.36,1), text-shadow .62s ease;
+      opacity: 0.62;
+      transform: scale(0.99);
+      transition: color .85s cubic-bezier(.22,1,.36,1), opacity .85s ease, transform .85s cubic-bezier(.22,1,.36,1), text-shadow .85s ease;
       will-change: color, opacity, transform;
       cursor: pointer;
     }
@@ -119,7 +119,7 @@
     .ktv-line.on {
       color: #ffffff;
       opacity: 1;
-      transform: scale(1.08);
+      transform: scale(1.05);
       font-weight: 800;
       text-shadow: 0 0 25px rgba(236, 72, 153, 0.75), 0 0 50px rgba(168, 85, 247, 0.5);
     }
@@ -1304,7 +1304,7 @@
     </div>
 
     <!-- 中間超大滾動歌詞（擴大安全呼吸距，歌詞完美置中防遮擋） -->
-    <div id="ktvLyricsBox" class="flex-1 w-full max-w-4xl mx-auto my-2 overflow-y-auto text-center space-y-10 md:space-y-14 scroll-smooth z-10">
+    <div id="ktvLyricsBox" class="flex-1 w-full max-w-4xl mx-auto my-2 overflow-y-auto text-center space-y-10 md:space-y-14 z-10">
       <!-- 歌詞由 JS 動態生成 -->
     </div>
 
@@ -1359,7 +1359,7 @@
             </select>
           </div>
         </div>
-        <div id="lyricsBox" class="h-48 overflow-y-auto text-center space-y-3 scroll-smooth"></div>
+        <div id="lyricsBox" class="h-48 overflow-y-auto text-center space-y-3"></div>
       </div>
     </div>
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
@@ -2102,6 +2102,8 @@
       const token = ++lyricsToken;
       const box = document.getElementById('lyricsBox');
       const ktvBox = document.getElementById('ktvLyricsBox');
+      stopLyricScroll(box);
+      stopLyricScroll(ktvBox);
       document.getElementById('lyricsTitle').textContent = song ? song.title : '';
       if (song) {
         document.getElementById('ktvTitle').textContent = song.title;
@@ -2130,14 +2132,56 @@
     }
 
     // 以容器與歌詞行的可視座標計算中心，避免不同瀏覽器 offsetTop 基準不一致。
+    const lyricScrollStates = new WeakMap();
+
+    function stopLyricScroll(container) {
+      const state = container && lyricScrollStates.get(container);
+      if (!state) return;
+      cancelAnimationFrame(state.frameId);
+      lyricScrollStates.delete(container);
+    }
+
+    function animateLyricScroll(container, state, now) {
+      if (lyricScrollStates.get(container) !== state) return;
+      const elapsed = Math.min(0.05, Math.max(0, (now - state.lastFrameAt) / 1000));
+      state.lastFrameAt = now;
+      const distance = state.targetTop - container.scrollTop;
+      if (Math.abs(distance) < 0.45) {
+        container.scrollTop = state.targetTop;
+        lyricScrollStates.delete(container);
+        return;
+      }
+      // 指數緩動持續追蹤目標；下一句到來時更新目標，不重啟或突然跳位。
+      const follow = 1 - Math.exp(-elapsed / 0.62);
+      container.scrollTop += distance * follow;
+      state.frameId = requestAnimationFrame(t => animateLyricScroll(container, state, t));
+    }
+
     function scrollLyricToCenter(container, line) {
       if (!container || !line) return;
       const containerRect = container.getBoundingClientRect();
       const lineRect = line.getBoundingClientRect();
-      const targetTop = container.scrollTop + lineRect.top - containerRect.top
+      const rawTarget = container.scrollTop + lineRect.top - containerRect.top
         - (container.clientHeight - lineRect.height) / 2;
-      container.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' });
+      const maxScroll = Math.max(0, container.scrollHeight - container.clientHeight);
+      const targetTop = Math.max(0, Math.min(maxScroll, rawTarget));
+      let state = lyricScrollStates.get(container);
+      if (state) {
+        state.targetTop = targetTop;
+        return;
+      }
+      state = { targetTop, lastFrameAt: performance.now(), frameId: 0 };
+      lyricScrollStates.set(container, state);
+      state.frameId = requestAnimationFrame(t => animateLyricScroll(container, state, t));
     }
+
+    ['lyricsBox', 'ktvLyricsBox'].forEach(id => {
+      const container = document.getElementById(id);
+      if (!container) return;
+      ['wheel', 'touchstart', 'pointerdown'].forEach(type => {
+        container.addEventListener(type, () => stopLyricScroll(container), { passive: true });
+      });
+    });
 
     // 歌詞時間判斷維持原樣；只平滑化目前句子的高亮與置中滾動。
     function updateLyrics() {
@@ -2241,7 +2285,7 @@
       const box = document.getElementById('lyricsBox');
       box.style.setProperty('--played', played);
       box.style.setProperty('--todo', todo);
-      box.className = 'h-48 overflow-y-auto text-center space-y-3 scroll-smooth fx-' + fx;
+      box.className = 'h-48 overflow-y-auto text-center space-y-3 fx-' + fx;
       document.getElementById('lyricFx').value = fx;
     }
     function saveLyricStyle(patch) {
@@ -3043,11 +3087,26 @@
           await ref.set({ name, ids: {} });
           document.getElementById('newUserListName').value = '';
           openPlaylist('u:' + ref.key);
+          return;
         } catch (e) {
-          console.error('建立雲端播放清單失敗：', e);
-          alert('雲端清單建立失敗，請稍後再試。');
+          const code = e && e.code ? String(e.code) : 'unknown';
+          const detail = e && e.message ? String(e.message) : '';
+          console.error('建立雲端播放清單失敗：', { code, detail, error: e });
+
+          // 雲端權限／連線失敗時，仍先保住使用者剛建立的清單。
+          const key = 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+          guestPlaylists[key] = { name, ids: {} };
+          if (!saveGuestPlaylists()) { delete guestPlaylists[key]; return; }
+          document.getElementById('newUserListName').value = '';
+          openPlaylist('g:' + key);
+
+          const permissionIssue = /PERMISSION_DENIED|permission-denied/i.test(code + ' ' + detail);
+          const cause = permissionIssue
+            ? '可能是 Firebase 資料庫規則不允許此帳號寫入。'
+            : '可能是網路或 Firebase 連線暫時失敗。';
+          alert(`雲端同步失敗（${code}），清單已先保存在這台瀏覽器。${cause} 本機清單不會同步到其他裝置。`);
+          return;
         }
-        return;
       }
       const key = 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
       guestPlaylists[key] = { name, ids: {} };
