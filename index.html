@@ -1749,13 +1749,14 @@
       try {
         const d = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
         if (d) {
-          songs = (d.songs || []).filter(s => !s.src.startsWith("blob:"));
+          songs = (d.songs || []).filter(s => !s.locked && !String(s.src || '').startsWith("blob:"));
           genres = d.genres || [];
           playlists = d.playlists || [];
           stats = {};
         }
       } catch (e) { console.warn("讀取失敗", e); }
-      if (!songs.length) songs = DEFAULT_SONGS.map(s => ({ ...s }));
+      songs = songs.filter(s => !s.locked);
+      if (!songs.length) songs = DEFAULT_SONGS.filter(s => !s.locked).map(s => ({ ...s }));
       songs.forEach(s => { if (!stats[s.id]) stats[s.id] = { plays: 0, likes: 0 }; });
       playlists.forEach(p => p.ids = p.ids.filter(id => songs.some(s => s.id === id)));
       genres = [...new Set(songs.map(s => s.genre))];
@@ -3778,6 +3779,7 @@
           const remoteIds = list.map(s => s.id);
           songs = songs.filter(s => remoteIds.includes(s.id));
         }
+        songs = songs.filter(s => !s.locked);
         if (!songs.length) songs = DEFAULT_SONGS.filter(s => !s.locked).map(s => ({ ...s }));
         genres = [...new Set(songs.map(s => s.genre))];
         nextId = songs.reduce((m, s) => Math.max(m, s.id), 0) + 1;
