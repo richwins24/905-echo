@@ -3490,6 +3490,15 @@
     }
     loadNotice();
 
+    // publish_at / hide_at 使用 YYYY-MM-DD 日期字串；以訪客瀏覽器本地日期比較。
+    function todayKey() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
     async function loadRemote() {
       try {
         const res = await fetch('music/songs.json');
