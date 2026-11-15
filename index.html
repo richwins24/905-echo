@@ -1087,8 +1087,8 @@
           <div id="m-4" data-start="2026-11-04" data-end="2026-11-06" class="timeline-node shrink-0 w-36 bg-slate-800/80 border border-slate-700 rounded-2xl p-3 relative group transition">
             <div class="text-[10px] font-bold text-amber-300 mb-1">11/4 ~ 11/6</div>
             <div class="text-xs font-bold text-white truncate">🏃 57週年運動會</div>
-            <div class="text-[10px] text-slate-300 mt-1">大隊接力拼第一</div>
-            <span class="tag-status mt-2 inline-block px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-500 text-slate-950">熱血進行 🔥</span>
+            <div class="text-[10px] text-slate-300 mt-1">留下熱血與團隊合作的回憶</div>
+            <span class="tag-status mt-2 inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold bg-emerald-950 text-emerald-300 border border-emerald-500/30">已結束</span>
           </div>
 
           <!-- 節點 5: 第二次段考 -->
@@ -1582,7 +1582,7 @@
 
         if (nowStr > end) {
           tag.className = "tag-status mt-2 inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold bg-emerald-950 text-emerald-300 border border-emerald-500/30";
-          tag.textContent = "已達成";
+          tag.textContent = node.id === 'm-4' ? "已結束" : "已達成";
         } else if (nowStr >= start && nowStr <= end) {
           tag.className = "tag-status mt-2 inline-block px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-500 text-slate-950";
           tag.textContent = "熱血進行 🔥";
