@@ -39,10 +39,10 @@
     #playerBar.mini #currentTitle { font-size: 12px; }
 
     /* ===== 歌詞整句效果 ===== */
-    #lyricsBox { --played: #ffffff; --todo: #64748b; height: 12rem; overflow-y: auto; }
-    #lyricsBox .lyric-line { transform-origin: center; }
-    .lyric-line { color: var(--todo); opacity: .55; cursor: pointer; transition: color .3s, opacity .3s, transform .3s; }
-    .lyric-line.on { color: #ffffff; opacity: 1; transform: scale(1.14); transform-origin: center; font-weight: 700; }
+    #lyricsBox { --played: #ffffff; --todo: #64748b; height: 12rem; overflow-y: auto; scroll-behavior: smooth; overscroll-behavior: contain; }
+    #lyricsBox .lyric-line { transform-origin: center; will-change: color, opacity, transform; }
+    .lyric-line { color: var(--todo); opacity: .48; cursor: pointer; transition: color .58s cubic-bezier(.22,1,.36,1), opacity .58s ease, transform .58s cubic-bezier(.22,1,.36,1), text-shadow .58s ease; }
+    .lyric-line.on { color: #ffffff; opacity: 1; transform: scale(1.045); transform-origin: center; font-weight: 700; }
     #lyricsBox.fx-glow .lyric-line.on { text-shadow: 0 0 10px var(--played), 0 0 20px var(--played); }
     #lyricsBox.fx-pop .lyric-line.on { transform: scale(1.14) translateY(-2px); }
     #lyricsBox.fx-wave .lyric-line.on { animation: lyricWave 1.2s ease-in-out infinite; }
@@ -97,6 +97,8 @@
     /* KTV 歌詞滾動區塊：上下充足留白，確保歌詞完美置中且完全不被頂底遮擋 */
     #ktvLyricsBox {
       scrollbar-width: none;
+      scroll-behavior: smooth;
+      overscroll-behavior: contain;
       padding-top: 25vh !important;
       padding-bottom: 25vh !important;
     }
@@ -105,9 +107,10 @@
       color: #94a3b8;
       font-size: 1.6rem;
       line-height: 1.9;
-      opacity: 0.35;
-      transform: scale(0.95);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0.42;
+      transform: scale(0.98);
+      transition: color .62s cubic-bezier(.22,1,.36,1), opacity .62s ease, transform .62s cubic-bezier(.22,1,.36,1), text-shadow .62s ease;
+      will-change: color, opacity, transform;
       cursor: pointer;
     }
     @media (min-width: 768px) {
@@ -116,7 +119,7 @@
     .ktv-line.on {
       color: #ffffff;
       opacity: 1;
-      transform: scale(1.22);
+      transform: scale(1.08);
       font-weight: 800;
       text-shadow: 0 0 25px rgba(236, 72, 153, 0.75), 0 0 50px rgba(168, 85, 247, 0.5);
     }
@@ -989,8 +992,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
       
       <!-- 【左】大型畢業倒數看板 -->
-      <section id="gradHeroBanner" class="lg:col-span-5 relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-950/70 via-slate-900/90 to-indigo-950/70 border border-purple-500/40 p-6 flex flex-col justify-between shadow-2xl backdrop-blur-xl cursor-pointer" title="點擊切換 畢業倒數 / 認識天數">
-        <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-pink-500/10 rounded-full filter blur-3xl pointer-events-none"></div>
+      <section id="gradHeroBanner" class="lg:col-span-5 relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-950/70 via-slate-900/90 to-indigo-950/70 border border-purple-500/40 p-6 flex flex-col justify-between shadow-2xl cursor-pointer" title="點擊切換 畢業倒數 / 認識天數">
         <div>
           <div class="flex items-center gap-2 mb-2">
             <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40">
@@ -1042,7 +1044,7 @@
       </section>
 
       <!-- 【右】9年級第一學期青春里程碑大時間軸（依據行事曆） -->
-      <section class="lg:col-span-7 bg-slate-900/90 border border-purple-500/30 rounded-3xl p-6 shadow-2xl backdrop-blur-xl flex flex-col justify-between">
+      <section class="lg:col-span-7 bg-slate-900/90 border border-purple-500/30 rounded-3xl p-6 shadow-2xl flex flex-col justify-between">
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center gap-2">
             <span class="w-8 h-8 rounded-lg bg-purple-600/30 text-purple-400 flex items-center justify-center font-bold text-sm border border-purple-500/40">
@@ -1152,15 +1154,16 @@
     </div>
 
     <!-- 我的清單（登入後顯示） -->
-    <div id="myListBox" class="login-only hidden mb-4 flex flex-wrap items-center gap-2 text-sm">
-      <span class="text-slate-400"><i class="fa-solid fa-folder"></i> 我的清單</span>
-      <input id="newUserListName" maxlength="20" placeholder="新清單名稱" class="flex-1 min-w-[140px] bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-white">
+    <div id="myListBox" class="mb-4 flex flex-wrap items-center gap-2 text-sm">
+      <span class="text-slate-400"><i class="fa-solid fa-folder"></i> 播放清單</span>
+      <input id="newUserListName" maxlength="20" placeholder="新播放清單名稱" class="flex-1 min-w-[140px] bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-white">
       <button id="addUserListBtn" class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600">建立</button>
       <label class="flex items-center gap-1 text-xs text-slate-400 cursor-pointer">
         <input id="notifyNew" type="checkbox" class="accent-purple-500"> 有新歌通知我
       </label>
       <button id="yearReviewBtn" class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600">📊 年度回顧</button>
-      <button id="delUserListBtn" class="hidden px-3 py-1.5 rounded-lg bg-red-900/60 hover:bg-red-800 text-red-200">刪除此清單</button>
+      <button id="delUserListBtn" class="hidden px-3 py-1.5 rounded-lg bg-red-900/60 hover:bg-red-800 text-red-200">刪除播放清單</button>
+      <p id="playlistStorageHint" class="basis-full text-[11px] text-slate-500">播放清單會保存在這台瀏覽器；登入後可建立同步到帳號的清單。</p>
     </div>
 
     <!-- 清單切換 -->
@@ -1473,11 +1476,13 @@
     // ===== 設定 =====
     const DEFAULT_COVER = "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500";
     const STORE_KEY = "sg_data_v2";
+    const GUEST_PLAYLIST_KEY = "sg_guest_playlists_v1";
 
     // ===== 狀態 =====
     let songs = [];
     let genres = [];
     let playlists = [];
+    let guestPlaylists = {};
     let stats = {};
     let nextId = 1, nextPlId = 1;
     let isAdmin = false;
@@ -1613,6 +1618,15 @@
     // ===== 儲存（瀏覽器本機） =====
     function load() {
       try {
+        const storedGuestPlaylists = JSON.parse(localStorage.getItem(GUEST_PLAYLIST_KEY) || "{}");
+        guestPlaylists = storedGuestPlaylists && typeof storedGuestPlaylists === 'object' && !Array.isArray(storedGuestPlaylists)
+          ? storedGuestPlaylists
+          : {};
+      } catch (e) {
+        guestPlaylists = {};
+        console.warn("讀取本機播放清單失敗", e);
+      }
+      try {
         const d = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
         if (d) {
           songs = (d.songs || []).filter(s => !s.src.startsWith("blob:"));
@@ -1639,6 +1653,16 @@
       }
     }
 
+    function saveGuestPlaylists() {
+      try {
+        localStorage.setItem(GUEST_PLAYLIST_KEY, JSON.stringify(guestPlaylists));
+        return true;
+      } catch (e) {
+        alert("無法儲存播放清單，請確認瀏覽器允許網站使用本機儲存空間。");
+        return false;
+      }
+    }
+
     function esc(str) {
       return String(str ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     }
@@ -1660,9 +1684,11 @@
     }
 
     function getBaseList() {
-      if (typeof currentPlaylistFilter === "string" && currentPlaylistFilter.startsWith("u:")) {
+      if (typeof currentPlaylistFilter === "string" && (currentPlaylistFilter.startsWith("u:") || currentPlaylistFilter.startsWith("g:"))) {
+        const isGuestList = currentPlaylistFilter.startsWith("g:");
         const key = currentPlaylistFilter.slice(2);
-        const ids = Object.keys((userLists[key] && userLists[key].ids) || {}).map(Number);
+        const source = isGuestList ? guestPlaylists : userLists;
+        const ids = Object.keys((source[key] && source[key].ids) || {}).map(Number);
         return ids.map(id => songs.find(s => s.id === id)).filter(Boolean);
       }
       if (currentPlaylistFilter !== "all") {
@@ -1695,17 +1721,25 @@
 
     let playlistPickerOpen = false;
 
+    function getActivePlaylist() {
+      const filter = String(currentPlaylistFilter);
+      if (filter.startsWith("g:")) return guestPlaylists[filter.slice(2)] || null;
+      if (filter.startsWith("u:") && currentUser) return userLists[filter.slice(2)] || null;
+      return null;
+    }
+
     function renderPlaylistChips() {
-      const userItems = currentUser ? Object.entries(userLists).map(([k, v]) => ({ id: "u:" + k, name: "📁 " + (v.name || "未命名"), n: Object.keys(v.ids || {}).length })) : [];
-      const items = [{ id: "all", name: "所有歌曲", n: songs.length }, ...userItems];
+      const guestItems = Object.entries(guestPlaylists).map(([k, v]) => ({ id: "g:" + k, name: "📁 " + (v.name || "未命名"), n: Object.keys(v.ids || {}).length }));
+      const userItems = currentUser ? Object.entries(userLists).map(([k, v]) => ({ id: "u:" + k, name: "☁️ " + (v.name || "未命名"), n: Object.keys(v.ids || {}).length })) : [];
+      const items = [{ id: "all", name: "所有歌曲", n: songs.length }, ...guestItems, ...userItems];
       playlistChips.innerHTML = items.map(p => {
         const active = String(p.id) === String(currentPlaylistFilter);
         return `<button onclick="openPlaylist('${p.id}')" class="shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium border transition ${active ? 'bg-slate-100 text-slate-900 border-slate-100' : 'bg-slate-900 text-slate-300 border-slate-700 hover:border-slate-500'}">${esc(p.name)} <span class="opacity-60">${p.n}</span></button>`;
       }).join('');
-      const isUser = !!(activeUserList && userLists[activeUserList]);
-      plBanner.classList.toggle('hidden', !isUser);
-      document.getElementById('playlistAddBtn').classList.toggle('hidden', !isUser);
-      if (isUser) plName.textContent = `${userLists[activeUserList].name}（${Object.keys(userLists[activeUserList].ids || {}).length} 首）`;
+      const activeList = getActivePlaylist();
+      plBanner.classList.toggle('hidden', !activeList);
+      document.getElementById('playlistAddBtn').classList.toggle('hidden', !activeList);
+      if (activeList) plName.textContent = `${activeList.name}（${Object.keys(activeList.ids || {}).length} 首）`;
       else playlistPickerOpen = false;
       renderPlaylistPicker();
     }
@@ -1713,7 +1747,7 @@
     function renderPlaylistPicker() {
       const panel = document.getElementById('playlistAddPanel');
       const listBox = document.getElementById('playlistAddList');
-      const activeList = activeUserList && userLists[activeUserList];
+      const activeList = getActivePlaylist();
       const isOpen = !!(activeList && playlistPickerOpen);
       panel.classList.toggle('hidden', !isOpen);
       if (!isOpen) return;
@@ -1774,7 +1808,8 @@
 
         const fav = userFavs.has(song.id);
         const ri = ratingInfo(song.id);
-        const inList = activeUserList && userLists[activeUserList] && userLists[activeUserList].ids && userLists[activeUserList].ids[song.id];
+        const activeList = getActivePlaylist();
+        const inList = !!(activeList && activeList.ids && activeList.ids[song.id]);
         const socialBar = `
           <div class="flex flex-wrap items-center gap-2 text-[11px] pt-2">
             <button onclick="toggleFav(${song.id})" class="login-only px-2 py-1 rounded bg-slate-800 hover:bg-pink-900/40 ${fav ? 'text-pink-300' : 'text-slate-400'}"><i class="fa-${fav ? 'solid' : 'regular'} fa-heart"></i> ${fav ? '已收藏' : '收藏'}</button>
@@ -1784,7 +1819,7 @@
             </select>
             <span class="login-only text-amber-300">★ ${ri.count ? ri.avg.toFixed(1) : '–'} (${ri.count})</span>
             <button onclick="openComments(${song.id})" class="login-only px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300"><i class="fa-regular fa-comment"></i> 留言</button>
-            ${activeUserList ? `<button onclick="toggleInUserList(${song.id})" class="login-only px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">${inList ? '－ 從清單移除' : '＋ 加入清單'}</button>` : ''}
+            ${activeUserList ? `<button onclick="toggleInUserList(${song.id})" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">${inList ? '－ 從清單移除' : '＋ 加入清單'}</button>` : ''}
           </div>`;
 
         const adminBar = isAdmin ? `
@@ -2094,7 +2129,17 @@
       applyLyricStyle();
     }
 
-    // 歌詞置中更新（KTV 模式專屬防遮擋精確居中計算）
+    // 以容器與歌詞行的可視座標計算中心，避免不同瀏覽器 offsetTop 基準不一致。
+    function scrollLyricToCenter(container, line) {
+      if (!container || !line) return;
+      const containerRect = container.getBoundingClientRect();
+      const lineRect = line.getBoundingClientRect();
+      const targetTop = container.scrollTop + lineRect.top - containerRect.top
+        - (container.clientHeight - lineRect.height) / 2;
+      container.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' });
+    }
+
+    // 歌詞時間判斷維持原樣；只平滑化目前句子的高亮與置中滾動。
     function updateLyrics() {
       if (!currentLyrics.length) return;
       const t = audio.currentTime;
@@ -2109,17 +2154,14 @@
         const box = document.getElementById('lyricsBox');
         box.querySelectorAll('.lyric-line').forEach(p => p.classList.toggle('on', Number(p.dataset.i) === idx));
         const cur = box.querySelector(`[data-i="${idx}"]`);
-        if (cur) box.scrollTo({ top: cur.offsetTop - box.clientHeight / 2 + cur.clientHeight / 2, behavior: 'smooth' });
+        if (cur) scrollLyricToCenter(box, cur);
       }
 
       if (isKtvMode) {
         const ktvBox = document.getElementById('ktvLyricsBox');
         ktvBox.querySelectorAll('.ktv-line').forEach(p => p.classList.toggle('on', Number(p.dataset.i) === idx));
         const curKtv = ktvBox.querySelector(`[data-i="${idx}"]`);
-        if (curKtv) {
-          const targetY = curKtv.offsetTop - (ktvBox.clientHeight / 2) + (curKtv.clientHeight / 2);
-          ktvBox.scrollTo({ top: targetY, behavior: 'smooth' });
-        }
+        if (curKtv) scrollLyricToCenter(ktvBox, curKtv);
       }
     }
 
@@ -2297,8 +2339,9 @@
 
     window.openPlaylist = function (val) {
       const str = String(val);
-      currentPlaylistFilter = str === "all" ? "all" : (str.startsWith("u:") ? str : Number(str));
-      activeUserList = str.startsWith("u:") ? str.slice(2) : null;
+      const isNamedList = str.startsWith("u:") || str.startsWith("g:");
+      currentPlaylistFilter = str === "all" ? "all" : (isNamedList ? str : Number(str));
+      activeUserList = isNamedList ? str.slice(2) : null;
       currentGenreFilter = "all";
       refreshAll();
     };
@@ -2941,6 +2984,11 @@
       userLists = {};
       userHist = {};
       userPrefs = {};
+      if (!currentUser && String(currentPlaylistFilter).startsWith('u:')) {
+        currentPlaylistFilter = 'all';
+        activeUserList = null;
+        playlistPickerOpen = false;
+      }
       if (currentUser && sharedDb) {
         const uid = currentUser.uid;
         const f = sharedDb.ref('userFavs/' + uid);
@@ -2968,7 +3016,12 @@
     function refreshUserUI() {
       renderGenreFilters();
       renderPlaylistChips();
-      document.getElementById('myListBox').classList.toggle('hidden', !currentUser);
+      document.getElementById('myListBox').classList.remove('hidden');
+      document.getElementById('notifyNew').closest('label').classList.toggle('hidden', !currentUser);
+      document.getElementById('yearReviewBtn').classList.toggle('hidden', !currentUser);
+      document.getElementById('playlistStorageHint').textContent = currentUser
+        ? '本機清單保存在這台瀏覽器；登入清單會同步到你的帳號。'
+        : '播放清單會保存在這台瀏覽器；登入後也可建立同步到帳號的清單。';
       document.getElementById('delUserListBtn').classList.toggle('hidden', !activeUserList);
       renderAccountPanel();
       renderSongs(getFilteredSongs());
@@ -2982,25 +3035,58 @@
     };
 
     document.getElementById('addUserListBtn').addEventListener('click', async () => {
-      const name = document.getElementById('newUserListName').value.trim();
-      if (!name) return;
-      if (!currentUser || !sharedDb) return alert('請先登入');
-      const ref = sharedDb.ref('userPlaylists/' + currentUser.uid).push();
-      await ref.set({ name, ids: {} });
+      const name = document.getElementById('newUserListName').value.trim().slice(0, 20);
+      if (!name) return alert('請先輸入播放清單名稱');
+      if (currentUser && sharedDb) {
+        try {
+          const ref = sharedDb.ref('userPlaylists/' + currentUser.uid).push();
+          await ref.set({ name, ids: {} });
+          document.getElementById('newUserListName').value = '';
+          openPlaylist('u:' + ref.key);
+        } catch (e) {
+          console.error('建立雲端播放清單失敗：', e);
+          alert('雲端清單建立失敗，請稍後再試。');
+        }
+        return;
+      }
+      const key = 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+      guestPlaylists[key] = { name, ids: {} };
+      if (!saveGuestPlaylists()) { delete guestPlaylists[key]; return; }
       document.getElementById('newUserListName').value = '';
-      openPlaylist('u:' + ref.key);
+      openPlaylist('g:' + key);
     });
 
     document.getElementById('delUserListBtn').addEventListener('click', async () => {
-      if (!activeUserList || !currentUser) return;
-      if (!confirm('確定刪除此清單？（不會刪除歌曲）')) return;
-      await sharedDb.ref('userPlaylists/' + currentUser.uid + '/' + activeUserList).remove();
-      openPlaylist('all');
+      if (!activeUserList) return;
+      if (!confirm('確定刪除此播放清單？（不會刪除歌曲）')) return;
+      if (String(currentPlaylistFilter).startsWith('g:')) {
+        delete guestPlaylists[activeUserList];
+        if (!saveGuestPlaylists()) return;
+        openPlaylist('all');
+        return;
+      }
+      if (!currentUser || !sharedDb) return;
+      try {
+        await sharedDb.ref('userPlaylists/' + currentUser.uid + '/' + activeUserList).remove();
+        openPlaylist('all');
+      } catch (e) {
+        console.error('刪除雲端播放清單失敗：', e);
+        alert('刪除失敗，請稍後再試。');
+      }
     });
 
     window.toggleInUserList = function (songId) {
-      if (!currentUser || !sharedDb) return alert('請先登入');
-      if (!activeUserList) return alert('請先點選一個「我的清單」');
+      if (!activeUserList) return alert('請先開啟一個播放清單');
+      if (String(currentPlaylistFilter).startsWith('g:')) {
+        const list = guestPlaylists[activeUserList];
+        if (!list) return alert('找不到這個本機播放清單');
+        list.ids = list.ids || {};
+        if (list.ids[songId]) delete list.ids[songId];
+        else list.ids[songId] = true;
+        if (saveGuestPlaylists()) refreshAll();
+        return;
+      }
+      if (!currentUser || !sharedDb) return alert('請先登入以修改雲端播放清單');
       const ids = (userLists[activeUserList] && userLists[activeUserList].ids) || {};
       const ref = sharedDb.ref('userPlaylists/' + currentUser.uid + '/' + activeUserList + '/ids/' + songId);
       ids[songId] ? ref.remove() : ref.set(true);
