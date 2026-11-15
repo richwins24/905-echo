@@ -770,6 +770,131 @@
     </div>
   </header>
 
+    <!-- 登入狀態與登入前後差異、個人資料設定 -->
+    <section id="accountArea" class="mx-auto max-w-7xl px-4 pt-4 mb-6 rounded-2xl border border-slate-700/80 bg-slate-900/80 p-4 shadow-lg md:p-5">
+      <div id="guestAccountView">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p class="text-xs font-bold tracking-wider text-amber-300">目前狀態：尚未登入</p>
+            <h2 class="mt-1 text-lg font-bold text-white">以訪客方式聆聽</h2>
+          </div>
+          <button id="accountLoginBtn" class="rounded-full bg-purple-600 px-4 py-2 text-sm font-semibold text-white hover:bg-purple-500">
+            <i class="fa-brands fa-google mr-1"></i> Google 登入
+          </button>
+        </div>
+        <details id="featureCompareDetails" class="group">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-3 rounded-xl border border-slate-700 bg-slate-950/50 px-4 py-3 text-sm font-semibold text-white transition hover:border-purple-400/60 hover:bg-slate-800/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-purple-400">
+            <span><i class="fa-solid fa-table-list mr-2 text-purple-300"></i>比較訪客與登入功能</span>
+            <span class="flex shrink-0 items-center gap-2 text-xs font-normal text-slate-400"><span class="group-open:hidden">點擊展開</span><span class="hidden group-open:inline">點擊收合</span><i class="fa-solid fa-chevron-down transition-transform group-open:rotate-180"></i></span>
+          </summary>
+          <div class="mt-3">
+        <div class="overflow-x-auto rounded-xl border border-slate-700">
+          <table class="w-full min-w-[620px] border-collapse text-left text-xs">
+            <thead>
+              <tr class="bg-slate-800/90 text-slate-200">
+                <th scope="col" class="w-1/2 px-4 py-3 font-bold">功能</th>
+                <th scope="col" class="px-4 py-3 text-center font-bold">未登入・訪客</th>
+                <th scope="col" class="px-4 py-3 text-center font-bold">登入後</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800 bg-slate-950/40">
+              <tr>
+                <th scope="row" class="px-4 py-3 font-medium text-slate-200"><i class="fa-solid fa-music mr-2 text-sky-300"></i>瀏覽、搜尋與播放歌曲</th>
+                <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-emerald-900/30 px-2.5 py-1 font-semibold text-emerald-300"><i class="fa-solid fa-check"></i>可使用</span></td>
+                <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-emerald-900/30 px-2.5 py-1 font-semibold text-emerald-300"><i class="fa-solid fa-check"></i>可使用</span></td>
+              </tr>
+              <tr>
+                <th scope="row" class="px-4 py-3 font-medium text-slate-200"><i class="fa-solid fa-closed-captioning mr-2 text-sky-300"></i>歌詞、KTV 與歌曲介紹</th>
+                <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-emerald-900/30 px-2.5 py-1 font-semibold text-emerald-300"><i class="fa-solid fa-check"></i>可使用</span></td>
+                <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-emerald-900/30 px-2.5 py-1 font-semibold text-emerald-300"><i class="fa-solid fa-check"></i>可使用</span></td>
+              </tr>
+              <tr>
+                <th scope="row" class="px-4 py-3 font-medium text-slate-200"><i class="fa-solid fa-calendar-days mr-2 text-sky-300"></i>班級公告、活動與畢業倒數</th>
+                <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-emerald-900/30 px-2.5 py-1 font-semibold text-emerald-300"><i class="fa-solid fa-check"></i>可使用</span></td>
+                <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-emerald-900/30 px-2.5 py-1 font-semibold text-emerald-300"><i class="fa-solid fa-check"></i>可使用</span></td>
+              </tr>
+              <tr>
+                <th scope="row" class="px-4 py-3 font-medium text-slate-200"><i class="fa-solid fa-heart mr-2 text-pink-300"></i>收藏歌曲與個人歌單</th>
+                <td class="px-4 py-3 text-center"><span class="text-slate-500">—</span></td>
+                <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-purple-900/40 px-2.5 py-1 font-semibold text-purple-200"><i class="fa-solid fa-lock-open"></i>可建立與同步</span></td>
+              </tr>
+              <tr>
+                <th scope="row" class="px-4 py-3 font-medium text-slate-200"><i class="fa-solid fa-clock-rotate-left mr-2 text-indigo-300"></i>最近播放、繼續播放與年度回顧</th>
+                <td class="px-4 py-3 text-center"><span class="text-slate-500">—</span></td>
+                <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-purple-900/40 px-2.5 py-1 font-semibold text-purple-200"><i class="fa-solid fa-cloud"></i>個人紀錄</span></td>
+              </tr>
+              <tr>
+                <th scope="row" class="px-4 py-3 font-medium text-slate-200"><i class="fa-solid fa-star mr-2 text-amber-300"></i>歌曲按讚與評分</th>
+                <td class="px-4 py-3 text-center"><span class="text-slate-500">—</span></td>
+                <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-purple-900/40 px-2.5 py-1 font-semibold text-purple-200"><i class="fa-solid fa-check"></i>可使用</span></td>
+              </tr>
+              <tr>
+                <th scope="row" class="px-4 py-3 font-medium text-slate-200"><i class="fa-solid fa-comment mr-2 text-amber-300"></i>發表歌曲留言</th>
+                <td class="px-4 py-3 text-center"><span class="text-slate-500">—</span></td>
+                <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-purple-900/40 px-2.5 py-1 font-semibold text-purple-200"><i class="fa-solid fa-check"></i>登入後可留言</span></td>
+              </tr>
+              <tr>
+                <th scope="row" class="px-4 py-3 font-medium text-slate-200"><i class="fa-solid fa-id-card mr-2 text-indigo-300"></i>自訂顯示暱稱與頭像</th>
+                <td class="px-4 py-3 text-center"><span class="text-slate-500">—</span></td>
+                <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-purple-900/40 px-2.5 py-1 font-semibold text-purple-200"><i class="fa-solid fa-check"></i>可設定</span></td>
+              </tr>
+              <tr>
+                <th scope="row" class="px-4 py-3 font-medium text-slate-200"><i class="fa-solid fa-bell mr-2 text-indigo-300"></i>新歌提示偏好</th>
+                <td class="px-4 py-3 text-center"><span class="text-slate-500">—</span></td>
+                <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-purple-900/40 px-2.5 py-1 font-semibold text-purple-200"><i class="fa-solid fa-check"></i>可自行開啟</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-3 text-[11px] leading-5 text-slate-500">留言可能需要管理員審核。登入是自願的；訪客仍可聽歌。登入個人功能需要 Google 登入成功，並受 Firebase 權限設定影響。</p>
+          </div>
+        </details>
+      </div>
+
+      <div id="memberAccountView" class="hidden">
+        <div class="mb-4 flex flex-wrap items-center gap-3">
+          <div id="accountAvatarPreview" class="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full border border-purple-400/40 bg-purple-900/50 text-xl text-white">♪</div>
+          <div class="mr-auto">
+            <p class="text-xs font-bold tracking-wider text-emerald-300">目前狀態：已登入</p>
+            <p id="accountWelcomeName" class="mt-1 font-bold text-white">個人帳號</p>
+            <p class="text-xs text-slate-400">個人資料與歌單會儲存在這個帳號</p>
+          </div>
+          <button id="accountSignOutBtn" class="rounded-lg bg-slate-800 px-3 py-2 text-xs text-slate-300 hover:bg-slate-700">登出</button>
+        </div>
+        <details id="profileSettingsDetails" class="overflow-hidden rounded-xl border border-slate-700 bg-slate-950/40">
+          <summary class="cursor-pointer list-none px-4 py-3 font-semibold text-white marker:hidden">
+            <i class="fa-solid fa-user-gear mr-2 text-purple-300"></i>個人暱稱與頭像設定
+            <span class="ml-1 text-xs font-normal text-slate-400">（設定專區）</span>
+          </summary>
+          <div class="space-y-4 border-t border-slate-800 p-4">
+            <label class="block text-sm text-slate-300">
+              顯示暱稱
+              <input id="profileNickname" maxlength="20" autocomplete="nickname" placeholder="輸入 1–20 字暱稱" class="input mt-1.5 max-w-md">
+              <span class="mt-1 block text-xs text-slate-500">此名稱會顯示在頁首與你發表的留言，不會公開顯示電子郵件。</span>
+            </label>
+            <div>
+              <p class="mb-2 text-sm text-slate-300">選擇頭像</p>
+              <div id="profileAvatarChoices" class="flex flex-wrap gap-2">
+                <button type="button" data-avatar="" aria-label="使用 Google 頭像" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xs text-slate-200">Google 頭像</button>
+                <button type="button" data-avatar="🎧" aria-label="頭像耳機" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🎧</button>
+                <button type="button" data-avatar="🎵" aria-label="頭像音符" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🎵</button>
+                <button type="button" data-avatar="🌟" aria-label="頭像星星" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🌟</button>
+                <button type="button" data-avatar="🌈" aria-label="頭像彩虹" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🌈</button>
+                <button type="button" data-avatar="🎹" aria-label="頭像鋼琴" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🎹</button>
+                <button type="button" data-avatar="🌙" aria-label="頭像月亮" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🌙</button>
+                <button type="button" data-avatar="🌱" aria-label="頭像新芽" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🌱</button>
+                <button type="button" data-avatar="💜" aria-label="頭像紫心" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">💜</button>
+              </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+              <button id="saveProfileBtn" class="rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white hover:bg-purple-500">儲存設定</button>
+              <span id="profileSaveMsg" role="status" class="text-xs text-slate-400"></span>
+            </div>
+          </div>
+        </details>
+      </div>
+    </section>
+
   <!-- 單曲限定的沉浸式聆聽企劃主視覺；切換其他主題時隱藏 -->
   <section id="heartEventBanner" class="max-w-7xl mx-auto px-4 pt-5" aria-label="單曲主題活動：沒有人知道我的心事">
     <div class="heart-event-card relative overflow-hidden rounded-[2rem] border px-5 py-6 md:px-10 md:py-9">
@@ -1028,73 +1153,6 @@
       </div>
     </section>
 
-    <!-- 登入狀態與登入前後差異、個人資料設定 -->
-    <section id="accountArea" class="mb-6 rounded-2xl border border-slate-700/80 bg-slate-900/80 p-4 shadow-lg md:p-5">
-      <div id="guestAccountView">
-        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <p class="text-xs font-bold tracking-wider text-amber-300">目前狀態：尚未登入</p>
-            <h2 class="mt-1 text-lg font-bold text-white">以訪客方式聆聽</h2>
-          </div>
-          <button id="accountLoginBtn" class="rounded-full bg-purple-600 px-4 py-2 text-sm font-semibold text-white hover:bg-purple-500">
-            <i class="fa-brands fa-google mr-1"></i> Google 登入
-          </button>
-        </div>
-        <div class="grid gap-3 text-sm md:grid-cols-2">
-          <div class="rounded-xl border border-slate-700 bg-slate-950/50 p-3">
-            <h3 class="mb-2 font-bold text-slate-200"><i class="fa-solid fa-user mr-1 text-slate-400"></i> 未登入也可以</h3>
-            <p class="text-xs leading-6 text-slate-400">瀏覽歌曲、播放音樂、查看歌詞與使用 KTV。</p>
-          </div>
-          <div class="rounded-xl border border-purple-500/30 bg-purple-950/20 p-3">
-            <h3 class="mb-2 font-bold text-purple-200"><i class="fa-solid fa-user-check mr-1"></i> 登入後還可以</h3>
-            <p class="text-xs leading-6 text-slate-300">收藏歌曲、建立個人歌單、同步播放紀錄、評分與留言，並設定自己的暱稱和頭像。</p>
-          </div>
-        </div>
-      </div>
-
-      <div id="memberAccountView" class="hidden">
-        <div class="mb-4 flex flex-wrap items-center gap-3">
-          <div id="accountAvatarPreview" class="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full border border-purple-400/40 bg-purple-900/50 text-xl text-white">♪</div>
-          <div class="mr-auto">
-            <p class="text-xs font-bold tracking-wider text-emerald-300">目前狀態：已登入</p>
-            <p id="accountWelcomeName" class="mt-1 font-bold text-white">個人帳號</p>
-            <p class="text-xs text-slate-400">個人資料與歌單會儲存在這個帳號</p>
-          </div>
-          <button id="accountSignOutBtn" class="rounded-lg bg-slate-800 px-3 py-2 text-xs text-slate-300 hover:bg-slate-700">登出</button>
-        </div>
-        <details id="profileSettingsDetails" class="overflow-hidden rounded-xl border border-slate-700 bg-slate-950/40">
-          <summary class="cursor-pointer list-none px-4 py-3 font-semibold text-white marker:hidden">
-            <i class="fa-solid fa-user-gear mr-2 text-purple-300"></i>個人暱稱與頭像設定
-            <span class="ml-1 text-xs font-normal text-slate-400">（設定專區）</span>
-          </summary>
-          <div class="space-y-4 border-t border-slate-800 p-4">
-            <label class="block text-sm text-slate-300">
-              顯示暱稱
-              <input id="profileNickname" maxlength="20" autocomplete="nickname" placeholder="輸入 1–20 字暱稱" class="input mt-1.5 max-w-md">
-              <span class="mt-1 block text-xs text-slate-500">此名稱會顯示在頁首與你發表的留言，不會公開顯示電子郵件。</span>
-            </label>
-            <div>
-              <p class="mb-2 text-sm text-slate-300">選擇頭像</p>
-              <div id="profileAvatarChoices" class="flex flex-wrap gap-2">
-                <button type="button" data-avatar="" aria-label="使用 Google 頭像" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xs text-slate-200">Google 頭像</button>
-                <button type="button" data-avatar="🎧" aria-label="頭像耳機" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🎧</button>
-                <button type="button" data-avatar="🎵" aria-label="頭像音符" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🎵</button>
-                <button type="button" data-avatar="🌟" aria-label="頭像星星" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🌟</button>
-                <button type="button" data-avatar="🌈" aria-label="頭像彩虹" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🌈</button>
-                <button type="button" data-avatar="🎹" aria-label="頭像鋼琴" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🎹</button>
-                <button type="button" data-avatar="🌙" aria-label="頭像月亮" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🌙</button>
-                <button type="button" data-avatar="🌱" aria-label="頭像新芽" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🌱</button>
-                <button type="button" data-avatar="💜" aria-label="頭像紫心" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">💜</button>
-              </div>
-            </div>
-            <div class="flex flex-wrap items-center gap-3">
-              <button id="saveProfileBtn" class="rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white hover:bg-purple-500">儲存設定</button>
-              <span id="profileSaveMsg" role="status" class="text-xs text-slate-400"></span>
-            </div>
-          </div>
-        </details>
-      </div>
-    </section>
 
     <!-- 最近播放／繼續上次播放 -->
     <div id="recentRow" class="login-only flex items-center gap-2 overflow-x-auto pb-3 text-xs"></div>
