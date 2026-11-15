@@ -3299,6 +3299,7 @@
     setInterval(() => {
       if (VOTE_ENABLED && sharedDb && voteAttachedMonth && voteAttachedMonth !== voteMonth()) attachVote();
     }, 30000);
+    setInterval(updateVoteCountdown, 1000);
 
     // 投票使用穩定且唯一的歌曲 Key；若 songs.json 有重複 id，改用歌曲資料指紋區分。
     function voteHash(text) {
@@ -3317,6 +3318,21 @@
       if (sameIdSongs.length <= 1) return rawId;
       const fingerprint = [rawId, song.title || '', song.src || '', song.cover || ''].join('|');
       return 'song_' + voteHash(fingerprint);
+    }
+
+    function updateVoteCountdown() {
+      const el = document.getElementById('voteCountdown');
+      if (!el) return;
+      const now = new Date();
+      const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+      let diff = Math.max(0, nextMonth.getTime() - now.getTime());
+      const days = Math.floor(diff / 86400000);
+      diff %= 86400000;
+      const hours = Math.floor(diff / 3600000);
+      diff %= 3600000;
+      const minutes = Math.floor(diff / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+      el.textContent = `距離本期投票結束：${days} 天 ${String(hours).padStart(2, '0')} 時 ${String(minutes).padStart(2, '0')} 分 ${String(seconds).padStart(2, '0')} 秒`;
     }
 
     function renderVote() {
@@ -3344,6 +3360,7 @@
           <div>
             <h2 class="flex items-center gap-2 text-lg font-black text-white md:text-xl"><i class="fa-solid fa-trophy text-amber-300"></i>905 班人氣歌曲榜</h2>
             <p class="mt-1 text-xs text-slate-400">投票期間 ${votePeriodInfo().startLabel}–${votePeriodInfo().endLabel}（月底截止）・目前 ${rows.length} 首；登入後每期支持 1 首。</p>
+            <p id="voteCountdown" class="mt-2 text-xs font-semibold text-amber-300" aria-live="polite">本期投票倒數計算中…</p>
           </div>
           <div class="rounded-xl border border-amber-400/20 bg-amber-400/10 px-3 py-2 text-xs text-amber-100">
             <i class="fa-solid fa-ticket mr-1 text-amber-300"></i>${uid ? `本月已投 ${myVotes}/${VOTE_LIMIT} 首` : '登入後即可參與投票'}
@@ -3367,6 +3384,7 @@
       box.querySelectorAll('[data-vote-song-id]').forEach(button => {
         button.addEventListener('click', () => window.toggleVote(button.dataset.voteSongId));
       });
+      updateVoteCountdown();
     }
 
     window.toggleVote = async function (songId) {
