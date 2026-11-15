@@ -11,13 +11,6 @@
     ::-webkit-scrollbar-track { background: #0f172a; }
     ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #475569; }
-    .wave { display: flex; align-items: flex-end; gap: 2px; height: 14px; }
-    .wave span { width: 3px; height: 30%; background: #a855f7; border-radius: 2px; animation: wv .9s ease-in-out infinite; }
-    .wave span:nth-child(2) { animation-delay: .15s; }
-    .wave span:nth-child(3) { animation-delay: .3s; }
-    .wave span:nth-child(4) { animation-delay: .45s; }
-    .wave.paused span { animation-play-state: paused; }
-    @keyframes wv { 0%, 100% { height: 20%; } 50% { height: 100%; } }
     .input { width: 100%; background: #1e293b; border: 1px solid #334155; border-radius: .5rem; padding: .5rem .75rem; color: #fff; font-size: .875rem; }
     body.is-guest .login-only { display: none !important; }
     body.login-off .login-only { display: none !important; }
@@ -35,7 +28,7 @@
       #playerBar .extra-controls { flex-wrap: wrap; overflow: visible; justify-content: flex-end; row-gap: 4px; }
       #playerBar .extra-controls select { max-width: 96px; }
     }
-    #playerBar.mini .full-only, #playerBar.mini .extra-controls, #playerBar.mini #currentCover, #playerBar.mini #waveBar { display: none !important; }
+    #playerBar.mini .full-only, #playerBar.mini .extra-controls, #playerBar.mini #currentCover { display: none !important; }
     #playerBar.mini #currentTitle { font-size: 12px; }
 
     /* ===== 歌詞整句效果 ===== */
@@ -46,9 +39,9 @@
     #lyricsBox.fx-glow .lyric-line.on { text-shadow: 0 0 5px var(--played), 0 0 10px var(--played); }
     #lyricsBox.fx-pop .lyric-line.on { transform: scale(1.03) translateY(-1px); }
     #lyricsBox.fx-wave .lyric-line.on { animation: lyricWave 2.4s ease-in-out infinite; }
-    @keyframes lyricWave { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
+    @keyframes lyricWave { 0%, 100% { transform: scale(1.025) translateY(0); } 50% { transform: scale(1.025) translateY(-1.5px); } }
     @keyframes lyricNeon { 0%, 100% { text-shadow: 0 0 5px var(--played), 0 0 10px var(--played); opacity: 1; } 50% { text-shadow: 0 0 8px var(--played), 0 0 16px var(--played); opacity: 1; } }
-    @keyframes lyricZoom { from { transform: translateY(2px); opacity: .65; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes lyricZoom { from { transform: scale(.96) translateY(2px); opacity: .65; } to { transform: scale(1.025) translateY(0); opacity: 1; } }
     #lyricsBox.fx-neon .lyric-line.on { animation: lyricNeon 2s linear infinite; }
     #lyricsBox.fx-zoom .lyric-line.on { animation: lyricZoom .6s ease-out both; }
 
@@ -305,18 +298,6 @@
       background: rgba(15, 23, 42, 0.65); padding: .55rem .8rem;
       color: rgba(255, 228, 240, 0.88); font-size: .58rem; letter-spacing: .2em;
     }
-    body.theme-song .event-soundwave { height: 2rem; display: flex; align-items: center; justify-content: center; gap: 4px; }
-    body.theme-song .event-soundwave span {
-      width: 3px; height: var(--bar, 35%); border-radius: 99px;
-      background: linear-gradient(to top, #818cf8, #f9a8d4); opacity: .8;
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      body.theme-song .event-soundwave span { animation: eventSound 1.15s ease-in-out infinite alternate; }
-      body.theme-song .event-soundwave span:nth-child(3n) { animation-delay: .2s; }
-      body.theme-song .event-soundwave span:nth-child(3n + 1) { animation-delay: .4s; }
-      @keyframes eventSound { from { transform: scaleY(.45); opacity: .5; } to { transform: scaleY(1.15); opacity: 1; } }
-    }
-
     /* 心事單曲企劃：歌曲故事卡與情緒旅程 */
     #heartStorySection { display: none; }
     body.theme-song #heartStorySection { display: block; }
@@ -879,7 +860,6 @@
             </tbody>
           </table>
         </div>
-        <p class="mt-3 text-[11px] leading-5 text-slate-500">留言可能需要管理員審核。登入是自願的；訪客仍可聽歌。登入個人功能需要 Google 登入成功，並受 Firebase 權限設定影響。</p>
       </div>
           </div>
         </details>
@@ -917,7 +897,6 @@
       </div>
       <div class="relative z-10 mt-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-white/10 pt-4">
         <div class="flex items-center gap-3">
-          <div class="event-soundwave" aria-hidden="true"><span style="--bar:32%"></span><span style="--bar:58%"></span><span style="--bar:82%"></span><span style="--bar:46%"></span><span style="--bar:100%"></span><span style="--bar:64%"></span><span style="--bar:38%"></span><span style="--bar:76%"></span><span style="--bar:52%"></span><span style="--bar:92%"></span><span style="--bar:42%"></span><span style="--bar:68%"></span><span style="--bar:30%"></span><span style="--bar:84%"></span><span style="--bar:55%"></span><span style="--bar:96%"></span><span style="--bar:36%"></span><span style="--bar:72%"></span><span style="--bar:48%"></span><span style="--bar:62%"></span><span style="--bar:88%"></span><span style="--bar:40%"></span><span style="--bar:70%"></span><span style="--bar:50%"></span></div>
           <span class="text-[10px] md:text-xs tracking-wide text-indigo-100/70">留一段時間，聽聽自己的心</span>
         </div>
         <span class="text-[9px] font-bold tracking-[0.24em] text-indigo-200/50">A QUIET MOMENT WITH THIS SONG</span>
@@ -1156,14 +1135,15 @@
     <!-- 我的清單（登入後顯示） -->
     <div id="myListBox" class="mb-4 flex flex-wrap items-center gap-2 text-sm">
       <span class="text-slate-400"><i class="fa-solid fa-folder"></i> 播放清單</span>
-      <input id="newUserListName" maxlength="20" placeholder="新播放清單名稱" class="flex-1 min-w-[140px] bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-white">
-      <button id="addUserListBtn" class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600">建立</button>
+      <input id="newUserListName" maxlength="20" placeholder="新播放清單名稱" class="hidden flex-1 min-w-[140px] bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-white">
+      <button id="addUserListBtn" class="hidden px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600">建立</button>
       <label class="flex items-center gap-1 text-xs text-slate-400 cursor-pointer">
         <input id="notifyNew" type="checkbox" class="accent-purple-500"> 有新歌通知我
       </label>
       <button id="yearReviewBtn" class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600">📊 年度回顧</button>
       <button id="delUserListBtn" class="hidden px-3 py-1.5 rounded-lg bg-red-900/60 hover:bg-red-800 text-red-200">刪除播放清單</button>
-      <p id="playlistStorageHint" class="basis-full text-[11px] text-slate-500">播放清單會保存在這台瀏覽器；登入後可建立同步到帳號的清單。</p>
+      <p id="playlistStorageHint" class="basis-full text-[11px] text-slate-500">登入後才能建立並同步播放清單。</p>
+      <p id="playlistLoginHint" class="basis-full text-[11px] text-slate-400">請先使用右上角 Google 登入，登入後建立的清單會保存到你的帳號。</p>
     </div>
 
     <!-- 清單切換 -->
@@ -1369,7 +1349,6 @@
           <p id="currentTitle" class="text-sm font-semibold truncate">尚未選擇曲目</p>
           <p id="currentGenre" class="text-xs text-slate-400">點選歌曲即可播放</p>
         </div>
-        <div id="waveBar" class="wave shrink-0 paused"><span></span><span></span><span></span><span></span></div>
       </div>
       <div class="flex flex-col items-center gap-2 w-full md:w-2/4">
         <div class="flex items-center gap-3 sm:gap-5">
@@ -1403,7 +1382,7 @@
         </button>
 
         <!-- 更多設定展開按鈕 -->
-        <button id="moreSettingsBtn" class="text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 px-2.5 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow-sm" title="展開更多播放設定（倍速、波形、循環等）">
+        <button id="moreSettingsBtn" class="text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 px-2.5 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow-sm" title="展開更多播放設定（倍速、循環等）">
           <i class="fa-solid fa-sliders text-purple-400"></i>
           <span>更多設定</span>
           <i id="moreSettingsArrow" class="fa-solid fa-chevron-up text-[10px] transition-transform duration-200"></i>
@@ -1440,16 +1419,6 @@
               </span>
               <button id="loopBtn" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-slate-200 transition flex items-center gap-1.5" title="切換循環模式">
                 <i class="fa-solid fa-repeat"></i> <span id="loopLabel">循環：關</span>
-              </button>
-            </div>
-
-            <!-- 動態波形開關 -->
-            <div class="flex items-center justify-between gap-2">
-              <span class="text-slate-300 flex items-center gap-1.5">
-                <i class="fa-solid fa-wave-square text-purple-400"></i> 聲波波形動畫
-              </span>
-              <button id="waveToggleBtn" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-purple-400 font-semibold transition flex items-center gap-1.5" title="開關波形動畫">
-                <i class="fa-solid fa-toggle-on"></i> <span id="waveToggleText">已開啟</span>
               </button>
             </div>
 
@@ -1491,7 +1460,6 @@
     let currentGenreFilter = "all";
     let currentPlaylistFilter = "all";
     let sortMode = "manual";
-    let waveOn = true;
     let lyricsOn = false;
     let isKtvMode = false;
     let currentLyrics = [];
@@ -1512,8 +1480,6 @@
     const currentCover = document.getElementById('currentCover');
     const currentTitle = document.getElementById('currentTitle');
     const currentGenre = document.getElementById('currentGenre');
-    const waveBar = document.getElementById('waveBar');
-    const waveToggleBtn = document.getElementById('waveToggleBtn');
     const musicGrid = document.getElementById('musicGrid');
     const searchInput = document.getElementById('searchInput');
     const genreFilters = document.getElementById('genreFilters');
@@ -1729,7 +1695,7 @@
     }
 
     function renderPlaylistChips() {
-      const guestItems = Object.entries(guestPlaylists).map(([k, v]) => ({ id: "g:" + k, name: "📁 " + (v.name || "未命名"), n: Object.keys(v.ids || {}).length }));
+      const guestItems = Object.entries(guestPlaylists).map(([k, v]) => ({ id: "g:" + k, name: "📱 本機 · " + (v.name || "未命名"), n: Object.keys(v.ids || {}).length }));
       const userItems = currentUser ? Object.entries(userLists).map(([k, v]) => ({ id: "u:" + k, name: "☁️ " + (v.name || "未命名"), n: Object.keys(v.ids || {}).length })) : [];
       const items = [{ id: "all", name: "所有歌曲", n: songs.length }, ...guestItems, ...userItems];
       playlistChips.innerHTML = items.map(p => {
@@ -1802,7 +1768,6 @@
         const rank = ranking.findIndex(s => s.id === song.id) + 1;
         const isCurrent = song.id === currentId;
         const isPlayingThis = isCurrent && playingNow;
-        const showWave = waveOn && isPlayingThis;
         const stat = st(song.id);
         const isNew = song.added && (Date.now() - new Date(song.added).getTime()) < 7 * 86400000;
 
@@ -1839,7 +1804,6 @@
             ${isNewSong(song) ? '<span class="absolute top-12 left-3 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">NEW</span>' : ''}
             <span class="absolute top-3 right-3 bg-slate-950/70 px-2.5 py-1 rounded-md text-[11px] font-bold text-amber-300 border border-slate-700">#${rank}</span>
             ${isNew ? '<span class="absolute top-12 left-3 bg-amber-400 text-slate-900 px-2 py-0.5 rounded text-[10px] font-bold">NEW</span>' : ''}
-            ${showWave ? `<div class="wave absolute bottom-3 left-3"><span></span><span></span><span></span><span></span></div>` : ''}
           </div>
           <div class="p-4 flex flex-col flex-grow justify-between gap-3">
             <div>
@@ -1880,7 +1844,6 @@
       playIcon.className = on ? "fa-solid fa-pause" : "fa-solid fa-play";
       const ktvIcon = document.getElementById('ktvPlayIcon');
       if (ktvIcon) ktvIcon.className = on ? "fa-solid fa-pause" : "fa-solid fa-play";
-      waveBar.classList.toggle('paused', !on);
       renderSongs(getFilteredSongs());
     }
 
@@ -2356,20 +2319,6 @@
       ktvVolumeBar.value = e.target.value;
     });
 
-    waveToggleBtn.addEventListener('click', () => {
-      waveOn = !waveOn;
-      waveBar.classList.toggle('hidden', !waveOn);
-      waveToggleBtn.classList.toggle('text-purple-400', waveOn);
-      waveToggleBtn.classList.toggle('text-slate-500', !waveOn);
-      const wtText = document.getElementById('waveToggleText');
-      if (wtText) wtText.textContent = waveOn ? '已開啟' : '已關閉';
-      const icon = waveToggleBtn.querySelector('i');
-      if (icon) {
-        icon.className = waveOn ? 'fa-solid fa-toggle-on' : 'fa-solid fa-toggle-off';
-      }
-      renderSongs(getFilteredSongs());
-    });
-
     // ===== 篩選 / 清單 / 排序 =====
     searchInput.addEventListener('input', () => renderSongs(getFilteredSongs()));
 
@@ -2764,7 +2713,8 @@
               cover: m.cover || DEFAULT_COVER,
               src,
               lyrics: m.lyrics || null,
-              lyrics_file: m.lyrics_file || ''
+              lyrics_file: m.lyrics_file || '',
+              specialEdition: true
             });
           } catch (err) {
             console.warn('此檔案無法用這組解鎖碼開啟：', m.title, err);
@@ -3061,11 +3011,14 @@
       renderGenreFilters();
       renderPlaylistChips();
       document.getElementById('myListBox').classList.remove('hidden');
+      document.getElementById('newUserListName').classList.toggle('hidden', !currentUser);
+      document.getElementById('addUserListBtn').classList.toggle('hidden', !currentUser);
+      document.getElementById('playlistLoginHint').classList.toggle('hidden', !!currentUser);
       document.getElementById('notifyNew').closest('label').classList.toggle('hidden', !currentUser);
       document.getElementById('yearReviewBtn').classList.toggle('hidden', !currentUser);
       document.getElementById('playlistStorageHint').textContent = currentUser
-        ? '本機清單保存在這台瀏覽器；登入清單會同步到你的帳號。'
-        : '播放清單會保存在這台瀏覽器；登入後也可建立同步到帳號的清單。';
+        ? '雲端清單會同步到你的帳號；標示「本機」的舊清單只保存在這台瀏覽器。'
+        : '登入後才能建立並同步播放清單。';
       document.getElementById('delUserListBtn').classList.toggle('hidden', !activeUserList);
       renderAccountPanel();
       renderSongs(getFilteredSongs());
@@ -3080,39 +3033,25 @@
 
     document.getElementById('addUserListBtn').addEventListener('click', async () => {
       const name = document.getElementById('newUserListName').value.trim().slice(0, 20);
+      if (!currentUser) return alert('請先使用 Google 登入，才能建立並保存播放清單。');
       if (!name) return alert('請先輸入播放清單名稱');
-      if (currentUser && sharedDb) {
-        try {
-          const ref = sharedDb.ref('userPlaylists/' + currentUser.uid).push();
-          await ref.set({ name, ids: {} });
-          document.getElementById('newUserListName').value = '';
-          openPlaylist('u:' + ref.key);
-          return;
-        } catch (e) {
-          const code = e && e.code ? String(e.code) : 'unknown';
-          const detail = e && e.message ? String(e.message) : '';
-          console.error('建立雲端播放清單失敗：', { code, detail, error: e });
-
-          // 雲端權限／連線失敗時，仍先保住使用者剛建立的清單。
-          const key = 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-          guestPlaylists[key] = { name, ids: {} };
-          if (!saveGuestPlaylists()) { delete guestPlaylists[key]; return; }
-          document.getElementById('newUserListName').value = '';
-          openPlaylist('g:' + key);
-
-          const permissionIssue = /PERMISSION_DENIED|permission-denied/i.test(code + ' ' + detail);
-          const cause = permissionIssue
-            ? '可能是 Firebase 資料庫規則不允許此帳號寫入。'
-            : '可能是網路或 Firebase 連線暫時失敗。';
-          alert(`雲端同步失敗（${code}），清單已先保存在這台瀏覽器。${cause} 本機清單不會同步到其他裝置。`);
-          return;
+      if (!sharedDb) return alert('資料庫目前未連線，清單尚未建立。請重新整理頁面後再試。');
+      try {
+        const ref = sharedDb.ref('userPlaylists/' + currentUser.uid).push();
+        await ref.set({ name, ids: {} });
+        document.getElementById('newUserListName').value = '';
+        openPlaylist('u:' + ref.key);
+      } catch (e) {
+        const code = e && e.code ? String(e.code) : 'unknown';
+        const detail = e && e.message ? String(e.message).slice(0, 180) : '';
+        console.error('建立雲端播放清單失敗：', { code, detail, error: e });
+        const denied = /PERMISSION_DENIED|permission-denied/i.test(code + ' ' + detail);
+        if (denied) {
+          alert(`Firebase 拒絕建立清單（${code}）。請檢查 Realtime Database 規則是否允許登入帳號寫入 userPlaylists/${currentUser.uid}。清單尚未建立。`);
+        } else {
+          alert(`雲端清單建立失敗（${code}）：${detail || '請檢查網路或 Firebase 連線。'} 清單尚未建立。`);
         }
       }
-      const key = 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-      guestPlaylists[key] = { name, ids: {} };
-      if (!saveGuestPlaylists()) { delete guestPlaylists[key]; return; }
-      document.getElementById('newUserListName').value = '';
-      openPlaylist('g:' + key);
     });
 
     document.getElementById('delUserListBtn').addEventListener('click', async () => {
@@ -3227,6 +3166,7 @@
 
       const snap = await sharedDb.ref('comments/' + commentSongId).once('value');
       const existing = Object.entries(snap.val() || {}).sort((a, b) => (a[1].time || 0) - (b[1].time || 0));
+      // 每首歌最多保留 3 則；送出新留言前，先從最早的一則開始清除。
       while (existing.length >= 3) {
         const [oldId, oldC] = existing.shift();
         try {
@@ -3488,16 +3428,17 @@
     function renderVote() {
       const box = document.getElementById('voteBox');
       if (!box) return;
-      const voteKeys = songs.map(getVoteSongKey);
-      const invalidSongs = songs.filter((song, index) => !voteKeys[index]);
+      const eligibleSongs = songs.filter(song => !song.locked && !song.specialEdition);
+      const voteKeys = eligibleSongs.map(getVoteSongKey);
+      const invalidSongs = eligibleSongs.filter((song, index) => !voteKeys[index]);
       if (invalidSongs.length) {
-        console.error('投票已暫停：歌曲 ID 缺失', { invalidSongs, songs });
+        console.error('投票已暫停：歌曲 ID 缺失', { invalidSongs, songs: eligibleSongs });
         box.innerHTML = '<div class="rounded-xl border border-red-500/30 bg-red-950/30 px-4 py-4 text-sm text-red-200">投票暫時停用：歌曲資料缺少 ID，請管理員檢查 music/songs.json。</div>';
         return;
       }
       const uid = currentUser ? currentUser.uid : null;
-      const myVotes = uid ? songs.filter(s => voteRaw[getVoteSongKey(s)] && voteRaw[getVoteSongKey(s)][uid]).length : 0;
-      const rows = songs.map(s => {
+      const myVotes = uid ? eligibleSongs.filter(s => voteRaw[getVoteSongKey(s)] && voteRaw[getVoteSongKey(s)][uid]).length : 0;
+      const rows = eligibleSongs.map(s => {
         const songVotes = voteRaw[getVoteSongKey(s)] || {};
         const votes = Object.keys(songVotes).length;
         const mine = uid && songVotes[uid];
@@ -3530,7 +3471,7 @@
             </div>`;
           }).join('') : '<p class="rounded-xl bg-slate-950/50 px-4 py-6 text-center text-sm text-slate-500">目前沒有可投票的歌曲。</p>'}
         </div>
-        <p class="mt-3 text-[11px] text-slate-500">投票期間每月 1 日開始、月底截止；你的選擇會記錄在帳號中，跨月後自動開新一輪，過往月份紀錄保留。每期可支持 1 首；再次點選其他歌曲會直接改投。</p>`;
+        <p class="mt-3 text-[11px] text-slate-500">投票期間每月 1 日開始、月底截止；你的選擇會記錄在帳號中，跨月後自動開新一輪，過往月份紀錄保留。每期可支持 1 首；再次點選其他歌曲會直接改投。特別版不列入人氣榜與投票。</p>`;
       box.querySelectorAll('[data-vote-song-id]').forEach(button => {
         button.addEventListener('click', () => window.toggleVote(button.dataset.voteSongId));
       });
@@ -3544,12 +3485,13 @@
       const uid = currentUser.uid;
       const month = voteMonth();
       const songKey = String(songId || '').trim();
-      if (!songKey || !songs.some(song => getVoteSongKey(song) === songKey)) {
+      if (!songKey || !songs.some(song => !song.locked && !song.specialEdition && getVoteSongKey(song) === songKey)) {
         console.error('無效的投票歌曲 ID：', songId);
         return alert('投票歌曲資料無效，請重新整理頁面後再試。');
       }
       const mine = voteRaw[songKey] && voteRaw[songKey][uid];
       const myVoteKeys = songs
+        .filter(song => !song.locked && !song.specialEdition)
         .map(getVoteSongKey)
         .filter(key => key && voteRaw[key] && voteRaw[key][uid]);
       const voteRoot = sharedDb.ref('votes/' + month);
@@ -3663,11 +3605,10 @@
     }
 
 
-    // ===== 更多設定彈窗 (波形、倍速、定時、循環) =====
+    // ===== 更多設定彈窗 (倍速、循環) =====
     const moreSettingsBtn = document.getElementById('moreSettingsBtn');
     const moreSettingsPanel = document.getElementById('moreSettingsPanel');
     const moreSettingsArrow = document.getElementById('moreSettingsArrow');
-    const waveToggleText = document.getElementById('waveToggleText');
 
     if (moreSettingsBtn && moreSettingsPanel) {
       moreSettingsBtn.addEventListener('click', (e) => {
