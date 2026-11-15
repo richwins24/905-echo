@@ -509,6 +509,17 @@
     .heart-bubble-auth-hint { position: relative; z-index: 4; padding: 0 1rem 1rem; text-align: center; }
     @media (max-width: 640px) { .heart-bubble-stage { min-height: 43rem; border-radius: 1.7rem; } .heart-bubble-heading { padding-top: 1.7rem; } .heart-bubble-sky { top: 12rem; } .heart-bubble { width: 6.5rem; } }
 
+    /* 心事氣泡漂流 · 收緊版面與乾淨漂浮效果 */
+    .heart-bubble-stage { min-height: 34rem; user-select: none; }
+    .heart-bubble-heading { padding-top: 1.45rem; }
+    .heart-bubble-sky { inset: 10.5rem 0 0; }
+    .heart-bubble { width: clamp(5.8rem, 12vw, 8.4rem); animation-duration: var(--float-time, 13s); }
+    .heart-bubble-text { user-select: none; }
+    .heart-bubble-stage input, .heart-bubble-stage textarea { user-select: text; }
+    .heart-bubble-action.delete { color: #fecaca; background: rgba(239,68,68,.1); border-color: rgba(248,113,113,.2); }
+    @keyframes heartBubbleRise { from { transform: translate3d(-8px, 16px, 0) rotate(-2deg); } to { transform: translate3d(10px, -42px, 0) rotate(3deg); } }
+    @media (max-width: 640px) { .heart-bubble-stage { min-height: 32rem; } .heart-bubble-heading { padding-top: 1.15rem; } .heart-bubble-sky { top: 9.5rem; } }
+
     /* ===== 版面精修：只調整視覺與響應式配置，不改動互動功能 ===== */
     :root {
       --layout-surface: rgba(15, 23, 42, 0.78);
@@ -1031,6 +1042,7 @@
         <div class="heart-bubble-reader-actions">
           <button type="button" data-bubble-reaction="warm" class="heart-bubble-action warm">💛 給個溫暖 <span>0</span></button>
           <button id="heartBubbleListenBtn" type="button" class="heart-bubble-action listen">🎧 搭配聆聽</button>
+          <button id="heartBubbleDeleteBtn" type="button" class="heart-bubble-action delete hidden">刪除這顆心事</button>
         </div>
         <p id="heartBubbleDetailHint" class="heart-bubble-reader-hint"></p>
       </div>
@@ -2993,7 +3005,9 @@
       text.textContent = bubble.text;
       panel.classList.remove('hidden');
       panel.querySelector('[data-bubble-reaction="warm"] span').textContent = heartBubbleReactionCount(bubble, 'warm');
-      panel.querySelector('[data-bubble-reaction="warm"] span').textContent = heartBubbleReactionCount(bubble, 'warm');
+      const deleteBtn = document.getElementById('heartBubbleDeleteBtn');
+      const canDelete = !!(currentUser && (currentUser.uid === bubble.uid || isAdminUser()));
+      if (deleteBtn) deleteBtn.classList.toggle('hidden', !canDelete);
       if (hint) hint.textContent = currentUser ? '送出一點微光，讓對方知道有人聽見。' : '登入後可以送出回應。';
     }
 
@@ -3006,6 +3020,18 @@
         console.error('心事回應失敗：', err);
         alert('回應未能送出，請稍後再試。');
       }
+    }
+
+    async function deleteHeartBubble() {
+      if (!currentUser || !sharedDb || !selectedHeartBubbleId) return;
+      const bubble = heartBubbleData[selectedHeartBubbleId];
+      if (!bubble || (currentUser.uid !== bubble.uid && !isAdminUser())) return alert('只有自己的心事或管理員可以刪除');
+      if (!confirm('確定要刪除這顆心事氣泡嗎？')) return;
+      try {
+        await sharedDb.ref('heartBubbles/' + selectedHeartBubbleId).remove();
+        document.getElementById('heartBubbleDetail').classList.add('hidden');
+        selectedHeartBubbleId = null;
+      } catch (err) { console.error('刪除心事失敗：', err); alert('刪除失敗，請稍後再試。'); }
     }
 
     function playHeartBubbleSong() {
@@ -3033,12 +3059,18 @@
         const text = input.value.trim().slice(0, 30);
         if (!text) return;
         try {
-          await sharedDb.ref('heartBubbles').push().set({ uid: currentUser.uid, text, createdAt: firebase.database.ServerValue.TIMESTAMP });
+          const mineSnap = await sharedDb.ref('heartBubbles').orderByChild('uid').equalTo(currentUser.uid).once('value');
+          const mine = Object.entries(mineSnap.val() || {}).sort((a, b) => (a[1].createdAt || 0) - (b[1].createdAt || 0));
+          const updates = {};
+          while (mine.length >= 10) updates['heartBubbles/' + mine.shift()[0]] = null;
+          updates['heartBubbles/' + sharedDb.ref('heartBubbles').push().key] = { uid: currentUser.uid, text, createdAt: firebase.database.ServerValue.TIMESTAMP };
+          await sharedDb.ref().update(updates);
           input.value = ''; composer.classList.add('hidden');
         } catch (err) { console.error('心事送出失敗：', err); alert('心事未能漂流，請稍後再試。'); }
       });
       document.getElementById('heartBubbleReaderClose').addEventListener('click', () => document.getElementById('heartBubbleDetail').classList.add('hidden'));
       document.getElementById('heartBubbleListenBtn').addEventListener('click', playHeartBubbleSong);
+      document.getElementById('heartBubbleDeleteBtn').addEventListener('click', deleteHeartBubble);
       section.querySelectorAll('[data-bubble-reaction]').forEach(btn => btn.addEventListener('click', () => reactToHeartBubble(btn.dataset.bubbleReaction)));
     }
 
