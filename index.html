@@ -3300,13 +3300,26 @@
       if (VOTE_ENABLED && sharedDb && voteAttachedMonth && voteAttachedMonth !== voteMonth()) attachVote();
     }, 30000);
 
+    function getVoteSongKey(song) {
+      const key = String(song && song.id != null ? song.id : '').trim();
+      return key && key !== 'undefined' && key !== 'null' ? key : '';
+    }
+
     function renderVote() {
       const box = document.getElementById('voteBox');
       if (!box) return;
+      const voteKeys = songs.map(getVoteSongKey);
+      const invalidSongs = songs.filter((song, index) => !voteKeys[index]);
+      const duplicateKeys = voteKeys.filter((key, index) => key && voteKeys.indexOf(key) !== index);
+      if (invalidSongs.length || duplicateKeys.length) {
+        console.error('投票已暫停：歌曲 ID 缺失或重複', { invalidSongs, duplicateKeys, songs });
+        box.innerHTML = '<div class="rounded-xl border border-red-500/30 bg-red-950/30 px-4 py-4 text-sm text-red-200">投票暫時停用：歌曲資料的 ID 缺失或重複，請管理員檢查 music/songs.json。</div>';
+        return;
+      }
       const uid = currentUser ? currentUser.uid : null;
-      const myVotes = uid ? songs.filter(s => voteRaw[String(s.id)] && voteRaw[String(s.id)][uid]).length : 0;
+      const myVotes = uid ? songs.filter(s => voteRaw[getVoteSongKey(s)] && voteRaw[getVoteSongKey(s)][uid]).length : 0;
       const rows = songs.map(s => {
-        const songVotes = voteRaw[String(s.id)] || {};
+        const songVotes = voteRaw[getVoteSongKey(s)] || {};
         const votes = Object.keys(songVotes).length;
         const mine = uid && songVotes[uid];
         return { s, votes, mine };
@@ -3333,7 +3346,7 @@
               <span class="min-w-0 truncate text-sm font-semibold text-slate-100" title="${esc(r.s.title)}">${esc(r.s.title)}</span>
               <div class="col-start-2 row-start-2 h-1.5 overflow-hidden rounded-full bg-slate-800 sm:col-start-auto sm:row-start-auto" aria-hidden="true"><div class="h-full rounded-full bg-gradient-to-r from-amber-500 to-yellow-200 transition-all" style="width:${barWidth}%"></div></div>
               <span class="col-start-3 row-start-1 justify-self-end whitespace-nowrap text-xs font-bold text-amber-300 sm:col-start-auto sm:row-start-auto">${r.votes} 票</span>
-              <button type="button" data-vote-song-id="${esc(String(r.s.id))}" class="login-only col-start-3 row-start-2 rounded-lg px-3 py-1.5 text-xs font-semibold transition sm:col-start-auto sm:row-start-auto ${r.mine ? 'bg-purple-600 text-white hover:bg-purple-500' : 'bg-slate-800 text-slate-200 hover:bg-purple-700'}">${r.mine ? '已支持' : '投一票'}</button>
+              <button type="button" data-vote-song-id="${esc(getVoteSongKey(r.s))}" class="login-only col-start-3 row-start-2 rounded-lg px-3 py-1.5 text-xs font-semibold transition sm:col-start-auto sm:row-start-auto ${r.mine ? 'bg-purple-600 text-white hover:bg-purple-500' : 'bg-slate-800 text-slate-200 hover:bg-purple-700'}">${r.mine ? '已支持' : '投一票'}</button>
             </div>`;
           }).join('') : '<p class="rounded-xl bg-slate-950/50 px-4 py-6 text-center text-sm text-slate-500">目前沒有可投票的歌曲。</p>'}
         </div>
@@ -3349,9 +3362,13 @@
       attachVote();
       const uid = currentUser.uid;
       const month = voteMonth();
-      const songKey = String(songId);
+      const songKey = String(songId || '').trim();
+      if (!songKey || !songs.some(song => getVoteSongKey(song) === songKey)) {
+        console.error('無效的投票歌曲 ID：', songId);
+        return alert('投票歌曲資料無效，請重新整理頁面後再試。');
+      }
       const mine = voteRaw[songKey] && voteRaw[songKey][uid];
-      const myVotes = songs.filter(s => voteRaw[String(s.id)] && voteRaw[String(s.id)][uid]).length;
+      const myVotes = songs.filter(s => voteRaw[getVoteSongKey(s)] && voteRaw[getVoteSongKey(s)][uid]).length;
       if (!mine && myVotes >= VOTE_LIMIT) return alert('本期已支持一首歌曲，若要改投，請先取消原投票。');
       const ref = sharedDb.ref('votes/' + month + '/' + songKey + '/' + uid);
       voteWriteInProgress = true;
