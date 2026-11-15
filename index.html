@@ -443,6 +443,29 @@
 
 
 
+    /* ===== 心事氣泡漂流 ===== */
+    #heartBubbleSection { display: none; }
+    body.theme-song #heartBubbleSection { display: block; }
+    .heart-bubble-shell {
+      background: radial-gradient(circle at 18% 12%, rgba(129,140,248,.18), transparent 32%), radial-gradient(circle at 86% 82%, rgba(244,114,182,.15), transparent 35%), linear-gradient(145deg, rgba(15,23,42,.94), rgba(30,27,75,.72));
+      border: 1px solid rgba(196,181,253,.18); box-shadow: 0 20px 65px rgba(15,23,42,.3);
+    }
+    #heartBubbleSky {
+      position: relative; min-height: 25rem; overflow: hidden; border-radius: 1.5rem;
+      background: radial-gradient(circle at 50% 100%, rgba(99,102,241,.2), transparent 45%), radial-gradient(circle at 20% 20%, rgba(244,114,182,.12) 0 1px, transparent 2px), radial-gradient(circle at 78% 28%, rgba(224,231,255,.18) 0 1px, transparent 2px), #080d25;
+      background-size: auto, 130px 110px, 170px 150px, auto;
+    }
+    #heartBubbleSky::after { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .55; background: radial-gradient(ellipse at center, transparent 25%, rgba(2,6,23,.38) 100%); }
+    .heart-bubble {
+      position: absolute; z-index: 2; width: clamp(6.8rem, 19vw, 10rem); aspect-ratio: 1; padding: .8rem; display: grid; place-items: center; text-align: center; cursor: pointer;
+      border: 1px solid rgba(224,231,255,.36); border-radius: 50%; color: rgba(255,255,255,.9); background: radial-gradient(circle at 32% 24%, rgba(255,255,255,.28), rgba(129,140,248,.18) 35%, rgba(244,114,182,.13) 72%, rgba(15,23,42,.24)); box-shadow: inset 0 0 18px rgba(255,255,255,.08), 0 0 24px rgba(129,140,248,.16); backdrop-filter: blur(5px); transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+      animation: heartBubbleFloat var(--float-time, 9s) ease-in-out var(--float-delay, 0s) infinite alternate;
+    }
+    .heart-bubble:hover, .heart-bubble:focus-visible { z-index: 5; transform: scale(1.08); border-color: rgba(251,207,232,.8); box-shadow: 0 0 32px rgba(244,114,182,.32), inset 0 0 18px rgba(255,255,255,.12); outline: none; }
+    .heart-bubble-text { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 4; font-size: .72rem; line-height: 1.55; text-shadow: 0 1px 10px rgba(2,6,23,.8); }
+    @keyframes heartBubbleFloat { from { transform: translate3d(-5px, 5px, 0) rotate(-2deg); } to { transform: translate3d(8px, -13px, 0) rotate(3deg); } }
+    @media (prefers-reduced-motion: reduce) { .heart-bubble { animation: none; } }
+
     /* ===== 版面精修：只調整視覺與響應式配置，不改動互動功能 ===== */
     :root {
       --layout-surface: rgba(15, 23, 42, 0.78);
@@ -940,6 +963,35 @@
         </div>
       </div>
     </details>
+  </section>
+
+  <!-- 心事氣泡漂流：只在心事主題顯示 -->
+  <section id="heartBubbleSection" class="max-w-7xl mx-auto px-4 pt-5" aria-label="心事氣泡漂流">
+    <div class="heart-bubble-shell rounded-[2rem] p-4 md:p-6">
+      <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="text-[10px] font-bold tracking-[.28em] text-pink-200/70">A QUIET PLACE TO BE HEARD</p>
+          <h2 class="mt-1 text-2xl font-black text-white md:text-3xl">🫧 心事氣泡漂流</h2>
+          <p class="mt-2 max-w-2xl text-sm leading-7 text-indigo-100/75">寫下一句最近的心情，讓它乘著微光漂流。點開別人的氣泡，也許你會發現：其實我們都在努力著。</p>
+        </div>
+        <span id="heartBubbleCount" class="shrink-0 rounded-full border border-pink-200/15 bg-white/5 px-3 py-1.5 text-xs text-pink-100/75">漂流中 0 顆心事</span>
+      </div>
+      <form id="heartBubbleForm" class="mb-4 flex flex-col gap-2 sm:flex-row">
+        <input id="heartBubbleInput" maxlength="80" autocomplete="off" class="input flex-1 border-indigo-200/15 bg-slate-950/45" placeholder="寫下一句最近的心情（最多 80 字）" aria-label="輸入最近的心情">
+        <button id="heartBubbleSend" type="submit" class="rounded-xl bg-indigo-500/80 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-pink-500/80">讓心事漂流</button>
+      </form>
+      <p id="heartBubbleAuthHint" class="mb-4 text-xs text-pink-100/65">登入後才能送出心事；送出後只會顯示為「905 同學」。</p>
+      <div id="heartBubbleSky" aria-live="polite"><p id="heartBubbleEmpty" class="absolute inset-0 z-[1] grid place-items-center px-6 text-center text-sm text-indigo-100/55">還沒有漂流中的心事，寫下第一句吧。</p></div>
+      <div id="heartBubbleDetail" class="mt-4 hidden rounded-2xl border border-white/10 bg-slate-950/35 p-4">
+        <p class="text-[10px] font-bold tracking-[.2em] text-pink-200/65">漂流到你身邊的心事</p>
+        <p id="heartBubbleDetailText" class="mt-2 text-sm leading-7 text-white"></p>
+        <div class="mt-3 flex flex-wrap items-center gap-2">
+          <button type="button" data-bubble-reaction="understand" class="heart-bubble-reaction rounded-full border border-indigo-200/20 bg-indigo-400/10 px-3 py-1.5 text-xs font-semibold text-indigo-100 hover:bg-indigo-400/25">我懂 <span>0</span></button>
+          <button type="button" data-bubble-reaction="陪你一下" class="heart-bubble-reaction rounded-full border border-pink-200/20 bg-pink-400/10 px-3 py-1.5 text-xs font-semibold text-pink-100 hover:bg-pink-400/25">陪你一下 <span>0</span></button>
+          <span id="heartBubbleDetailHint" class="text-[11px] text-slate-400"></span>
+        </div>
+      </div>
+    </div>
   </section>
 
   <main class="max-w-7xl mx-auto px-4 py-6">
@@ -2841,6 +2893,86 @@
       console.warn('登入功能未連線：', e);
     }
 
+    // ===== 心事氣泡漂流 =====
+    let heartBubbleRef = null;
+    let heartBubbleData = {};
+    let selectedHeartBubbleId = null;
+
+    function heartBubbleReactionCount(bubble, type) {
+      return Object.keys((bubble && bubble.reactions && bubble.reactions[type]) || {}).length;
+    }
+
+    function renderHeartBubbles() {
+      const sky = document.getElementById('heartBubbleSky');
+      const empty = document.getElementById('heartBubbleEmpty');
+      const count = document.getElementById('heartBubbleCount');
+      if (!sky) return;
+      sky.querySelectorAll('.heart-bubble').forEach(el => el.remove());
+      const entries = Object.entries(heartBubbleData).slice(-60);
+      if (empty) empty.classList.toggle('hidden', entries.length > 0);
+      if (count) count.textContent = `漂流中 ${entries.length} 顆心事`;
+      entries.forEach(([id, bubble], index) => {
+        if (!bubble || !bubble.text) return;
+        const node = document.createElement('button');
+        node.type = 'button'; node.className = 'heart-bubble'; node.dataset.bubbleId = id;
+        node.style.left = `${8 + ((index * 37) % 82)}%`;
+        node.style.top = `${8 + ((index * 53) % 76)}%`;
+        node.style.setProperty('--float-time', `${7 + (index % 5)}s`);
+        node.style.setProperty('--float-delay', `${-(index % 6) * 1.1}s`);
+        node.innerHTML = `<span class="heart-bubble-text">${esc(bubble.text)}</span>`;
+        node.title = '點擊閱讀這句心事';
+        node.addEventListener('click', () => openHeartBubble(id));
+        sky.appendChild(node);
+      });
+    }
+
+    function openHeartBubble(id) {
+      const bubble = heartBubbleData[id];
+      if (!bubble) return;
+      selectedHeartBubbleId = id;
+      const panel = document.getElementById('heartBubbleDetail');
+      const text = document.getElementById('heartBubbleDetailText');
+      const hint = document.getElementById('heartBubbleDetailHint');
+      if (!panel || !text) return;
+      text.textContent = bubble.text;
+      panel.classList.remove('hidden');
+      panel.querySelector('[data-bubble-reaction="understand"] span').textContent = heartBubbleReactionCount(bubble, 'understand');
+      panel.querySelector('[data-bubble-reaction="陪你一下"] span').textContent = heartBubbleReactionCount(bubble, '陪你一下');
+      if (hint) hint.textContent = currentUser ? '送出一點微光，讓對方知道有人聽見。' : '登入後可以送出回應。';
+    }
+
+    async function reactToHeartBubble(type) {
+      if (!currentUser || !sharedDb) return alert('請先登入，才能送出回應');
+      if (!selectedHeartBubbleId) return;
+      try {
+        await sharedDb.ref(`heartBubbles/${selectedHeartBubbleId}/reactions/${type}/${currentUser.uid}`).set(true);
+      } catch (err) {
+        console.error('心事回應失敗：', err);
+        alert('回應未能送出，請稍後再試。');
+      }
+    }
+
+    function attachHeartBubbles() {
+      const section = document.getElementById('heartBubbleSection');
+      if (!section || !sharedDb) return;
+      if (!heartBubbleRef) {
+        heartBubbleRef = sharedDb.ref('heartBubbles').limitToLast(60);
+        heartBubbleRef.on('value', snap => { heartBubbleData = snap.val() || {}; renderHeartBubbles(); if (selectedHeartBubbleId) openHeartBubble(selectedHeartBubbleId); });
+      }
+      document.getElementById('heartBubbleForm').addEventListener('submit', async e => {
+        e.preventDefault();
+        if (!currentUser || !sharedDb) return alert('請先按右上角「Google 登入」');
+        const input = document.getElementById('heartBubbleInput');
+        const text = input.value.trim().slice(0, 80);
+        if (!text) return;
+        try {
+          await sharedDb.ref('heartBubbles').push().set({ uid: currentUser.uid, text, createdAt: firebase.database.ServerValue.TIMESTAMP });
+          input.value = '';
+        } catch (err) { console.error('心事送出失敗：', err); alert('心事未能漂流，請稍後再試。'); }
+      }, { once: true });
+      section.querySelectorAll('[data-bubble-reaction]').forEach(btn => btn.addEventListener('click', () => reactToHeartBubble(btn.dataset.bubbleReaction)));
+    }
+
     async function doGoogleLogin() {
       if (!authRef) return alert('登入功能尚未設定');
       try {
@@ -2861,6 +2993,8 @@
         renderSongs(getFilteredSongs());
       });
     }
+
+    attachHeartBubbles();
 
     document.getElementById('loginBtn').addEventListener('click', () => {
       if (!loginOpen && !isAdmin) {
