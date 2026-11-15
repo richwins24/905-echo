@@ -37,13 +37,6 @@
     .lyric-line { color: var(--todo); opacity: .58; cursor: pointer; transition: color .85s cubic-bezier(.22,1,.36,1), opacity .85s ease, transform .85s cubic-bezier(.22,1,.36,1), text-shadow .85s ease; }
     .lyric-line.on { color: #ffffff; opacity: 1; transform: scale(1.025); transform-origin: center; font-weight: 700; }
     #lyricsBox.fx-glow .lyric-line.on { text-shadow: 0 0 5px var(--played), 0 0 10px var(--played); }
-    #lyricsBox.fx-pop .lyric-line.on { transform: scale(1.03) translateY(-1px); }
-    #lyricsBox.fx-wave .lyric-line.on { animation: lyricWave 2.4s ease-in-out infinite; }
-    @keyframes lyricWave { 0%, 100% { transform: scale(1.025) translateY(0); } 50% { transform: scale(1.025) translateY(-1.5px); } }
-    @keyframes lyricNeon { 0%, 100% { text-shadow: 0 0 5px var(--played), 0 0 10px var(--played); opacity: 1; } 50% { text-shadow: 0 0 8px var(--played), 0 0 16px var(--played); opacity: 1; } }
-    @keyframes lyricZoom { from { transform: scale(.96) translateY(2px); opacity: .65; } to { transform: scale(1.025) translateY(0); opacity: 1; } }
-    #lyricsBox.fx-neon .lyric-line.on { animation: lyricNeon 2s linear infinite; }
-    #lyricsBox.fx-zoom .lyric-line.on { animation: lyricZoom .6s ease-out both; }
 
     /* ===== Apple Music 風格動態流動光暈全螢幕 KTV ===== */
     #ktvModal {
@@ -1116,7 +1109,7 @@
         <h2 class="font-bold text-amber-300"><i class="fa-solid fa-unlock"></i> 管理模式</h2>
         <div class="flex items-center gap-4">
           <button id="adminReportBtn" class="text-sm px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200">報表</button>
-          <button id="resetAllBtn" class="text-sm px-4 py-2 rounded-lg bg-amber-900/60 hover:bg-amber-800 text-amber-200">清除全部紀錄</button>
+          <button id="resetAllBtn" class="text-sm px-4 py-2 rounded-lg bg-amber-900/60 hover:bg-amber-800 text-amber-200">清除累積播放／按讚</button>
           <button id="lockBtn" class="text-xs text-slate-400 hover:text-white">鎖定</button>
         </div>
       </div>
@@ -1332,10 +1325,6 @@
             <select id="lyricFx" class="bg-slate-800 border border-slate-700 rounded px-1 py-0.5 text-[11px] text-slate-200">
               <option value="none">無特效</option>
               <option value="glow">發光</option>
-              <option value="pop">跳動</option>
-              <option value="wave">波浪</option>
-              <option value="neon">霓虹閃爍</option>
-              <option value="zoom">放大淡入</option>
             </select>
           </div>
         </div>
@@ -1956,20 +1945,49 @@
       bumpActivity();
     };
 
-    window.resetStats = function (id) {
+    function statsResetErrorMessage(error) {
+      const detail = [error && error.code, error && error.message].filter(Boolean).join(' ');
+      if (/PERMISSION_DENIED|permission-denied/i.test(detail)) {
+        return 'Firebase Rules 拒絕清除。請確認已使用已驗證的管理員 Google 帳號登入，且 stats 規則允許管理員寫入。';
+      }
+      return `雲端清除失敗：${(error && error.message) || '請檢查網路或 Firebase 連線後再試。'}`;
+    }
+
+    window.resetStats = async function (id) {
       const s = songs.find(x => x.id === id);
-      if (!s || !confirm(`確定清除「${s.title}」的播放與讚數紀錄？`)) return;
-      stats[id] = { plays: 0, likes: 0 };
-      remoteReset(id);
-      save();
-      refreshAll();
+      if (!s) return;
+      if (!sharedDb) return alert('Firebase 資料庫未連線，無法清除雲端統計。');
+      if (!isAdminUser()) return alert('清除雲端統計需使用已驗證的管理員 Google 帳號登入；管理解鎖碼本身沒有雲端寫入權限。');
+      if (!confirm(`確定清除「${s.title}」的累積播放與按讚數？`)) return;
+      try {
+        await remoteReset(id);
+        stats[id] = { plays: 0, likes: 0 };
+        save();
+        refreshAll();
+      } catch (error) {
+        console.error('清除歌曲統計失敗：', error);
+        alert(statsResetErrorMessage(error));
+      }
     };
 
-    function resetAllStats() {
-      if (!confirm("確定清除「所有歌曲」的播放與讚數紀錄？此動作無法復原。")) return;
-      songs.forEach(s => { stats[s.id] = { plays: 0, likes: 0 }; remoteReset(s.id); });
+    async function resetAllStats() {
+      if (!sharedDb) return alert('Firebase 資料庫未連線，無法清除雲端統計。');
+      if (!isAdminUser()) return alert('清除雲端統計需使用已驗證的管理員 Google 帳號登入；管理解鎖碼本身沒有雲端寫入權限。');
+      if (!songs.length) return alert('目前沒有可清除的歌曲統計。');
+      if (!confirm('確定清除所有歌曲的累積播放與按讚數？本週熱門及每日報表統計不會清除。此動作無法復原。')) return;
+
+      const results = await Promise.allSettled(songs.map(song => remoteReset(song.id)));
+      const failed = results.filter(result => result.status === 'rejected');
+      if (failed.length) {
+        console.error('部分歌曲統計清除失敗：', failed.map(result => result.reason));
+        refreshAll();
+        return alert(`有 ${failed.length} 首歌曲未能清除；已完成的項目已更新。${statsResetErrorMessage(failed[0].reason)}`);
+      }
+
+      songs.forEach(song => { stats[song.id] = { plays: 0, likes: 0 }; });
       save();
       refreshAll();
+      alert('所有歌曲的累積播放與按讚數已清除。');
     }
 
     function playAt(offset) {
@@ -2244,7 +2262,7 @@
     }
     function applyLyricStyle() {
       const st = getLyricStyle();
-      const played = '#ffffff', todo = '#64748b', fx = st.fx || 'none';
+      const played = '#ffffff', todo = '#64748b', fx = st.fx === 'glow' ? 'glow' : 'none';
       const box = document.getElementById('lyricsBox');
       box.style.setProperty('--played', played);
       box.style.setProperty('--todo', todo);
@@ -2965,10 +2983,13 @@
       sharedDb.ref('daily/' + todayKey() + '/' + field).transaction(n => (n || 0) + 1);
     }
 
-    function remoteReset(id) {
-      if (!sharedDb) return;
-      sharedDb.ref('stats/' + id + '/plays').set(0);
-      sharedDb.ref('stats/' + id + '/likes').set(0);
+    async function remoteReset(id) {
+      if (!sharedDb) throw new Error('Firebase 資料庫未連線');
+      if (!isAdminUser()) throw new Error('需要已驗證的管理員 Google 帳號');
+      await Promise.all([
+        sharedDb.ref('stats/' + id + '/plays').set(0),
+        sharedDb.ref('stats/' + id + '/likes').set(0)
+      ]);
     }
 
     function attachUserData() {
