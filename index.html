@@ -642,6 +642,69 @@
       body.theme-song .heart-compact-meta { font-size: .58rem; }
     }
 
+    /* ===== 畢業旅行：獨立主題與專屬體驗，不覆寫既有主題 ===== */
+    body.theme-travel {
+      --primary-color: #f0a85c; --primary-hover: #dd8741; --primary-border: #f0a85c; --primary-text: #ffd49a;
+      --primary-gradient: linear-gradient(135deg, rgba(120, 70, 57, .78), rgba(15, 23, 42, .94));
+      --bg-radial: radial-gradient(circle at 50% 0%, rgba(240, 168, 92, .19) 0%, rgba(15, 23, 42, 0) 70%);
+      --aura-color-1: radial-gradient(circle, #f0a85c 0%, #2dd4bf 70%, transparent 100%);
+      --aura-color-2: radial-gradient(circle, #fb7185 0%, #fbbf24 70%, transparent 100%);
+    }
+    #tripExperienceSection { display: none; }
+    body.theme-travel #tripExperienceSection { display: block; }
+    body.theme-travel .trip-hero {
+      isolation: isolate; border-color: rgba(253, 186, 116, .30);
+      background: radial-gradient(ellipse at 82% 10%, rgba(251,191,36,.2), transparent 35%),
+        radial-gradient(ellipse at 10% 100%, rgba(45,212,191,.19), transparent 42%),
+        linear-gradient(125deg, rgba(69,38,45,.96), rgba(30,41,59,.94) 54%, rgba(15,69,73,.86));
+      box-shadow: 0 24px 70px rgba(2,6,23,.34), inset 0 1px rgba(255,255,255,.08);
+    }
+    .trip-sun { position:absolute; z-index:0; width:15rem; height:15rem; right:8%; top:8%; border-radius:50%; background:radial-gradient(circle,rgba(253,230,138,.4),rgba(251,146,60,.1) 48%,transparent 72%); filter:blur(8px); pointer-events:none; }
+    .trip-route-art { position:absolute; z-index:0; inset:0; overflow:hidden; opacity:.38; pointer-events:none; }
+    .trip-route-art::before { content:''; position:absolute; width:62%; height:75%; right:-8%; top:14%; border:1px dashed rgba(254,215,170,.34); border-left-color:transparent; border-radius:50%; transform:rotate(-18deg); }
+    .trip-route-art span { position:absolute; width:8px; height:8px; border-radius:50%; background:#fde68a; box-shadow:0 0 0 5px rgba(253,230,138,.1),0 0 15px rgba(253,230,138,.55); }
+    .trip-route-art span:nth-child(1){right:49%;top:28%}.trip-route-art span:nth-child(2){right:36%;top:57%}.trip-route-art span:nth-child(3){right:18%;top:38%}.trip-route-art span:nth-child(4){right:12%;top:72%}
+    .trip-kicker,.trip-kicker-small { color:#fed7aa; font-size:.64rem; font-weight:900; letter-spacing:.2em; }
+    .trip-title-accent { color:#fcd38d; }
+    .trip-chip { border:1px solid rgba(255,255,255,.16); border-radius:999px; padding:.45rem .7rem; color:#ffedd5; background:rgba(15,23,42,.32); }
+    .trip-postcard { overflow:hidden; border:1px solid rgba(255,255,255,.55); border-radius:1.1rem; background:#fff8e9; box-shadow:0 18px 48px rgba(2,6,23,.3); }
+    .trip-postcard-scene { position:absolute; inset:0; overflow:hidden; background:linear-gradient(180deg,#78b9c5 0%,#f8c27a 49%,#e88d65 75%,#285f68 100%); }
+    .trip-postcard-sun { position:absolute; width:4.5rem; height:4.5rem; right:18%; top:15%; border-radius:50%; background:#fff0b5; box-shadow:0 0 48px rgba(255,241,179,.75); }
+    .trip-sea { position:absolute; inset:54% 0 0; background:linear-gradient(180deg,rgba(32,117,127,.45),#17616c 52%,#154b59); }
+    .trip-hill { position:absolute; bottom:27%; width:75%; height:38%; border-radius:55% 50% 0 0; background:#347b70; }
+    .trip-hill-one { left:-15%; transform:rotate(-9deg); }.trip-hill-two { right:-24%; bottom:23%; background:#245d65; transform:rotate(10deg); }
+    .trip-road { position:absolute; width:115%; height:22%; left:-8%; bottom:13%; border-top:2px dashed rgba(255,240,200,.72); border-radius:50%; transform:rotate(-7deg); }
+    .trip-postcard-caption { position:relative; z-index:2; border-top:1px solid rgba(91,62,44,.15); padding:.6rem .75rem .15rem; color:#6b5142; font-size:.65rem; font-weight:800; letter-spacing:.08em; }
+    .trip-stop { display:flex; align-items:center; gap:.55rem; color:#ffedd5; }.trip-stop span { display:grid; width:1.65rem; height:1.65rem; flex:0 0 auto; place-items:center; border:1px solid rgba(253,186,116,.35); border-radius:50%; color:#fcd38d; font-size:.58rem; font-weight:900; }.trip-stop b { font-size:.68rem; }
+    .trip-panel { border-color:rgba(253,186,116,.2); background:linear-gradient(145deg,rgba(15,23,42,.9),rgba(30,41,59,.82)); box-shadow:0 18px 48px rgba(2,6,23,.2); }
+    .trip-game-mark { display:grid; width:2.8rem; height:2.8rem; place-items:center; border:1px solid rgba(253,186,116,.25); border-radius:1rem; color:#fcd38d; background:rgba(251,191,36,.08); font-size:1.1rem; }
+    .trip-stat { border:1px solid rgba(148,163,184,.16); border-radius:999px; padding:.35rem .65rem; color:#cbd5e1; background:rgba(2,6,23,.32); }.trip-stat b { margin-left:.2rem; color:#fcd38d; }
+    .trip-memory-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.5rem; }
+    .trip-memory-card { position:relative; display:flex; min-height:5.2rem; flex-direction:column; align-items:center; justify-content:center; gap:.2rem; overflow:hidden; border:1px solid rgba(253,186,116,.22); border-radius:1rem; color:#f8fafc; background:linear-gradient(145deg,rgba(51,65,85,.78),rgba(15,23,42,.9)); transition:transform .18s ease,border-color .18s ease,background .18s ease; }
+    .trip-memory-card:not(:disabled):hover { transform:translateY(-2px); border-color:rgba(253,186,116,.65); }
+    .trip-memory-card:disabled { cursor:default; }
+    .trip-memory-card .trip-card-front { color:#fcd38d; font-size:1.2rem; }.trip-memory-card .trip-card-back { display:none; text-align:center; }.trip-memory-card.is-flipped .trip-card-front,.trip-memory-card.is-matched .trip-card-front { display:none; }.trip-memory-card.is-flipped .trip-card-back,.trip-memory-card.is-matched .trip-card-back { display:block; }.trip-memory-card.is-matched { border-color:rgba(45,212,191,.55); background:linear-gradient(145deg,rgba(13,92,86,.45),rgba(15,23,42,.9)); color:#ccfbf1; }
+    .trip-card-icon { display:block; font-size:1.15rem; }.trip-card-label { display:block; font-size:.63rem; font-weight:800; line-height:1.25; }
+    .trip-primary-btn,.trip-secondary-btn { min-height:2.5rem; border-radius:.8rem; padding:.55rem .9rem; font-size:.75rem; font-weight:800; transition:transform .18s ease,background .18s ease; }.trip-primary-btn { color:#422006; background:linear-gradient(120deg,#fcd38d,#f59e0b); box-shadow:0 7px 18px rgba(245,158,11,.17); }.trip-secondary-btn { border:1px solid rgba(148,163,184,.2); color:#e2e8f0; background:rgba(30,41,59,.8); }.trip-primary-btn:hover,.trip-secondary-btn:hover { transform:translateY(-1px); }
+    .trip-lyrics summary::-webkit-details-marker { display:none; }.trip-lyrics summary::marker { content:''; }.trip-lyrics-toggle { display:grid; width:2.3rem; height:2.3rem; flex:0 0 auto; place-items:center; border:1px solid rgba(253,186,116,.24); border-radius:50%; color:#fcd38d; background:rgba(251,191,36,.08); transition:transform .2s ease; }.trip-lyrics[open] .trip-lyrics-toggle { transform:rotate(180deg); }.trip-lyrics-body { max-height:34rem; overflow-y:auto; padding-right:.5rem; }.trip-lyrics-body h4 { margin-bottom:.5rem; color:#fcd38d; font-size:.76rem; font-weight:900; letter-spacing:.04em; }.trip-lyrics-body p + p { margin-top:.65rem; }.trip-lyrics-body section { border-left:2px solid rgba(253,186,116,.24); padding-left:.85rem; }
+    @media (max-width:480px) { .trip-memory-grid { gap:.35rem; }.trip-memory-card { min-height:4.5rem; border-radius:.75rem; }.trip-card-icon { font-size:1rem; }.trip-card-label { font-size:.55rem; }.trip-stop b { font-size:.61rem; }.trip-hero { padding:1rem; } }
+
+    /* 只有畢業旅行主題的全螢幕 KTV 使用新底部播放器；舊主題播放器不變 */
+    #travelKtvControlBar { display:none; }
+    body.theme-travel #ktvControlBar { display:none !important; }
+    body.theme-travel #travelKtvControlBar { display:grid; }
+    body.theme-travel #ktvControlBar { margin-bottom:1rem !important; }
+    body.theme-travel #ktvLyricsBox { max-width:56rem; }
+    .travel-ktv-player { position:relative; z-index:30; width:100%; max-width:58rem; flex-shrink:0; grid-template-columns:minmax(0,1fr) minmax(15rem,1.35fr) auto; align-items:center; gap:1rem; margin:0 auto max(1.5rem,calc(env(safe-area-inset-bottom,0px) + 1.25rem)); padding:.85rem 1.1rem; border:1px solid rgba(253,186,116,.3); border-radius:1.4rem; color:#e2e8f0; background:linear-gradient(120deg,rgba(69,38,45,.92),rgba(15,23,42,.96) 54%,rgba(15,69,73,.84)); box-shadow:0 18px 55px rgba(0,0,0,.4),inset 0 1px rgba(255,255,255,.07); backdrop-filter:blur(22px); }
+    .travel-ktv-now { display:flex; min-width:0; align-items:center; gap:.65rem; }.travel-ktv-disc { display:grid; width:2.6rem; height:2.6rem; flex:0 0 auto; place-items:center; border:1px solid rgba(253,186,116,.32); border-radius:50%; color:#fcd38d; background:repeating-radial-gradient(circle,#263447 0 2px,#142235 3px 5px); box-shadow:0 0 18px rgba(245,158,11,.12); }.travel-ktv-overline { display:block; color:#fdba74; font-size:.52rem; font-weight:900; letter-spacing:.15em; }.travel-ktv-now p { margin-top:.2rem; font-size:.76rem; }
+    .travel-ktv-center { min-width:0; }.travel-ktv-actions { display:flex; align-items:center; justify-content:center; gap:.75rem; }.travel-ktv-actions button,.travel-ktv-volume button { display:inline-flex; min-width:2rem; min-height:2rem; align-items:center; justify-content:center; gap:.22rem; color:#e2e8f0; background:transparent; }.travel-ktv-actions button:hover,.travel-ktv-volume button:hover { color:#fcd38d; }.travel-ktv-actions button span { font-size:.55rem; }.travel-ktv-actions .travel-ktv-play { width:2.65rem; height:2.65rem; border-radius:50%; color:#422006; background:linear-gradient(135deg,#fcd38d,#f59e0b); box-shadow:0 7px 22px rgba(245,158,11,.24); }
+    .travel-ktv-progress { display:flex; align-items:center; gap:.5rem; margin-top:.45rem; color:#cbd5e1; font: .62rem ui-monospace,SFMono-Regular,monospace; }.travel-ktv-progress input,.travel-ktv-volume input { min-width:0; accent-color:#fbbf24; cursor:pointer; }.travel-ktv-progress input { flex:1; }.travel-ktv-volume { display:flex; align-items:center; gap:.45rem; }.travel-ktv-volume input { width:4.5rem; }
+    @media (min-width:640px) { .travel-ktv-player { margin-bottom:max(2.5rem,calc(env(safe-area-inset-bottom,0px) + 2rem)); padding:1rem 1.25rem; } }
+    @media (min-width:1024px) { .travel-ktv-player { margin-bottom:3.5rem; } }
+    @media (max-width:700px) { .travel-ktv-player { grid-template-columns:minmax(0,1fr) auto; gap:.55rem .8rem; padding:.7rem .8rem; }.travel-ktv-center { grid-column:1 / -1; grid-row:2; }.travel-ktv-now { grid-column:1; grid-row:1; }.travel-ktv-volume { grid-column:2; grid-row:1; }.travel-ktv-volume input { width:3.6rem; }.travel-ktv-actions { gap:.55rem; }.travel-ktv-player { margin-bottom:max(1.2rem,calc(env(safe-area-inset-bottom,0px) + .8rem)); } }
+    @media (prefers-reduced-motion:reduce) { .trip-memory-card,.trip-primary-btn,.trip-secondary-btn,.trip-lyrics-toggle { transition:none; } }
+
+
   </style>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-database-compat.js"></script>
@@ -724,6 +787,16 @@
                   </div>
                 </div>
                 <i class="fa-solid fa-check text-indigo-300 text-xs check-icon hidden" id="check-song"></i>
+              </div>
+              <div onclick="applyPresetTheme('travel')" id="themeBtn-travel" class="flex items-center justify-between p-2 rounded-xl cursor-pointer hover:bg-slate-800 transition">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-3.5 h-3.5 rounded-full bg-amber-300 shadow-sm shadow-amber-300/50"></span>
+                  <div>
+                    <p class="font-bold text-white text-xs">畢業旅行</p>
+                    <p class="text-[10px] text-slate-400">把沿途風景與 905 回憶收藏起來</p>
+                  </div>
+                </div>
+                <i class="fa-solid fa-check text-amber-200 text-xs check-icon hidden" id="check-travel"></i>
               </div>
             </div>
             <!-- 自訂義主題色區塊 -->
@@ -915,6 +988,71 @@
         </div>
       </div>
     </details>
+  </section>
+
+  <!-- 畢業旅行主題限定：旅程回憶、歌詞與配對小遊戲；其他主題不顯示 -->
+  <section id="tripExperienceSection" class="max-w-7xl mx-auto px-4 pt-5" aria-label="畢業旅行回憶">
+    <div class="trip-hero relative overflow-hidden rounded-[2rem] border p-5 sm:p-7 md:p-10">
+      <div class="trip-sun" aria-hidden="true"></div>
+      <div class="trip-route-art" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <div class="relative z-10 grid gap-7 md:grid-cols-[1.2fr_.8fr] md:items-center">
+        <div>
+          <p class="trip-kicker"><i class="fa-solid fa-route mr-2"></i>905 CLASS TRIP · OUR MEMORY POSTCARD</p>
+          <h2 class="mt-3 text-3xl font-black leading-tight text-white sm:text-4xl md:text-5xl">畢業旅行<br><span class="trip-title-accent">沿途有你，風景都珍貴</span></h2>
+          <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-200 sm:text-base">從井仔腳的陽光，到高雄港邊的海風；把一起出發、一起大笑、一起不想說再見的日子，收進 905 的旅行明信片。</p>
+          <div class="mt-5 flex flex-wrap gap-2 text-xs font-semibold">
+            <span class="trip-chip"><i class="fa-solid fa-sun mr-1.5"></i>井仔腳</span>
+            <span class="trip-chip"><i class="fa-solid fa-water mr-1.5"></i>旗津・壽山</span>
+            <span class="trip-chip"><i class="fa-solid fa-train mr-1.5"></i>哈瑪星</span>
+            <span class="trip-chip"><i class="fa-solid fa-heart mr-1.5"></i>愛河・安平</span>
+          </div>
+        </div>
+        <div class="trip-postcard relative mx-auto w-full max-w-sm rotate-1 p-3 sm:p-4">
+          <div class="trip-postcard-scene" aria-hidden="true"><span class="trip-postcard-sun"></span><span class="trip-sea"></span><span class="trip-hill trip-hill-one"></span><span class="trip-hill trip-hill-two"></span><span class="trip-road"></span></div>
+          <div class="relative z-10 flex min-h-32 flex-col justify-between p-3 sm:min-h-40">
+            <span class="self-start rounded-full bg-slate-950/35 px-3 py-1 text-[10px] font-bold tracking-[.18em] text-white">SOUTHERN TAIWAN · 905</span>
+            <div><p class="text-xl font-black text-white sm:text-2xl">沿途有你</p><p class="mt-1 text-xs text-white/80">最好的風景，是有你們在。</p></div>
+          </div>
+          <div class="trip-postcard-caption">一張寫給 905 的旅行明信片</div>
+        </div>
+      </div>
+      <div class="relative z-10 mt-7 grid grid-cols-2 gap-2 border-t border-white/15 pt-4 text-xs sm:grid-cols-4 sm:gap-3">
+        <div class="trip-stop"><span>01</span><b>井仔腳・出發的陽光</b></div>
+        <div class="trip-stop"><span>02</span><b>旗津・吹過臉龐的海風</b></div>
+        <div class="trip-stop"><span>03</span><b>哈瑪星・一起走過的鐵道</b></div>
+        <div class="trip-stop"><span>04</span><b>安平・回憶停靠的地方</b></div>
+      </div>
+    </div>
+
+    <div class="mt-5 grid gap-5 lg:grid-cols-[.9fr_1.1fr]">
+      <section class="trip-panel rounded-3xl border p-4 sm:p-6" aria-labelledby="tripGameTitle">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div><p class="trip-kicker-small">905 MEMORY GAME</p><h3 id="tripGameTitle" class="mt-1 text-xl font-black text-white">翻開旅行明信片</h3><p class="mt-1 text-xs leading-5 text-slate-400">找出相同的景點配對，看看你記得多少趟旅程。</p></div>
+          <span class="trip-game-mark" aria-hidden="true"><i class="fa-solid fa-images"></i></span>
+        </div>
+        <div class="mt-4 flex flex-wrap items-center gap-2 text-xs">
+          <span class="trip-stat">配對 <b id="tripMoves">0</b></span>
+          <span class="trip-stat">時間 <b id="tripTimer">0:00</b></span>
+          <span class="trip-stat">最佳 <b id="tripBest">—</b></span>
+        </div>
+        <div id="tripMemoryGrid" class="trip-memory-grid mt-4" aria-label="旅行景點配對卡片"></div>
+        <div class="mt-4 flex flex-wrap items-center gap-3">
+          <button id="tripGameStartBtn" type="button" class="trip-primary-btn"><i class="fa-solid fa-play mr-1.5"></i>開始旅行</button>
+          <button id="tripGameResetBtn" type="button" class="trip-secondary-btn">重新洗牌</button>
+          <p id="tripGameStatus" class="min-h-5 text-xs text-slate-300" role="status" aria-live="polite">翻開兩張明信片，找出相同的景點。</p>
+        </div>
+      </section>
+
+      <section class="trip-panel trip-lyrics rounded-3xl border p-4 sm:p-6" aria-labelledby="tripSongIntroTitle">
+        <p class="trip-kicker-small">OUR TRIP SONG</p>
+        <h3 id="tripSongIntroTitle" class="mt-1 text-xl font-black text-white">這首歌介紹</h3>
+        <div class="trip-lyrics-body mt-4 space-y-4 border-t border-white/10 pt-4 text-sm leading-8 text-slate-200">
+          <p>這是一首寫給 905 畢業旅行與青春同行的歌。從清晨帶著行李出發，到井仔腳的陽光、高雄街道的笑聲，以及壽山與海邊的風景，歌曲記下了我們一起走過的旅程。</p>
+          <p>旗津的海風、義大的摩天輪、哈瑪星的鐵道、愛河的夜色，還有台江與安平留下的足跡，都是旅途中值得珍藏的畫面。晚會裡熟悉的歌聲和不想說再見的心情，也讓這段回憶更加難忘。</p>
+          <p>歌裡唱著感謝與不捨：謝謝彼此陪伴走過這一段，讓平凡的日子有了不一樣的答案。旅程會有結束的時候，未來大家也許走向不同方向，但一起看過的風景、分享過的歡笑，會一直留在心上。願每個人都帶著這份回憶，勇敢走向自己的下一段旅程。</p>
+        </div>
+      </section>
+    </div>
   </section>
 
   <main class="max-w-7xl mx-auto px-4 py-6">
@@ -1311,6 +1449,21 @@
           <input type="range" id="ktvVolumeBar" min="0" max="1" step="0.05" value="0.8" class="w-20 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500">
         </div>
       </div>
+    </div>
+    <!-- 畢業旅行主題專用 KTV 播放器；其他主題仍使用原播放器 -->
+    <div id="travelKtvControlBar" class="travel-ktv-player" aria-label="畢業旅行 KTV 播放器">
+      <div class="travel-ktv-now"><span class="travel-ktv-disc"><i class="fa-solid fa-compact-disc"></i></span><div class="min-w-0"><span class="travel-ktv-overline">NOW PLAYING · 905 ROAD SONG</span><p id="travelKtvNowPlaying" class="truncate font-bold text-white">尚未播放歌曲</p></div></div>
+      <div class="travel-ktv-center">
+        <div class="travel-ktv-actions">
+          <button id="travelKtvPrevBtn" type="button" title="上一首" aria-label="上一首"><i class="fa-solid fa-backward-step"></i></button>
+          <button id="travelKtvRewindBtn" type="button" title="倒退 5 秒" aria-label="倒退 5 秒"><i class="fa-solid fa-rotate-left"></i><span>5</span></button>
+          <button id="travelKtvPlayBtn" type="button" class="travel-ktv-play" title="播放／暫停" aria-label="播放或暫停"><i id="travelKtvPlayIcon" class="fa-solid fa-play"></i></button>
+          <button id="travelKtvForwardBtn" type="button" title="快進 5 秒" aria-label="快進 5 秒"><i class="fa-solid fa-rotate-right"></i><span>5</span></button>
+          <button id="travelKtvNextBtn" type="button" title="下一首" aria-label="下一首"><i class="fa-solid fa-forward-step"></i></button>
+        </div>
+        <div class="travel-ktv-progress"><span id="travelKtvCurrentTime">0:00</span><input id="travelKtvProgressBar" type="range" min="0" max="100" value="0" aria-label="歌曲播放進度"><span id="travelKtvDuration">0:00</span></div>
+      </div>
+      <div class="travel-ktv-volume"><button id="travelKtvMuteBtn" type="button" title="靜音／取消靜音" aria-label="靜音／取消靜音"><i class="fa-solid fa-volume-high"></i></button><input id="travelKtvVolumeBar" type="range" min="0" max="1" step="0.05" value="0.8" aria-label="音量"></div>
     </div>
   </div>
 
@@ -2248,6 +2401,34 @@
 
     ktvMuteBtn.addEventListener('click', () => document.getElementById('muteBtn').click());
 
+    // 畢業旅行 KTV 專屬控制列沿用同一個 audio 與播放佇列。
+    const travelKtvProgress = document.getElementById('travelKtvProgressBar');
+    const travelKtvVolume = document.getElementById('travelKtvVolumeBar');
+    const travelKtvPlayIcon = document.getElementById('travelKtvPlayIcon');
+    function syncTravelKtvPlayer() {
+      const current = document.getElementById('travelKtvNowPlaying');
+      const title = document.getElementById('currentTitle');
+      if (current && title) current.textContent = title.textContent || '尚未播放歌曲';
+      if (travelKtvProgress && !isNaN(audio.duration) && audio.duration > 0) travelKtvProgress.value = String(audio.currentTime / audio.duration * 100);
+      const currentTime = document.getElementById('travelKtvCurrentTime');
+      const duration = document.getElementById('travelKtvDuration');
+      if (currentTime) currentTime.textContent = formatTime(audio.currentTime || 0);
+      if (duration) duration.textContent = formatTime(audio.duration || 0);
+      if (travelKtvVolume) travelKtvVolume.value = String(audio.volume);
+      if (travelKtvPlayIcon) travelKtvPlayIcon.className = audio.paused ? 'fa-solid fa-play' : 'fa-solid fa-pause';
+    }
+    document.getElementById('travelKtvPlayBtn').addEventListener('click', () => playPauseBtn.click());
+    document.getElementById('travelKtvPrevBtn').addEventListener('click', playPrev);
+    document.getElementById('travelKtvNextBtn').addEventListener('click', playNext);
+    document.getElementById('travelKtvRewindBtn').addEventListener('click', () => seekDelta(-5));
+    document.getElementById('travelKtvForwardBtn').addEventListener('click', () => seekDelta(5));
+    document.getElementById('travelKtvMuteBtn').addEventListener('click', () => document.getElementById('muteBtn').click());
+    travelKtvProgress.addEventListener('input', event => { if (!isNaN(audio.duration) && audio.duration > 0) audio.currentTime = Number(event.target.value) / 100 * audio.duration; });
+    travelKtvVolume.addEventListener('input', event => { audio.volume = Number(event.target.value); volumeBar.value = event.target.value; ktvVolumeBar.value = event.target.value; try { localStorage.setItem('sg_volume', event.target.value); } catch (_) {} });
+    ['timeupdate','loadedmetadata','durationchange','play','pause','volumechange'].forEach(type => audio.addEventListener(type, syncTravelKtvPlayer));
+    syncTravelKtvPlayer();
+
+
     document.getElementById('ktvLyricsBox').addEventListener('click', e => {
       const p = e.target.closest('.ktv-line');
       if (!p) return;
@@ -2445,7 +2626,7 @@
     function applyCustomColor(hex) {
       currentThemeMode = 'custom';
       currentCustomHex = hex;
-      document.body.classList.remove('theme-blue', 'theme-green', 'theme-purple', 'theme-song');
+      document.body.classList.remove('theme-blue', 'theme-green', 'theme-purple', 'theme-song', 'theme-travel');
 
       const { r, g, b } = hexToRgb(hex);
       const hoverHex = '#' + [
@@ -2490,11 +2671,11 @@
         document.documentElement.style.removeProperty(p);
       });
 
-      document.body.classList.remove('theme-blue', 'theme-green', 'theme-purple', 'theme-song');
+      document.body.classList.remove('theme-blue', 'theme-green', 'theme-purple', 'theme-song', 'theme-travel');
       document.body.classList.add('theme-' + theme);
 
       const lbl = document.getElementById('themeNameLabel');
-      const names = { blue: '藍色主題', green: '綠色主題', purple: '經典紫色', song: '心事單曲企劃' };
+      const names = { blue: '藍色主題', green: '綠色主題', purple: '經典紫色', song: '心事單曲企劃', travel: '畢業旅行' };
       if (lbl) lbl.textContent = names[theme] || '主題風格';
 
       try {
@@ -2505,7 +2686,7 @@
     }
 
     function updateThemeUISelection() {
-      ['blue', 'green', 'purple', 'song'].forEach(t => {
+      ['blue', 'green', 'purple', 'song', 'travel'].forEach(t => {
         const check = document.getElementById('check-' + t);
         const btn = document.getElementById('themeBtn-' + t);
         if (check) check.classList.toggle('hidden', currentThemeMode !== t);
@@ -2572,6 +2753,68 @@
         if (selectedLabel) selectedLabel.textContent = '已選擇這種心情';
         featuredQuote.textContent = `「${tile.dataset.moodQuote || ''}」`;
       }));
+    })();
+
+
+
+    // ===== 畢業旅行主題限定：905 旅行明信片配對小遊戲 =====
+    (() => {
+      const grid = document.getElementById('tripMemoryGrid');
+      if (!grid) return;
+      const cards = [
+        { id: 'jingzaijiao', name: '井仔腳', icon: '☀️' }, { id: '旗津', name: '旗津海風', icon: '🌊' },
+        { id: 'shoushan', name: '壽山', icon: '⛰️' }, { id: '義大', name: '義大摩天輪', icon: '🎡' },
+        { id: '哈瑪星', name: '哈瑪星鐵道', icon: '🚂' }, { id: '愛河', name: '愛河夜晚', icon: '🌙' },
+        { id: '台江', name: '台江紅樹林', icon: '🌿' }, { id: '安平', name: '安平街道', icon: '🏮' }
+      ];
+      const movesEl = document.getElementById('tripMoves');
+      const timerEl = document.getElementById('tripTimer');
+      const bestEl = document.getElementById('tripBest');
+      const statusEl = document.getElementById('tripGameStatus');
+      const startBtn = document.getElementById('tripGameStartBtn');
+      const resetBtn = document.getElementById('tripGameResetBtn');
+      let deck = [], first = null, second = null, locked = true, moves = 0, matches = 0, seconds = 0, clock = null, flipToken = 0;
+      const bestKey = 'sg_trip_memory_best_v1';
+      const shuffle = items => { const out = [...items]; for (let i = out.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [out[i], out[j]] = [out[j], out[i]]; } return out; };
+      const format = value => `${Math.floor(value / 60)}:${String(value % 60).padStart(2, '0')}`;
+      const updateBest = () => { try { const n = Number(localStorage.getItem(bestKey)); bestEl.textContent = n > 0 ? `${n} 次` : '—'; } catch (_) { bestEl.textContent = '—'; } };
+      function renderDeck(disabled = true) {
+        grid.innerHTML = deck.map((card, index) => `<button type="button" class="trip-memory-card" data-trip-card="${index}" aria-label="旅行明信片 ${index + 1}" aria-pressed="false" ${disabled ? 'disabled' : ''}><span class="trip-card-front" aria-hidden="true"><i class="fa-solid fa-location-dot"></i></span><span class="trip-card-back"><span class="trip-card-icon" aria-hidden="true">${card.icon}</span><span class="trip-card-label">${card.name}</span></span></button>`).join('');
+      }
+      function stopClock() { if (clock) { clearInterval(clock); clock = null; } }
+      function resetGame() {
+        stopClock(); flipToken++; first = second = null; locked = true; moves = matches = seconds = 0;
+        movesEl.textContent = '0'; timerEl.textContent = '0:00';
+        deck = shuffle([...cards, ...cards]); renderDeck(true);
+        statusEl.textContent = '翻開兩張明信片，找出相同的景點。'; startBtn.innerHTML = '<i class="fa-solid fa-play mr-1.5"></i>開始旅行';
+      }
+      function startGame() {
+        stopClock(); flipToken++; first = second = null; moves = matches = seconds = 0; locked = false;
+        movesEl.textContent = '0'; timerEl.textContent = '0:00'; deck = shuffle([...cards, ...cards]); renderDeck(false);
+        statusEl.textContent = '旅程開始！找出 8 組相同景點。'; startBtn.innerHTML = '<i class="fa-solid fa-rotate mr-1.5"></i>重新開始';
+        clock = setInterval(() => { seconds++; timerEl.textContent = format(seconds); }, 1000);
+      }
+      grid.addEventListener('click', event => {
+        const button = event.target.closest('[data-trip-card]');
+        if (!button || locked || button.disabled || button.classList.contains('is-flipped') || button.classList.contains('is-matched')) return;
+        const index = Number(button.dataset.tripCard); button.classList.add('is-flipped'); button.setAttribute('aria-pressed', 'true');
+        if (!first) { first = { button, card: deck[index] }; return; }
+        second = { button, card: deck[index] }; moves++; movesEl.textContent = String(moves);
+        if (first.card.id === second.card.id) {
+          first.button.classList.add('is-matched'); second.button.classList.add('is-matched');
+          first.button.disabled = true; second.button.disabled = true; matches++; first = second = null;
+          if (matches === cards.length) {
+            locked = true; stopClock(); statusEl.textContent = `全部配對成功！用了 ${moves} 次、${format(seconds)}，這趟回憶收好了。`;
+            try { const best = Number(localStorage.getItem(bestKey)); if (!best || moves < best) localStorage.setItem(bestKey, String(moves)); } catch (_) {}
+            updateBest(); startBtn.innerHTML = '<i class="fa-solid fa-rotate mr-1.5"></i>再玩一次';
+          } else statusEl.textContent = '配對成功！再找下一個景點。';
+        } else {
+          locked = true; statusEl.textContent = '這兩張不是一組，再試試看。'; const token = ++flipToken;
+          setTimeout(() => { if (token !== flipToken) return; first.button.classList.remove('is-flipped'); second.button.classList.remove('is-flipped'); first.button.setAttribute('aria-pressed', 'false'); second.button.setAttribute('aria-pressed', 'false'); first = second = null; locked = false; }, 750);
+        }
+      });
+      startBtn.addEventListener('click', startGame); resetBtn.addEventListener('click', resetGame);
+      updateBest(); resetGame();
     })();
 
     // ===== ⏩ ⏪ 快進 5 秒 / 後退 5 秒 =====
