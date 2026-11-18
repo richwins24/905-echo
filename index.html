@@ -1108,15 +1108,15 @@
         <div>
           <div class="flex items-center gap-2 mb-2">
             <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40">
-              <i class="fa-solid fa-graduation-cap text-amber-300"></i> <span id="bannerTitleTag">目標：2027年6月11日</span>
+              <i class="fa-solid fa-graduation-cap text-amber-300"></i> <span id="bannerTitleTag">會考日：2027年5月15日</span>
             </span>
-            <span class="text-[10px] text-slate-400">(點擊切換)</span>
+            <span class="text-[10px] text-slate-400">(點擊切換會考／畢業／相識天數)</span>
           </div>
           <h2 id="bannerMainHeading" class="text-xl md:text-2xl font-black text-white tracking-wide">
-            905 · 畢業倒數計時
+            905 · 會考倒數計時
           </h2>
-          <p id="bannerSubHeading" class="text-xs text-slate-300 mt-1">
-            每一個今天，都是我們往後日子最珍貴的昨天。
+          <p id="bannerSubHeading" class="hidden">
+            距離國中教育會考還有一段旅程，穩穩前進、一起加油。
           </p>
         </div>
 
@@ -1163,11 +1163,11 @@
               <i class="fa-solid fa-route"></i>
             </span>
             <div>
-              <h3 class="font-bold text-base text-white">9年級第一學期 · 青春里程碑</h3>
-              <p class="text-xs text-slate-400">已自動鎖定並聚焦在當前活動</p>
+              <h3 class="font-bold text-base text-white">9年級 · 青春里程碑行事曆</h3>
+              <p id="nextMilestoneCountdown" class="text-xs text-amber-200" aria-live="polite">正在計算下一個任務…</p>
             </div>
           </div>
-          <span class="text-[11px] px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">9上限定 🎯</span>
+          <span class="text-[11px] px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">一路倒數至會考 🎯</span>
         </div>
 
         <!-- 橫向滾動時間節點 -->
@@ -1237,8 +1237,16 @@
             <span class="tag-status mt-2 inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold bg-slate-700 text-slate-300">倒數中</span>
           </div>
 
+          <!-- 節點 9: 國中教育會考 -->
+          <div id="m-9" data-start="2027-05-15" data-end="2027-05-15" class="timeline-node shrink-0 w-40 bg-gradient-to-br from-amber-950/70 to-slate-800 border border-amber-500/40 rounded-2xl p-3 relative group transition">
+            <div class="text-[10px] font-bold text-amber-300 mb-1">2027/5/15</div>
+            <div class="text-xs font-bold text-white truncate">🎓 國中教育會考</div>
+            <div class="text-[10px] text-slate-300 mt-1">重要里程碑，從容迎戰</div>
+            <span class="tag-status mt-2 inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold bg-slate-700 text-slate-300">倒數中</span>
+          </div>
+
         </div>
-        <p class="text-[11px] text-slate-500 mt-2 text-right">← 左右滑動查看各項大活動，已為你定位當前焦點 →</p>
+        <p class="text-[11px] text-slate-500 mt-2 text-right">← 左右滑動查看九年級里程碑，已為你定位下一個任務 →</p>
       </section>
 
     </div>
@@ -1634,66 +1642,105 @@
     const adminToggleBtn = document.getElementById('adminToggleBtn');
     const adminPanel = document.getElementById('adminPanel');
 
-    // ===== 畢業倒數設定：2027年6月11日 09:00 =====
+    // ===== 會考／畢業倒數：2027年5月15日、2027年6月11日 =====
+    const EXAM_DATE = new Date('2027-05-15T00:00:00+08:00');
     const GRAD_DATE = new Date('2027-06-11T09:00:00+08:00');
     const START_DATE = new Date('2024-09-01T08:00:00+08:00');
-    let showCountdown = true;
+    let heroTimerMode = 'exam'; // exam -> graduation -> together
 
     function updateBigGradCountdown() {
       const now = new Date();
-      const diffGrad = GRAD_DATE - now;
+      const examMode = heroTimerMode === 'exam';
+      const countdownMode = heroTimerMode !== 'together';
+      const targetDate = examMode ? EXAM_DATE : GRAD_DATE;
+      const diff = targetDate - now;
+      const heading = document.getElementById('bannerMainHeading');
+      const subheading = document.getElementById('bannerSubHeading');
+      const tag = document.getElementById('bannerTitleTag');
+      const countBox = document.getElementById('countdownBoxes');
+      const togetherBox = document.getElementById('togetherBox');
 
-      if (diffGrad > 0) {
-        const d = Math.floor(diffGrad / (1000 * 60 * 60 * 24));
-        const h = Math.floor((diffGrad / (1000 * 60 * 60)) % 24);
-        const m = Math.floor((diffGrad / (1000 * 60)) % 60);
-        const s = Math.floor((diffGrad / 1000) % 60);
-
-        document.getElementById('cDays').textContent = d;
-        document.getElementById('cHours').textContent = String(h).padStart(2, '0');
-        document.getElementById('cMinutes').textContent = String(m).padStart(2, '0');
-        document.getElementById('cSeconds').textContent = String(s).padStart(2, '0');
+      countBox.classList.toggle('hidden', !countdownMode);
+      togetherBox.classList.toggle('hidden', countdownMode);
+      if (countdownMode) {
+        const days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+        const hours = diff > 0 ? Math.floor((diff / (1000 * 60 * 60)) % 24) : 0;
+        const minutes = diff > 0 ? Math.floor((diff / (1000 * 60)) % 60) : 0;
+        const seconds = diff > 0 ? Math.floor((diff / 1000) % 60) : 0;
+        document.getElementById('cDays').textContent = days;
+        document.getElementById('cHours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('cMinutes').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('cSeconds').textContent = String(seconds).padStart(2, '0');
+        heading.textContent = examMode ? '905 · 會考倒數計時' : '905 · 畢業倒數計時';
+        tag.textContent = examMode ? '會考日：2027年5月15日' : '畢業日：2027年6月11日';
+        if (diff > 0) {
+          subheading.textContent = examMode
+            ? `距離國中教育會考還有 ${days} 天，穩穩前進、一起加油。`
+            : `距離畢業還有 ${days} 天，每一個今天都值得珍惜。`;
+        } else {
+          subheading.textContent = examMode ? '會考日到了，905 一起加油！' : '畢業的日子到了，祝福 905 展開新的旅程。';
+        }
       } else {
-        document.getElementById('cDays').textContent = "0";
-        document.getElementById('cHours').textContent = "00";
-        document.getElementById('cMinutes').textContent = "00";
-        document.getElementById('cSeconds').textContent = "00";
+        const togetherDays = Math.max(1, Math.floor((now - START_DATE) / (1000 * 60 * 60 * 24)));
+        document.getElementById('tDays').textContent = togetherDays;
+        heading.textContent = '905 · 青春相伴日常';
+        tag.textContent = '905 班相識紀錄（2024.9 起）';
+        subheading.textContent = `我們已一起走過 ${togetherDays} 天，珍藏每個青春里程。`;
       }
-
-      const diffStart = now - START_DATE;
-      const togetherDays = Math.max(1, Math.floor(diffStart / (1000 * 60 * 60 * 24)));
-      document.getElementById('tDays').textContent = togetherDays;
     }
 
     function toggleHeroTimerMode() {
-      showCountdown = !showCountdown;
-      const countBox = document.getElementById('countdownBoxes');
-      const togBox = document.getElementById('togetherBox');
-      const tag = document.getElementById('bannerTitleTag');
-      if (showCountdown) {
-        countBox.classList.remove('hidden');
-        togBox.classList.add('hidden');
-        tag.textContent = '目標：2027年6月11日';
-      } else {
-        countBox.classList.add('hidden');
-        togBox.classList.remove('hidden');
-        tag.textContent = '905 班相識紀錄（2024.9 起）';
-      }
+      heroTimerMode = heroTimerMode === 'exam' ? 'graduation' : heroTimerMode === 'graduation' ? 'together' : 'exam';
+      updateBigGradCountdown();
     }
     document.getElementById('gradHeroBanner').addEventListener('click', toggleHeroTimerMode);
     setInterval(updateBigGradCountdown, 1000);
     updateBigGradCountdown();
 
-    // ===== 📍 里程碑：自動根據日期高亮並滾動鎖定焦點 =====
+    // ===== 📍 青春里程碑：高亮當前活動並顯示下一個任務倒數 =====
+    function daysUntilMilestone(dateKey) {
+      const [year, month, day] = dateKey.split('-').map(Number);
+      const now = new Date();
+      const todayUtc = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+      const targetUtc = Date.UTC(year, month - 1, day);
+      return Math.round((targetUtc - todayUtc) / 86400000);
+    }
+
+    function updateNextMilestoneCountdown() {
+      const label = document.getElementById('nextMilestoneCountdown');
+      if (!label) return;
+      const nodes = Array.from(document.querySelectorAll('.timeline-node'));
+      const today = todayKey();
+      const ongoing = nodes.find(node => node.dataset.start <= today && node.dataset.end >= today);
+      const next = nodes.find(node => node.dataset.start > today);
+      const titleOf = node => {
+        const title = node.querySelector('.text-xs.font-bold.text-white');
+        return title ? title.textContent.replace(/^\S+\s*/, '').trim() : '下一個里程碑';
+      };
+      if (ongoing && next) {
+        const days = daysUntilMilestone(next.dataset.start);
+        label.textContent = `目前：${titleOf(ongoing)}進行中｜下一個：${titleOf(next)}・${days === 0 ? '今天' : `還有 ${days} 天`}`;
+      } else if (ongoing) {
+        label.textContent = `目前任務：${titleOf(ongoing)}進行中`;
+      } else if (next) {
+        const days = daysUntilMilestone(next.dataset.start);
+        label.textContent = `下一個任務：${titleOf(next)}・${days === 0 ? '今天登場' : `還有 ${days} 天`}`;
+      } else {
+        label.textContent = '會考里程碑已完成，接下來迎向畢業！';
+      }
+    }
+
     function focusCurrentMilestone() {
       const nowStr = todayKey();
       const nodes = Array.from(document.querySelectorAll('.timeline-node'));
       let targetNode = null;
+      nodes.forEach(node => node.classList.remove('current-milestone'));
 
       for (const node of nodes) {
         const start = node.dataset.start;
         const end = node.dataset.end;
         const tag = node.querySelector('.tag-status');
+        if (!tag) continue;
 
         if (nowStr > end) {
           tag.className = "tag-status mt-2 inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold bg-emerald-950 text-emerald-300 border border-emerald-500/30";
@@ -1704,26 +1751,25 @@
           targetNode = node;
         } else {
           tag.className = "tag-status mt-2 inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold bg-slate-700 text-slate-300";
-          tag.textContent = "倒數中";
-          if (!targetNode && nowStr < start) {
-            targetNode = node;
-          }
+          const days = daysUntilMilestone(start);
+          tag.textContent = days === 0 ? '今天開始' : `還有 ${days} 天`;
+          if (!targetNode && nowStr < start) targetNode = node;
         }
       }
-
+      updateNextMilestoneCountdown();
       if (targetNode) {
         targetNode.classList.add('current-milestone');
         setTimeout(() => {
           const track = document.getElementById('timelineTrack');
-          if (track) {
-            track.scrollTo({
-              left: targetNode.offsetLeft - track.offsetLeft - (track.clientWidth / 2) + (targetNode.clientWidth / 2),
-              behavior: 'smooth'
-            });
-          }
+          if (track) track.scrollTo({
+            left: targetNode.offsetLeft - track.offsetLeft - (track.clientWidth / 2) + (targetNode.clientWidth / 2),
+            behavior: 'smooth'
+          });
         }, 500);
       }
     }
+    focusCurrentMilestone();
+    setInterval(updateNextMilestoneCountdown, 60 * 1000);
 
     // ===== 儲存（瀏覽器本機） =====
     function load() {
