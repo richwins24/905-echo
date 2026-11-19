@@ -53,14 +53,14 @@
     "cover": "music/covers/cover-06.png",
     "src": "music/mp3/song-06.mp3",
     "lyrics_file": "music/lyrics/song-06.json"
+  },
+  {
+    "id": 7,
+    "title": "沿途有你",
+    "intro": "",
+    "genre": "畢業旅行",
+    "cover": "music/covers/cover-07.png",
+    "src": "music/mp3/song-07.mp3",
+    "lyrics_file": "music/lyrics/song-07.json"
   }
 ]
-{
-  "id": 7,
-  "title": "沿途有你",
-  "intro": "從井仔腳、高雄到台南，記錄畢業旅行中一起走過的風景與歡笑。旅程或許會結束，但那些共同留下的回憶不會消失。獻給每一位陪伴彼此走過這段旅程的夥伴。",
-  "genre": "畢業歌",
-  "cover": "music/covers/cover-07.png",
-  "src": "music/mp3/song-07.mp3",
-  "lyrics_file": "music/lyrics/song-07.json"
-}
