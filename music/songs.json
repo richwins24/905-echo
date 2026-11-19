@@ -54,13 +54,4 @@
     "src": "music/mp3/song-06.mp3",
     "lyrics_file": "music/lyrics/song-06.json"
   },
-  {
-    "id": 7,
-    "title": "沿途有你",
-    "intro": "",
-    "genre": "畢業旅行",
-    "cover": "music/covers/cover-07.png",
-    "src": "music/mp3/song-07.mp3",
-    "lyrics_file": "music/lyrics/song-07.json"
-  }
-]
+ 
