@@ -865,11 +865,13 @@
           </div>
           <button id="accountSignOutBtn" class="rounded-lg bg-slate-800 px-3 py-2 text-xs text-slate-300 hover:bg-slate-700">登出</button>
         </div>
-        <details id="profileSettingsDetails" class="overflow-hidden rounded-xl border border-slate-700 bg-slate-950/40">
-          <summary class="cursor-pointer list-none px-4 py-3 font-semibold text-white marker:hidden">
-            <i class="fa-solid fa-store mr-2 text-amber-300"></i>個人外觀商店
-            <span class="ml-1 text-xs font-normal text-slate-400">（使用積分永久解鎖）</span>
-          </summary>
+        <button id="toggleProfileShopBtn" type="button" aria-controls="profileShopPanel" aria-expanded="false" title="展開個人外觀商店" class="shrink-0 inline-flex items-center gap-2 rounded-full bg-purple-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-purple-500 border border-purple-400/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-purple-300">
+          <i class="fa-solid fa-store text-amber-200" aria-hidden="true"></i>
+          <span>個人外觀商店</span>
+          <span class="text-[10px] font-normal text-white/80">使用積分永久解鎖</span>
+          <i id="profileShopChevron" class="fa-solid fa-chevron-down text-[10px] text-white/80 transition-transform" aria-hidden="true"></i>
+        </button>
+        <div id="profileShopPanel" class="hidden mt-3 overflow-hidden rounded-xl border border-slate-700 bg-slate-950/40">
           <div class="space-y-4 border-t border-slate-800 p-4">
             <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-300/20 bg-gradient-to-r from-amber-400/10 via-slate-900/70 to-purple-500/10 p-4">
               <div>
@@ -908,7 +910,7 @@
               <span id="profileSaveMsg" role="status" class="text-xs text-slate-400"></span>
             </div>
           </div>
-        </details>
+        </div>
 
         <button id="toggleMemberRewardsBtn" type="button" aria-controls="memberRewardsPanel" aria-expanded="false" title="展開徽章與排行榜 TOP 10" class="mt-3 shrink-0 inline-flex items-center gap-2 rounded-full bg-purple-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-purple-500 border border-purple-400/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-purple-300">
           <i class="fa-solid fa-award" aria-hidden="true"></i><span>徽章與排行榜 TOP 10</span>
@@ -3805,6 +3807,17 @@
       if (willOpen) panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
     document.getElementById('accountSignOutBtn').addEventListener('click', () => document.getElementById('loginBtn').click());
+    document.getElementById('toggleProfileShopBtn').addEventListener('click', event => {
+      const button = event.currentTarget;
+      const panel = document.getElementById('profileShopPanel');
+      const chevron = document.getElementById('profileShopChevron');
+      const expanded = button.getAttribute('aria-expanded') !== 'true';
+      button.setAttribute('aria-expanded', String(expanded));
+      panel.classList.toggle('hidden', !expanded);
+      chevron.classList.toggle('rotate-180', expanded);
+      button.title = expanded ? '收合個人外觀商店' : '展開個人外觀商店';
+    });
+
     document.getElementById('toggleMemberRewardsBtn').addEventListener('click', event => {
       const button = event.currentTarget;
       const panel = document.getElementById('memberRewardsPanel');
