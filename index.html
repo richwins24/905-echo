@@ -107,7 +107,7 @@
       opacity: 1;
       transform: scale(1.05);
       font-weight: 800;
-      text-shadow: 0 0 25px rgba(236, 72, 153, 0.75), 0 0 50px rgba(168, 85, 247, 0.5);
+      text-shadow: none;
     }
     #ktvLyricsBox.fx-glow .ktv-line.on { text-shadow: 0 0 12px var(--played, #c084fc), 0 0 28px #a855f7; }
     #lyricsBox.fx-trip-stars .lyric-line.on, #ktvLyricsBox.fx-trip-stars .ktv-line.on { color:#fef3c7; text-shadow:0 0 8px #fbbf24,0 0 22px rgba(251,191,36,.8),0 0 40px rgba(251,191,36,.38); }
@@ -1486,6 +1486,42 @@
     </div>
   </div>
 
+  <div id="lyricFxShopModal" class="hidden fixed inset-0 z-[120] flex items-center justify-center bg-black/75 p-4" role="presentation">
+    <section class="w-full max-w-lg rounded-2xl border border-purple-400/40 bg-slate-900 p-5 shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="lyricFxShopTitle">
+      <div class="mb-4 flex items-start justify-between gap-3">
+        <div>
+          <h2 id="lyricFxShopTitle" class="text-base font-bold text-white"><i class="fa-solid fa-wand-magic-sparkles mr-2 text-purple-300" aria-hidden="true"></i>字幕特效商店</h2>
+          <p class="mt-1 text-xs text-slate-400">選擇喜歡的歌詞風格；付費特效永久解鎖後可隨時切換。</p>
+        </div>
+        <button id="closeLyricFxShopBtn" type="button" class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-slate-700 text-slate-300 transition hover:bg-slate-800 hover:text-white" aria-label="關閉字幕特效商店" title="關閉">✕</button>
+      </div>
+      <div class="space-y-3">
+        <label for="lyricFx" class="sr-only">選擇歌詞特效</label>
+        <select id="lyricFx" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200" aria-describedby="lyricFxShopStatus">
+              <option value="none">原始歌詞・免費</option>
+              <option value="glow">經典發光・免費</option>
+              <option value="trip-stars">畢旅星光・150 音樂幣</option>
+              <option value="sea-breeze">海風流光・300 音樂幣</option>
+              <option value="sunset">夕陽漸層・500 音樂幣</option>
+              <option value="postcard">旅行明信片・800 音樂幣</option>
+              <optgroup label="運動會限定・音樂幣解鎖">
+                <option value="track-ribbon">運動會彩帶・250 音樂幣</option>
+                <option value="medal-gold">金牌時刻・300 音樂幣</option>
+                <option value="stadium-neon">球場聚光・350 音樂幣</option>
+                <option value="team-pride">班級應援・400 音樂幣</option>
+                <option value="sprint-flame">衝刺火焰・450 音樂幣</option>
+                <option value="victory-confetti">勝利彩花・500 音樂幣</option>
+                <option value="finish-checker">終點格旗・550 音樂幣</option>
+                <option value="podium-prism">頒獎台幻彩・600 音樂幣</option>
+                <option value="sports-postcard">運動明信片・650 音樂幣</option>
+                <option value="rainbow-relay">彩虹接力・700 音樂幣</option>
+              </optgroup>
+            </select>
+        <div class="flex justify-end"><button id="buyLyricFxBtn" type="button" class="rounded-full border border-purple-400/50 bg-purple-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-purple-500 disabled:cursor-not-allowed disabled:opacity-40">解鎖特效</button></div>
+        <div id="lyricFxShopStatus" class="mb-2 min-h-4 text-right text-[10px] text-slate-400" role="status" aria-live="polite">原始與經典發光免費；畢旅與運動會主題特效可用音樂幣永久解鎖。</div>
+      </div>
+    </section>
+  </div>
   <!-- 留言面板 -->
   <div id="commentPanel" class="hidden fixed inset-x-0 bottom-24 z-40 px-4">
     <div class="max-w-xl mx-auto bg-slate-900/95 border border-slate-700 rounded-2xl p-4 shadow-2xl">
@@ -1590,32 +1626,10 @@
       <div class="max-w-2xl mx-auto border border-purple-500/40 rounded-2xl p-4 shadow-2xl" style="background:#0f172a">
         <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
           <p id="lyricsTitle" class="text-xs text-slate-400"></p>
-          <div class="flex flex-wrap items-center justify-end gap-2 text-[11px] text-slate-400">
-            <label for="lyricFx" class="sr-only">選擇歌詞特效</label>
-            <select id="lyricFx" class="max-w-[12rem] bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-[11px] text-slate-200" aria-describedby="lyricFxShopStatus">
-              <option value="none">原始歌詞・免費</option>
-              <option value="glow">經典發光・免費</option>
-              <option value="trip-stars">畢旅星光・150 音樂幣</option>
-              <option value="sea-breeze">海風流光・300 音樂幣</option>
-              <option value="sunset">夕陽漸層・500 音樂幣</option>
-              <option value="postcard">旅行明信片・800 音樂幣</option>
-              <optgroup label="運動會限定・音樂幣解鎖">
-                <option value="track-ribbon">運動會彩帶・250 音樂幣</option>
-                <option value="medal-gold">金牌時刻・300 音樂幣</option>
-                <option value="stadium-neon">球場聚光・350 音樂幣</option>
-                <option value="team-pride">班級應援・400 音樂幣</option>
-                <option value="sprint-flame">衝刺火焰・450 音樂幣</option>
-                <option value="victory-confetti">勝利彩花・500 音樂幣</option>
-                <option value="finish-checker">終點格旗・550 音樂幣</option>
-                <option value="podium-prism">頒獎台幻彩・600 音樂幣</option>
-                <option value="sports-postcard">運動明信片・650 音樂幣</option>
-                <option value="rainbow-relay">彩虹接力・700 音樂幣</option>
-              </optgroup>
-            </select>
-            <button id="buyLyricFxBtn" type="button" class="rounded-full border border-purple-400/50 bg-purple-600 px-3 py-1.5 text-[10px] font-semibold text-white transition hover:bg-purple-500 disabled:cursor-not-allowed disabled:opacity-40">解鎖特效</button>
-          </div>
+          <button id="openLyricFxShopBtn" type="button" aria-haspopup="dialog" aria-controls="lyricFxShopModal" aria-expanded="false" class="inline-flex items-center gap-2 rounded-full border border-purple-400/50 bg-purple-600 px-3 py-1.5 text-[10px] font-semibold text-white transition hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-purple-300" title="開啟字幕特效商店">
+            <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i><span>字幕特效商店</span>
+          </button>
         </div>
-        <div id="lyricFxShopStatus" class="mb-2 min-h-4 text-right text-[10px] text-slate-400" role="status" aria-live="polite">原始與經典發光免費；畢旅與運動會主題特效可用音樂幣永久解鎖。</div>
         <div id="lyricsBox" class="h-48 overflow-y-auto text-center space-y-3"></div>
       </div>
     </div>
@@ -2775,6 +2789,27 @@
       else updateLyricFxStoreUI();
     });
     document.getElementById('buyLyricFxBtn').addEventListener('click', () => unlockLyricEffect(document.getElementById('lyricFx').value));
+    const lyricFxShopModal = document.getElementById('lyricFxShopModal');
+    const openLyricFxShopBtn = document.getElementById('openLyricFxShopBtn');
+    const closeLyricFxShopBtn = document.getElementById('closeLyricFxShopBtn');
+    function setLyricFxShopOpen(open) {
+      lyricFxShopModal.classList.toggle('hidden', !open);
+      openLyricFxShopBtn.setAttribute('aria-expanded', String(open));
+      if (open) setTimeout(() => document.getElementById('lyricFx').focus(), 0);
+      else openLyricFxShopBtn.focus();
+    }
+    openLyricFxShopBtn.addEventListener('click', () => setLyricFxShopOpen(true));
+    closeLyricFxShopBtn.addEventListener('click', () => setLyricFxShopOpen(false));
+    lyricFxShopModal.addEventListener('click', event => {
+      if (event.target === lyricFxShopModal) setLyricFxShopOpen(false);
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !lyricFxShopModal.classList.contains('hidden')) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        setLyricFxShopOpen(false);
+      }
+    });
     applyLyricStyle();
 
     function openLyricsPanel(on) {
