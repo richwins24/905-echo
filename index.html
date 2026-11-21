@@ -114,8 +114,25 @@
     #lyricsBox.fx-sea-breeze .lyric-line.on, #ktvLyricsBox.fx-sea-breeze .ktv-line.on { color:#a5f3fc; text-shadow:0 0 8px rgba(34,211,238,.8),0 0 28px rgba(6,182,212,.68); }
     #lyricsBox.fx-sunset .lyric-line.on, #ktvLyricsBox.fx-sunset .ktv-line.on { color:#fed7aa; text-shadow:0 0 8px rgba(251,146,60,.85),0 0 24px rgba(236,72,153,.65),0 0 40px rgba(249,115,22,.35); }
     #lyricsBox.fx-postcard .lyric-line.on, #ktvLyricsBox.fx-postcard .ktv-line.on { display:inline-block; border:1px solid rgba(253,186,116,.7); border-radius:.75rem; padding:.12em .55em; color:#fff7ed; background:linear-gradient(100deg,rgba(124,45,18,.38),rgba(15,23,42,.34),rgba(14,116,144,.32)); box-shadow:0 0 22px rgba(251,146,60,.22),inset 0 0 14px rgba(255,255,255,.07); }
-    @media (prefers-reduced-motion: no-preference) { #lyricsBox.fx-trip-stars .lyric-line.on, #ktvLyricsBox.fx-trip-stars .ktv-line.on { animation: lyricStarPulse 2.6s ease-in-out infinite alternate; } }
+    #lyricsBox.fx-track-ribbon .lyric-line.on, #ktvLyricsBox.fx-track-ribbon .ktv-line.on { color:transparent; -webkit-text-fill-color:transparent; background:linear-gradient(90deg,#fb7185,#fbbf24,#34d399,#38bdf8); background-clip:text; -webkit-background-clip:text; filter:drop-shadow(0 0 10px rgba(251,191,36,.42)); }
+    #lyricsBox.fx-medal-gold .lyric-line.on, #ktvLyricsBox.fx-medal-gold .ktv-line.on { color:transparent; -webkit-text-fill-color:transparent; background:linear-gradient(180deg,#fff7ae 4%,#facc15 35%,#d97706 68%,#fff0a6 100%); background-clip:text; -webkit-background-clip:text; filter:drop-shadow(0 0 10px rgba(250,204,21,.55)); }
+    #lyricsBox.fx-stadium-neon .lyric-line.on, #ktvLyricsBox.fx-stadium-neon .ktv-line.on { color:#ecfeff; text-shadow:0 0 6px #fff,0 0 16px #22d3ee,0 0 32px #0284c7,0 0 46px rgba(217,70,239,.68); }
+    #lyricsBox.fx-team-pride .lyric-line.on, #ktvLyricsBox.fx-team-pride .ktv-line.on { color:transparent; -webkit-text-fill-color:transparent; background:linear-gradient(90deg,#ef4444 0%,#fff 48%,#60a5fa 100%); background-clip:text; -webkit-background-clip:text; filter:drop-shadow(0 0 8px rgba(96,165,250,.38)); }
+    #lyricsBox.fx-sprint-flame .lyric-line.on, #ktvLyricsBox.fx-sprint-flame .ktv-line.on { color:transparent; -webkit-text-fill-color:transparent; background:linear-gradient(100deg,#fef08a,#fb923c 42%,#ef4444 78%,#fda4af); background-clip:text; -webkit-background-clip:text; filter:drop-shadow(0 0 12px rgba(249,115,22,.48)); }
+    #lyricsBox.fx-victory-confetti .lyric-line.on, #ktvLyricsBox.fx-victory-confetti .ktv-line.on { color:transparent; -webkit-text-fill-color:transparent; background:linear-gradient(90deg,#f472b6,#facc15,#4ade80,#38bdf8,#a78bfa,#f472b6); background-size:240% 100%; background-clip:text; -webkit-background-clip:text; filter:drop-shadow(0 0 9px rgba(244,114,182,.4)); }
+    #lyricsBox.fx-finish-checker .lyric-line.on, #ktvLyricsBox.fx-finish-checker .ktv-line.on { display:inline-block; border:1px solid rgba(248,250,252,.38); border-bottom:3px solid #fb7185; border-radius:.45rem; padding:.08em .5em; color:#fff; background:repeating-linear-gradient(135deg,rgba(255,255,255,.13) 0 5px,rgba(15,23,42,.18) 5px 10px),linear-gradient(100deg,rgba(220,38,38,.5),rgba(30,64,175,.42)); text-shadow:0 0 10px rgba(255,255,255,.65); box-shadow:0 0 18px rgba(248,113,113,.28); }
+    #lyricsBox.fx-podium-prism .lyric-line.on, #ktvLyricsBox.fx-podium-prism .ktv-line.on { color:transparent; -webkit-text-fill-color:transparent; background:linear-gradient(100deg,#67e8f9,#c4b5fd 38%,#f9a8d4 72%,#fde68a); background-clip:text; -webkit-background-clip:text; filter:drop-shadow(0 0 8px rgba(196,181,253,.55)); }
+    #lyricsBox.fx-sports-postcard .lyric-line.on, #ktvLyricsBox.fx-sports-postcard .ktv-line.on { display:inline-block; border:1px dashed rgba(253,230,138,.82); border-radius:.7rem; padding:.12em .58em; color:#fff7ed; background:linear-gradient(110deg,rgba(190,24,93,.38),rgba(30,64,175,.36),rgba(5,150,105,.34)); box-shadow:0 0 22px rgba(56,189,248,.2),inset 0 0 14px rgba(255,255,255,.08); }
+    #lyricsBox.fx-rainbow-relay .lyric-line.on, #ktvLyricsBox.fx-rainbow-relay .ktv-line.on { color:transparent; -webkit-text-fill-color:transparent; background:linear-gradient(90deg,#ff5f6d,#ffc371,#f9f871,#7bed9f,#70a1ff,#c56cf0,#ff5f6d); background-size:260% 100%; background-clip:text; -webkit-background-clip:text; filter:drop-shadow(0 0 10px rgba(129,140,248,.48)); }
+    @media (prefers-reduced-motion: no-preference) {
+      #lyricsBox.fx-trip-stars .lyric-line.on, #ktvLyricsBox.fx-trip-stars .ktv-line.on { animation: lyricStarPulse 2.6s ease-in-out infinite alternate; }
+      #lyricsBox.fx-victory-confetti .lyric-line.on, #ktvLyricsBox.fx-victory-confetti .ktv-line.on,
+      #lyricsBox.fx-rainbow-relay .lyric-line.on, #ktvLyricsBox.fx-rainbow-relay .ktv-line.on { animation: lyricRainbowShift 5s linear infinite; }
+      #lyricsBox.fx-finish-checker .lyric-line.on, #ktvLyricsBox.fx-finish-checker .ktv-line.on { animation: lyricFinishPulse 2s ease-in-out infinite alternate; }
+    }
     @keyframes lyricStarPulse { from { filter:brightness(.95); } to { filter:brightness(1.2); } }
+    @keyframes lyricRainbowShift { from { background-position:0% 50%; } to { background-position:100% 50%; } }
+    @keyframes lyricFinishPulse { from { box-shadow:0 0 12px rgba(248,113,113,.18); } to { box-shadow:0 0 24px rgba(56,189,248,.4); } }
 
     /* ===== 跑馬燈動畫 ===== */
     .marquee-container {
@@ -1582,11 +1599,23 @@
               <option value="sea-breeze">海風流光・300 音樂幣</option>
               <option value="sunset">夕陽漸層・500 音樂幣</option>
               <option value="postcard">旅行明信片・800 音樂幣</option>
+              <optgroup label="運動會限定・音樂幣解鎖">
+                <option value="track-ribbon">運動會彩帶・250 音樂幣</option>
+                <option value="medal-gold">金牌時刻・300 音樂幣</option>
+                <option value="stadium-neon">球場聚光・350 音樂幣</option>
+                <option value="team-pride">班級應援・400 音樂幣</option>
+                <option value="sprint-flame">衝刺火焰・450 音樂幣</option>
+                <option value="victory-confetti">勝利彩花・500 音樂幣</option>
+                <option value="finish-checker">終點格旗・550 音樂幣</option>
+                <option value="podium-prism">頒獎台幻彩・600 音樂幣</option>
+                <option value="sports-postcard">運動明信片・650 音樂幣</option>
+                <option value="rainbow-relay">彩虹接力・700 音樂幣</option>
+              </optgroup>
             </select>
             <button id="buyLyricFxBtn" type="button" class="rounded-full border border-purple-400/50 bg-purple-600 px-3 py-1.5 text-[10px] font-semibold text-white transition hover:bg-purple-500 disabled:cursor-not-allowed disabled:opacity-40">解鎖特效</button>
           </div>
         </div>
-        <div id="lyricFxShopStatus" class="mb-2 min-h-4 text-right text-[10px] text-slate-400" role="status" aria-live="polite">原始與經典發光免費；畢旅主題特效可用音樂幣永久解鎖。</div>
+        <div id="lyricFxShopStatus" class="mb-2 min-h-4 text-right text-[10px] text-slate-400" role="status" aria-live="polite">原始與經典發光免費；畢旅與運動會主題特效可用音樂幣永久解鎖。</div>
         <div id="lyricsBox" class="h-48 overflow-y-auto text-center space-y-3"></div>
       </div>
     </div>
@@ -2610,7 +2639,17 @@
       { id: 'trip-stars', name: '畢旅星光', price: 150 },
       { id: 'sea-breeze', name: '海風流光', price: 300 },
       { id: 'sunset', name: '夕陽漸層', price: 500 },
-      { id: 'postcard', name: '旅行明信片', price: 800 }
+      { id: 'postcard', name: '旅行明信片', price: 800 },
+      { id: 'track-ribbon', name: '運動會彩帶', price: 250 },
+      { id: 'medal-gold', name: '金牌時刻', price: 300 },
+      { id: 'stadium-neon', name: '球場聚光', price: 350 },
+      { id: 'team-pride', name: '班級應援', price: 400 },
+      { id: 'sprint-flame', name: '衝刺火焰', price: 450 },
+      { id: 'victory-confetti', name: '勝利彩花', price: 500 },
+      { id: 'finish-checker', name: '終點格旗', price: 550 },
+      { id: 'podium-prism', name: '頒獎台幻彩', price: 600 },
+      { id: 'sports-postcard', name: '運動明信片', price: 650 },
+      { id: 'rainbow-relay', name: '彩虹接力', price: 700 }
     ];
     let activeLyricEffectId = 'none';
     let lyricEffectInitialized = false;
