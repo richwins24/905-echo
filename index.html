@@ -708,32 +708,35 @@
 
 
 
-    /* ===== 905 會員紀念收藏、每日積分與個人化裝飾（新增功能） ===== */
-    #accountArea.profile-bg-night {
-      background-image: radial-gradient(ellipse at 90% 0%, rgba(129,140,248,.22), transparent 45%), linear-gradient(135deg, rgba(30,27,75,.95), rgba(15,23,42,.92)) !important;
-    }
-    #accountArea.profile-bg-trip {
-      background-image: radial-gradient(ellipse at 88% 0%, rgba(251,191,36,.23), transparent 42%), linear-gradient(135deg, rgba(69,38,45,.96), rgba(15,69,73,.88)) !important;
-    }
-    #accountAvatarPreview.avatar-frame-melody { border: 2px solid #f9a8d4 !important; box-shadow: 0 0 0 3px rgba(244,114,182,.16), 0 0 20px rgba(244,114,182,.28); }
-    #accountAvatarPreview.avatar-frame-curator { border: 2px solid #a5b4fc !important; box-shadow: 0 0 0 3px rgba(129,140,248,.16), 0 0 20px rgba(129,140,248,.28); }
-    #accountAvatarPreview.avatar-frame-traveler { border: 2px solid #fcd38d !important; box-shadow: 0 0 0 3px rgba(245,158,11,.16), 0 0 20px rgba(245,158,11,.3); }
-    #accountNicknameTag { display: inline-flex; align-items: center; margin-left: .45rem; border: 1px solid rgba(196,181,253,.28); border-radius: 999px; padding: .18rem .5rem; color: #fbcfe8; background: rgba(129,140,248,.12); font-size: .62rem; font-weight: 800; vertical-align: middle; }
-    #accountNicknameTag:empty { display: none; }
+    /* ===== 905 會員徽章典藏、每日積分與登入排行榜 ===== */
     #memberRewardsDetails > summary { cursor: pointer; list-style: none; }
     #memberRewardsDetails > summary::-webkit-details-marker { display:none; }
     #memberRewardsDetails > summary::marker { content:''; }
     .member-reward-card { border: 1px solid rgba(148,163,184,.16); border-radius: 1rem; background: rgba(15,23,42,.58); }
-    .member-reward-card.is-earned { border-color: rgba(251,191,36,.34); background: linear-gradient(145deg,rgba(120,53,15,.18),rgba(30,41,59,.58)); }
-    .member-sticker-button { min-width: 3.3rem; min-height: 3.3rem; border: 1px solid rgba(148,163,184,.22); border-radius: .9rem; background: rgba(15,23,42,.65); font-size: 1.35rem; transition: transform .18s ease,border-color .18s ease,background .18s ease; }
-    .member-sticker-button:hover { transform: translateY(-2px); border-color: rgba(244,114,182,.55); }
-    .member-sticker-button.is-selected { border-color: rgba(251,207,232,.8); background: rgba(129,140,248,.2); box-shadow: 0 0 0 2px rgba(244,114,182,.12); }
-    .member-sticker-button:disabled { opacity:.4; cursor:not-allowed; }
-    #lyricsBox .lyric-line.on, #ktvLyricsBox .ktv-line.on { color: var(--member-lyric-color, #ffffff); }
-    @media (max-width: 640px) {
-      #memberRewardsDetails .member-reward-grid { grid-template-columns: 1fr; }
-      #memberPointsDisplay { font-size: 1.4rem; }
-    }
+    .member-badge-card { position:relative; display:flex; min-height:7.2rem; gap:.75rem; overflow:hidden; border:1px solid rgba(148,163,184,.17); border-radius:1rem; padding:.85rem; background:linear-gradient(145deg,rgba(15,23,42,.94),rgba(30,41,59,.72)); transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease; }
+    .member-badge-card::after { content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(115deg,transparent 15%,rgba(255,255,255,.045) 48%,transparent 72%); opacity:.35; }
+    .member-badge-card.is-earned { transform:translateY(-1px); border-color:rgba(103,232,249,.48); background:radial-gradient(ellipse at 12% 0%,rgba(34,211,238,.16),transparent 48%),linear-gradient(145deg,rgba(30,41,59,.96),rgba(15,23,42,.86)); box-shadow:0 8px 26px rgba(34,211,238,.09),inset 0 1px rgba(255,255,255,.07); }
+    .member-badge-card[data-tier="legend"]:not(.is-locked) { border-color:rgba(251,191,36,.68); background:radial-gradient(ellipse at 8% 0%,rgba(251,191,36,.23),transparent 50%),linear-gradient(145deg,rgba(69,38,45,.9),rgba(15,23,42,.9)); box-shadow:0 8px 30px rgba(245,158,11,.15),inset 0 1px rgba(255,255,255,.1); }
+    .member-badge-emblem { position:relative; z-index:1; display:grid; width:3.1rem; height:3.1rem; flex:0 0 auto; place-items:center; align-self:center; border:1px solid rgba(103,232,249,.35); border-radius:1rem; color:#cffafe; background:radial-gradient(circle at 32% 25%,rgba(103,232,249,.28),rgba(30,41,59,.92) 68%); font-size:1.4rem; box-shadow:0 0 20px rgba(34,211,238,.12); }
+    .member-badge-card[data-tier="legend"] .member-badge-emblem { border-color:rgba(251,191,36,.5); color:#fde68a; background:radial-gradient(circle at 32% 25%,rgba(251,191,36,.35),rgba(69,38,45,.92) 70%); box-shadow:0 0 22px rgba(245,158,11,.2); }
+    .member-badge-card.is-locked .member-badge-emblem { border-color:rgba(148,163,184,.15); color:#64748b; background:linear-gradient(145deg,#1e293b,#0f172a); filter:saturate(.35); }
+    .member-badge-copy { position:relative; z-index:1; min-width:0; flex:1; }
+    .member-badge-tier { color:#67e8f9; font-size:.55rem; font-weight:900; letter-spacing:.12em; }
+    .member-badge-card[data-tier="legend"] .member-badge-tier { color:#fcd34d; }
+    .member-badge-title { margin-top:.15rem; color:#f8fafc; font-size:.76rem; font-weight:900; }
+    .member-badge-description { margin-top:.22rem; color:#94a3b8; font-size:.65rem; line-height:1.55; }
+    .member-badge-state { position:relative; z-index:1; align-self:flex-start; flex:0 0 auto; border:1px solid rgba(148,163,184,.14); border-radius:999px; padding:.18rem .42rem; color:#94a3b8; background:rgba(2,6,23,.4); font-size:.55rem; font-weight:800; }
+    .member-badge-card.is-earned .member-badge-state { border-color:rgba(103,232,249,.24); color:#a5f3fc; background:rgba(8,145,178,.12); }
+    .leaderboard-row { display:grid; grid-template-columns:2rem minmax(0,1fr) auto; align-items:center; gap:.65rem; border:1px solid rgba(148,163,184,.14); border-radius:.85rem; padding:.6rem .7rem; background:linear-gradient(110deg,rgba(15,23,42,.82),rgba(30,41,59,.48)); }
+    .leaderboard-row.is-self { border-color:rgba(103,232,249,.45); background:linear-gradient(110deg,rgba(8,145,178,.15),rgba(30,41,59,.62)); }
+    .leaderboard-rank { display:grid; width:1.75rem; height:1.75rem; place-items:center; border-radius:.6rem; color:#cbd5e1; background:rgba(51,65,85,.7); font-size:.7rem; font-weight:900; }
+    .leaderboard-row:nth-child(1) .leaderboard-rank { color:#422006; background:linear-gradient(135deg,#fde68a,#f59e0b); }
+    .leaderboard-row:nth-child(2) .leaderboard-rank { color:#0f172a; background:linear-gradient(135deg,#e2e8f0,#94a3b8); }
+    .leaderboard-row:nth-child(3) .leaderboard-rank { color:#431407; background:linear-gradient(135deg,#fdba74,#c2410c); }
+    .leaderboard-metrics { color:#94a3b8; font-size:.58rem; line-height:1.5; text-align:right; }
+    #memberPointsDisplay { font-size:1.4rem; }
+    @media (prefers-reduced-motion:reduce) { .member-badge-card { transition:none; } }
+    @media (max-width: 640px) { .leaderboard-row { gap:.45rem; padding:.55rem; } .leaderboard-metrics { font-size:.54rem; } }
 
   </style>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
@@ -859,7 +862,6 @@
           <div class="mr-auto">
             <p class="text-xs font-bold tracking-wider text-emerald-300">目前狀態：已登入</p>
             <p id="accountWelcomeName" class="mt-1 font-bold text-white">個人帳號</p>
-            <span id="accountNicknameTag"></span>
             <p class="text-xs text-slate-400">個人資料與歌單會儲存在這個帳號</p>
           </div>
           <button id="accountSignOutBtn" class="rounded-lg bg-slate-800 px-3 py-2 text-xs text-slate-300 hover:bg-slate-700">登出</button>
@@ -867,17 +869,24 @@
         <details id="profileSettingsDetails" class="overflow-hidden rounded-xl border border-slate-700 bg-slate-950/40">
           <summary class="cursor-pointer list-none px-4 py-3 font-semibold text-white marker:hidden">
             <i class="fa-solid fa-user-gear mr-2 text-purple-300"></i>個人暱稱與頭像設定
-            <span class="ml-1 text-xs font-normal text-slate-400">（設定專區）</span>
+            <span class="ml-1 text-xs font-normal text-slate-400">（積分解鎖後永久使用）</span>
           </summary>
           <div class="space-y-4 border-t border-slate-800 p-4">
+            <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-800 bg-slate-900/60 p-3">
+              <div><p class="text-sm font-semibold text-white">自訂暱稱</p><p id="nicknameUnlockStatus" class="mt-1 text-xs text-slate-400">永久解鎖修改權：100 積分</p></div>
+              <button id="unlockNicknameBtn" type="button" class="rounded-lg bg-amber-400 px-3 py-2 text-xs font-bold text-slate-950 hover:bg-amber-300">解鎖暱稱・100 分</button>
+            </div>
             <label class="block text-sm text-slate-300">
               顯示暱稱
               <input id="profileNickname" maxlength="20" autocomplete="nickname" placeholder="輸入 1–20 字暱稱" class="input mt-1.5 max-w-md">
-              <span class="mt-1 block text-xs text-slate-500">此名稱會顯示在頁首與你發表的留言，不會公開顯示電子郵件。</span>
+              <span class="mt-1 block text-xs text-slate-500">只會公開顯示暱稱，不會公開電子郵件。</span>
             </label>
-            <div>
-              <p class="mb-2 text-sm text-slate-300">選擇頭像</p>
-              <div id="profileAvatarChoices" class="flex flex-wrap gap-2">
+            <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-3">
+              <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+                <div><p class="text-sm font-semibold text-white">自選頭像</p><p id="avatarUnlockStatus" class="mt-1 text-xs text-slate-400">永久解鎖自選頭像：150 積分；Google 頭像仍可免費使用。</p></div>
+                <button id="unlockAvatarBtn" type="button" class="rounded-lg bg-amber-400 px-3 py-2 text-xs font-bold text-slate-950 hover:bg-amber-300">解鎖自選頭像・150 分</button>
+              </div>
+              <div id="profileAvatarChoices" class="flex flex-wrap gap-2" aria-label="選擇頭像">
                 <button type="button" data-avatar="" aria-label="使用 Google 頭像" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xs text-slate-200">Google 頭像</button>
                 <button type="button" data-avatar="🎧" aria-label="頭像耳機" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🎧</button>
                 <button type="button" data-avatar="🎵" aria-label="頭像音符" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🎵</button>
@@ -890,7 +899,7 @@
               </div>
             </div>
             <div class="flex flex-wrap items-center gap-3">
-              <button id="saveProfileBtn" class="rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white hover:bg-purple-500">儲存設定</button>
+              <button id="saveProfileBtn" class="rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white hover:bg-purple-500">儲存暱稱／頭像</button>
               <span id="profileSaveMsg" role="status" class="text-xs text-slate-400"></span>
             </div>
           </div>
@@ -898,14 +907,14 @@
 
         <details id="memberRewardsDetails" class="mt-4 overflow-hidden rounded-xl border border-slate-700 bg-slate-950/40">
           <summary class="flex items-center justify-between gap-3 px-4 py-3 font-semibold text-white">
-            <span><i class="fa-solid fa-award mr-2 text-amber-300"></i>班級紀念收藏與個人化</span>
+            <span><i class="fa-solid fa-award mr-2 text-amber-300"></i>905 徽章收藏與登入排行榜</span>
             <i class="fa-solid fa-chevron-down text-xs text-slate-400"></i>
           </summary>
           <div class="space-y-5 border-t border-slate-800 p-4">
             <div class="member-reward-card flex flex-wrap items-center justify-between gap-4 p-4">
               <div>
                 <p class="text-xs font-bold tracking-wider text-amber-200">每日登入獎勵</p>
-                <p class="mt-1 text-xs text-slate-400">每天登入可得 10 積分，領取間隔至少 24 小時，累積上限 1000 分。</p>
+                <p class="mt-1 text-xs text-slate-400">每天登入可得 10 積分，領取間隔至少 24 小時，累積上限 1000 分；積分可解鎖暱稱與頭像設定。</p>
                 <p id="dailyRewardStatus" class="mt-2 text-xs text-slate-300" role="status" aria-live="polite">登入後自動檢查今日獎勵。</p>
               </div>
               <div class="flex items-center gap-3">
@@ -913,28 +922,21 @@
                 <button id="claimDailyRewardBtn" type="button" class="rounded-lg bg-amber-400 px-3 py-2 text-xs font-bold text-slate-950 hover:bg-amber-300">領取 +10</button>
               </div>
             </div>
-
             <div>
-              <div class="mb-2 flex items-end justify-between gap-2"><div><h3 class="text-sm font-bold text-white">905 班級紀念收藏</h3><p class="mt-1 text-xs text-slate-400">完成日常小任務，留下專屬徽章、貼紙與紀錄。</p></div><span id="memberAchievementCount" class="text-xs text-amber-200">0 / 4</span></div>
-              <div id="memberAchievementGrid" class="grid grid-cols-1 gap-2 sm:grid-cols-2" aria-live="polite"></div>
-            </div>
-
-            <div class="border-t border-slate-800 pt-4">
-              <h3 class="text-sm font-bold text-white">個人化裝飾</h3>
-              <p class="mt-1 text-xs text-slate-400">部分裝飾會在取得對應紀念收藏後開放；選好後按上方「儲存設定」。</p>
-              <div class="member-reward-grid mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <label class="text-xs text-slate-300">頭像框<select id="profileFrameSelect" class="input mt-1.5"></select></label>
-                <label class="text-xs text-slate-300">暱稱標籤<select id="profileTagSelect" class="input mt-1.5"></select></label>
-                <label class="text-xs text-slate-300">個人頁背景<select id="profileBgSelect" class="input mt-1.5"></select></label>
-                <label class="text-xs text-slate-300">KTV 歌詞顏色<select id="profileLyricColorSelect" class="input mt-1.5">
-                  <option value="white">星光白</option><option value="gold">畢旅金</option><option value="pink">心事粉</option><option value="cyan">海風青</option><option value="green">新芽綠</option>
-                </select></label>
+              <div class="mb-3 flex flex-wrap items-end justify-between gap-2">
+                <div><h3 class="text-sm font-bold text-white">905 徽章典藏</h3><p class="mt-1 text-xs text-slate-400">完成聽歌、收藏與互動任務，解鎖 24 枚紀念徽章。</p></div>
+                <span id="memberAchievementCount" class="rounded-full border border-amber-300/25 bg-amber-300/10 px-3 py-1 text-xs font-bold text-amber-200">0 / 24</span>
               </div>
-              <div class="mt-4">
-                <p class="mb-2 text-xs font-semibold text-slate-300">個人頁限定貼紙</p>
-                <div id="profileStickerChoices" class="flex flex-wrap gap-2" aria-label="選擇個人頁貼紙"></div>
-              </div>
+              <div id="memberAchievementGrid" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-live="polite"></div>
             </div>
+            <section id="memberLeaderboard" class="border-t border-slate-800 pt-4" aria-labelledby="memberLeaderboardTitle">
+              <div class="mb-3 flex flex-wrap items-end justify-between gap-2">
+                <div><h3 id="memberLeaderboardTitle" class="text-sm font-bold text-white"><i class="fa-solid fa-ranking-star mr-2 text-cyan-300"></i>登入同學排行榜</h3><p class="mt-1 text-xs text-slate-400">依徽章數、總聽歌次數排序；只顯示暱稱／預設名稱，不公開電子郵件。</p></div>
+                <span id="leaderboardMemberCount" class="text-xs text-slate-400">0 位同學</span>
+              </div>
+              <div id="memberLeaderboardList" class="space-y-2" aria-live="polite"><p class="text-xs text-slate-500">登入後即可加入排行榜。</p></div>
+              <p class="mt-3 text-[10px] leading-5 text-slate-500">聽歌次數沿用帳號播放紀錄；排行榜只對已登入同學開放，顯示暱稱、頭像符號、徽章總數、聽歌次數與積分。</p>
+            </section>
           </div>
         </details>
       </div>
@@ -987,7 +989,7 @@
                 <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-purple-900/40 px-2.5 py-1 font-semibold text-purple-200"><i class="fa-solid fa-check"></i>可互動</span></td>
               </tr>
               <tr>
-                <th scope="row" class="px-4 py-3 font-medium text-slate-200"><i class="fa-solid fa-id-card mr-2 text-indigo-300"></i>自訂顯示暱稱與頭像</th>
+                <th scope="row" class="px-4 py-3 font-medium text-slate-200"><i class="fa-solid fa-id-card mr-2 text-indigo-300"></i>自訂顯示暱稱與頭像（積分解鎖）</th>
                 <td class="px-4 py-3 text-center"><span class="text-slate-500">—</span></td>
                 <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-purple-900/40 px-2.5 py-1 font-semibold text-purple-200"><i class="fa-solid fa-check"></i>可設定</span></td>
               </tr>
@@ -2596,12 +2598,17 @@
       if (id === null || !songs.some(song => song.id === id)) return;
       awardMemberAchievement('first_song');
       if (!canCount('play_' + id, 60 * 1000)) return;
+      if (currentUser) {
+        const hour = new Date().getHours();
+        if (hour >= 5 && hour < 9 && !(userPrefs.memberActivity && userPrefs.memberActivity.morningListener)) persistMemberActivity('morningListener');
+        if ((hour >= 22 || hour < 4) && !(userPrefs.memberActivity && userPrefs.memberActivity.nightListener)) persistMemberActivity('nightListener');
+      }
       st(id).plays++;
       save();
       remoteInc(id, 'plays');
       if (currentUser && sharedDb) {
         sharedDb.ref('userPlays/' + currentUser.uid + '/' + new Date().getFullYear() + '/' + id)
-          .transaction(n => (n || 0) + 1);
+          .transaction(n => (n || 0) + 1).catch(error => console.warn('個人播放次數同步失敗：', error));
       }
       renderSongs(getFilteredSongs());
     }
@@ -3253,99 +3260,212 @@
         : currentUser.photoURL
           ? `<img src="${esc(currentUser.photoURL)}" alt="" referrerpolicy="no-referrer" class="h-6 w-6 rounded-full object-cover">`
           : `<span class="grid h-6 w-6 place-items-center rounded-full bg-purple-600 text-[11px] font-bold text-white">${esc(name.charAt(0).toUpperCase())}</span>`;
-      const memberTag = PROFILE_TAG_LABELS[profile.nicknameTag] && hasMemberAchievement(profile.nicknameTag === 'traveler' ? 'trip_memory' : profile.nicknameTag === 'curator' ? 'playlist_creator' : 'first_song') ? `<span class="hidden lg:inline rounded-full border border-purple-400/30 px-1.5 py-0.5 text-[9px] text-pink-200">${esc(PROFILE_TAG_LABELS[profile.nicknameTag])}</span>` : '';
-      b.innerHTML = `<span class="flex items-center gap-2">${photo}<span class="max-w-[7rem] truncate">${esc(name)}</span>${memberTag}</span>`;
+      b.innerHTML = `<span class="flex items-center gap-2">${photo}<span class="max-w-[7rem] truncate">${esc(name)}</span></span>`;
       b.title = '點擊登出';
     }
 
+    const PROFILE_UNLOCK_COSTS = { nickname: 100, avatar: 150 };
     const MEMBER_ACHIEVEMENTS = [
-      { id: 'daily_checkin', title: '每日來訪紀念', description: '領取每日登入積分，記下今天也來到 905。', sticker: '✨', icon: 'fa-sun' },
-      { id: 'first_song', title: '青春旋律收藏家', description: '完成第一次歌曲播放。', sticker: '🎵', icon: 'fa-music' },
-      { id: 'playlist_creator', title: '回憶歌單策展人', description: '建立一份專屬播放清單。', sticker: '📼', icon: 'fa-compact-disc' },
-      { id: 'trip_memory', title: '畢旅行程紀念章', description: '完成畢旅行程明信片配對遊戲。', sticker: '🚌', icon: 'fa-route' }
+      { id: 'daily_checkin', title: '905 報到星火', description: '領取每日登入積分，記下今天也來到 905。', sticker: '✨', icon: 'fa-sun', tier: 'bronze' },
+      { id: 'first_song', title: '青春初聲', description: '完成第一次歌曲播放。', sticker: '🎵', icon: 'fa-music', tier: 'bronze' },
+      { id: 'playlist_creator', title: '回憶策展人', description: '建立第一份專屬播放清單。', sticker: '📼', icon: 'fa-compact-disc', tier: 'silver' },
+      { id: 'trip_memory', title: '畢旅時光膠囊', description: '完成畢旅行程明信片配對遊戲。', sticker: '🚌', icon: 'fa-route', tier: 'legend' },
+      { id: 'listen_5', title: '耳機初啟', description: '累積播放 5 次。', sticker: '🎧', icon: 'fa-headphones', tier: 'bronze' },
+      { id: 'listen_25', title: '副歌接唱王', description: '累積播放 25 次。', sticker: '🎤', icon: 'fa-microphone-lines', tier: 'silver' },
+      { id: 'listen_50', title: '青春留聲機', description: '累積播放 50 次。', sticker: '💿', icon: 'fa-compact-disc', tier: 'silver' },
+      { id: 'listen_100', title: '百回聲浪', description: '累積播放 100 次。', sticker: '🌊', icon: 'fa-water', tier: 'gold' },
+      { id: 'listen_200', title: '905 傳說歌王', description: '累積播放 200 次。', sticker: '👑', icon: 'fa-crown', tier: 'legend' },
+      { id: 'unique_5', title: '歌單探險家', description: '聽過 5 首不同歌曲。', sticker: '🧭', icon: 'fa-compass', tier: 'bronze' },
+      { id: 'unique_15', title: '旋律收藏地圖', description: '聽過 15 首不同歌曲。', sticker: '🗺️', icon: 'fa-map', tier: 'silver' },
+      { id: 'unique_30', title: '全曲庫漫遊者', description: '聽過 30 首不同歌曲。', sticker: '🌌', icon: 'fa-earth-asia', tier: 'gold' },
+      { id: 'fav_5', title: '心頭好五選', description: '收藏 5 首歌曲。', sticker: '💜', icon: 'fa-heart', tier: 'bronze' },
+      { id: 'fav_15', title: '珍藏歌海', description: '收藏 15 首歌曲。', sticker: '💎', icon: 'fa-gem', tier: 'silver' },
+      { id: 'playlist_3', title: '三輯回憶', description: '建立 3 份雲端播放清單。', sticker: '📚', icon: 'fa-layer-group', tier: 'silver' },
+      { id: 'playlist_5', title: '班級音樂總監', description: '建立 5 份雲端播放清單。', sticker: '🎼', icon: 'fa-sliders', tier: 'gold' },
+      { id: 'genre_3', title: '跨界聆聽者', description: '聽過 3 種不同曲風。', sticker: '🎨', icon: 'fa-shapes', tier: 'silver' },
+      { id: 'genre_6', title: '音樂宇宙旅人', description: '聽過 6 種不同曲風。', sticker: '🪐', icon: 'fa-satellite', tier: 'gold' },
+      { id: 'morning_listener', title: '晨光點歌人', description: '在本地時間 05:00–08:59 播放歌曲。', sticker: '🌅', icon: 'fa-cloud-sun', tier: 'bronze' },
+      { id: 'night_listener', title: '午夜回聲', description: '在本地時間 22:00–03:59 播放歌曲。', sticker: '🌙', icon: 'fa-moon', tier: 'silver' },
+      { id: 'rated_1', title: '樂評初登場', description: '為至少 1 首歌曲評分。', sticker: '⭐', icon: 'fa-star', tier: 'bronze' },
+      { id: 'rated_10', title: '金耳朵評審', description: '為 10 首不同歌曲評分。', sticker: '🏅', icon: 'fa-award', tier: 'gold' },
+      { id: 'playlist_tracks_10', title: '十首珍藏歌單', description: '在雲端播放清單中收藏歌曲累計 10 首。', sticker: '🎁', icon: 'fa-box-open', tier: 'gold' },
+      { id: 'commenter', title: '回聲留言者', description: '完成第一則歌曲留言。', sticker: '💬', icon: 'fa-comment-dots', tier: 'bronze' }
     ];
-    const PROFILE_DECORATION_CHOICES = {
-      frame: [
-        { value: 'none', label: '原始樣式' },
-        { value: 'melody', label: '心事旋律框', requires: 'first_song' },
-        { value: 'curator', label: '歌單策展框', requires: 'playlist_creator' },
-        { value: 'traveler', label: '畢旅紀念框', requires: 'trip_memory' }
-      ],
-      tag: [
-        { value: 'none', label: '不顯示標籤' },
-        { value: 'melody', label: '旋律同行', requires: 'first_song' },
-        { value: 'curator', label: '歌單策展人', requires: 'playlist_creator' },
-        { value: 'traveler', label: '905 畢旅同行者', requires: 'trip_memory' }
-      ],
-      background: [
-        { value: 'none', label: '深夜預設' },
-        { value: 'night', label: '心事星夜', requires: 'first_song' },
-        { value: 'trip', label: '畢旅明信片', requires: 'trip_memory' }
-      ]
-    };
-    const PROFILE_TAG_LABELS = { melody: '旋律同行', curator: '歌單策展人', traveler: '905 畢旅同行者' };
-    const PROFILE_LYRIC_COLORS = { white: '#ffffff', gold: '#fcd38d', pink: '#f9a8d4', cyan: '#67e8f9', green: '#86efac' };
     const ACHIEVEMENT_BY_ID = Object.fromEntries(MEMBER_ACHIEVEMENTS.map(item => [item.id, item]));
+    let userPlayData = {};
+    let leaderboardData = {};
+    let profileUnlockInProgress = false;
 
     function hasMemberAchievement(id) {
       return !!(userPrefs.collection && userPrefs.collection[id]);
     }
 
-    function fillDecorationSelect(elementId, choices, selectedValue) {
-      const select = document.getElementById(elementId);
-      if (!select) return;
-      const available = choices.filter(choice => !choice.requires || hasMemberAchievement(choice.requires));
-      select.innerHTML = available.map(choice => `<option value="${esc(choice.value)}">${esc(choice.label)}</option>`).join('');
-      select.value = available.some(choice => choice.value === selectedValue) ? selectedValue : (available[0] ? available[0].value : 'none');
+    function hasProfileUnlock(kind) {
+      const legacyValue = kind === 'nickname' ? userPrefs.profile && userPrefs.profile.nickname : userPrefs.profile && userPrefs.profile.avatar;
+      return userPoints[kind === 'nickname' ? 'nicknameUnlocked' : 'avatarUnlocked'] === true || !!legacyValue;
     }
 
-    function renderMemberCollection(profile = {}) {
+    function getPlayMetrics() {
+      let total = 0;
+      const unique = new Set();
+      Object.values(userPlayData || {}).forEach(year => {
+        Object.entries(year || {}).forEach(([songId, rawCount]) => {
+          const count = Math.max(0, Number(rawCount) || 0);
+          if (count > 0) { total += count; unique.add(String(songId)); }
+        });
+      });
+      const genres = new Set(songs.filter(song => unique.has(String(song.id))).map(song => String(song.genre || '').trim()).filter(Boolean));
+      return { total, uniqueSongs: unique.size, genres: genres.size };
+    }
+
+    function totalPlaylistTracks() {
+      return Object.values(userLists || {}).reduce((sum, list) => sum + Object.values((list && list.ids) || {}).filter(Boolean).length, 0);
+    }
+
+    function checkMemberAchievements() {
+      if (!currentUser || !sharedDb) return;
+      const plays = getPlayMetrics();
+      const favorites = userFavs.size;
+      const playlists = Object.keys(userLists || {}).length;
+      const rated = Object.keys((userPrefs.memberActivity && userPrefs.memberActivity.ratedSongs) || {}).length;
+      const activity = userPrefs.memberActivity || {};
+      const conditions = [
+        ['listen_5', plays.total >= 5], ['listen_25', plays.total >= 25],
+        ['listen_50', plays.total >= 50], ['listen_100', plays.total >= 100], ['listen_200', plays.total >= 200],
+        ['unique_5', plays.uniqueSongs >= 5], ['unique_15', plays.uniqueSongs >= 15], ['unique_30', plays.uniqueSongs >= 30],
+        ['fav_5', favorites >= 5], ['fav_15', favorites >= 15], ['playlist_3', playlists >= 3], ['playlist_5', playlists >= 5],
+        ['genre_3', plays.genres >= 3], ['genre_6', plays.genres >= 6], ['morning_listener', !!activity.morningListener],
+        ['night_listener', !!activity.nightListener], ['rated_1', rated >= 1], ['rated_10', rated >= 10],
+        ['playlist_tracks_10', totalPlaylistTracks() >= 10]
+      ];
+      conditions.forEach(([id, earned]) => { if (earned) awardMemberAchievement(id); });
+    }
+
+    function renderMemberCollection() {
       const collection = document.getElementById('memberAchievementGrid');
       const count = document.getElementById('memberAchievementCount');
-      const stickerChoices = document.getElementById('profileStickerChoices');
-      if (!collection || !stickerChoices) return;
-      const earned = MEMBER_ACHIEVEMENTS.filter(item => hasMemberAchievement(item.id));
-      if (count) count.textContent = `${earned.length} / ${MEMBER_ACHIEVEMENTS.length}`;
+      if (!collection) return;
+      const earnedCount = MEMBER_ACHIEVEMENTS.filter(item => hasMemberAchievement(item.id)).length;
+      if (count) count.textContent = `${earnedCount} / ${MEMBER_ACHIEVEMENTS.length}`;
       collection.innerHTML = MEMBER_ACHIEVEMENTS.map(item => {
-        const unlocked = hasMemberAchievement(item.id);
-        return `<article class="member-reward-card ${unlocked ? 'is-earned' : 'opacity-60'} flex items-center gap-3 p-3">
-          <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl ${unlocked ? 'bg-amber-400/15 text-amber-200' : 'bg-slate-800 text-slate-500'} text-lg">${unlocked ? item.sticker : '<i class="fa-solid fa-lock text-sm"></i>'}</span>
-          <span class="min-w-0"><b class="block text-xs text-white">${esc(item.title)}</b><span class="mt-1 block text-[11px] leading-5 text-slate-400">${esc(item.description)}</span></span>
-          <span class="ml-auto shrink-0 text-[10px] font-bold ${unlocked ? 'text-emerald-300' : 'text-slate-500'}">${unlocked ? '已收藏' : '未解鎖'}</span>
+        const earned = hasMemberAchievement(item.id);
+        const tierLabel = { bronze: '青銅回聲', silver: '銀河旋律', gold: '金色珍藏', legend: '傳說限定' }[item.tier] || '905 收藏';
+        return `<article class="member-badge-card ${earned ? 'is-earned' : 'is-locked'}" data-tier="${esc(item.tier)}">
+          <span class="member-badge-emblem" aria-hidden="true">${earned ? esc(item.sticker) : '<i class="fa-solid fa-lock"></i>'}</span>
+          <span class="member-badge-copy"><span class="member-badge-tier">${esc(tierLabel)}</span><b class="member-badge-title block">${esc(item.title)}</b><span class="member-badge-description block">${esc(item.description)}</span></span>
+          <span class="member-badge-state">${earned ? '已解鎖' : '待挑戰'}</span>
         </article>`;
       }).join('');
-      const stickerItems = [{ id: 'none', sticker: '－', title: '不使用貼紙', unlocked: true }].concat(
-        MEMBER_ACHIEVEMENTS.map(item => ({ id: item.id, sticker: item.sticker, title: item.title, unlocked: hasMemberAchievement(item.id) }))
-      );
-      stickerChoices.innerHTML = stickerItems.map(item => `<button type="button" class="member-sticker-button ${profile.sticker === item.id ? 'is-selected' : ''}" data-sticker-id="${esc(item.id)}" aria-label="${esc(item.title)}${item.unlocked ? '' : '（尚未解鎖）'}" aria-pressed="${profile.sticker === item.id}" ${item.unlocked ? '' : 'disabled'}>${item.unlocked ? esc(item.sticker) : '<i class="fa-solid fa-lock text-xs"></i>'}</button>`).join('');
-      fillDecorationSelect('profileFrameSelect', PROFILE_DECORATION_CHOICES.frame, profile.avatarFrame || 'none');
-      fillDecorationSelect('profileTagSelect', PROFILE_DECORATION_CHOICES.tag, profile.nicknameTag || 'none');
-      fillDecorationSelect('profileBgSelect', PROFILE_DECORATION_CHOICES.background, profile.profileBg || 'none');
-      const colorSelect = document.getElementById('profileLyricColorSelect');
-      if (colorSelect) colorSelect.value = PROFILE_LYRIC_COLORS[profile.lyricColor] ? profile.lyricColor : 'white';
     }
 
-    function applyMemberDecorations(profile = {}) {
-      const account = document.getElementById('accountArea');
-      const avatar = document.getElementById('accountAvatarPreview');
-      const tag = document.getElementById('accountNicknameTag');
-      if (account) {
-        account.classList.remove('profile-bg-night', 'profile-bg-trip');
-        if (profile.profileBg === 'night' && hasMemberAchievement('first_song')) account.classList.add('profile-bg-night');
-        if (profile.profileBg === 'trip' && hasMemberAchievement('trip_memory')) account.classList.add('profile-bg-trip');
-      }
-      if (avatar) {
-        avatar.classList.remove('avatar-frame-melody', 'avatar-frame-curator', 'avatar-frame-traveler');
-        if (profile.avatarFrame === 'melody' && hasMemberAchievement('first_song')) avatar.classList.add('avatar-frame-melody');
-        if (profile.avatarFrame === 'curator' && hasMemberAchievement('playlist_creator')) avatar.classList.add('avatar-frame-curator');
-        if (profile.avatarFrame === 'traveler' && hasMemberAchievement('trip_memory')) avatar.classList.add('avatar-frame-traveler');
-      }
-      if (tag) tag.textContent = PROFILE_TAG_LABELS[profile.nicknameTag] && hasMemberAchievement(profile.nicknameTag === 'traveler' ? 'trip_memory' : profile.nicknameTag === 'curator' ? 'playlist_creator' : 'first_song') ? PROFILE_TAG_LABELS[profile.nicknameTag] : '';
-      const color = PROFILE_LYRIC_COLORS[profile.lyricColor] || PROFILE_LYRIC_COLORS.white;
-      ['lyricsBox', 'ktvLyricsBox'].forEach(id => {
-        const box = document.getElementById(id);
-        if (box) box.style.setProperty('--member-lyric-color', color);
+    function renderProfileUnlocks(profile = userPrefs.profile || {}) {
+      const nicknameUnlocked = hasProfileUnlock('nickname');
+      const avatarUnlocked = hasProfileUnlock('avatar');
+      const nicknameInput = document.getElementById('profileNickname');
+      const nicknameButton = document.getElementById('unlockNicknameBtn');
+      const avatarButton = document.getElementById('unlockAvatarBtn');
+      const nicknameStatus = document.getElementById('nicknameUnlockStatus');
+      const avatarStatus = document.getElementById('avatarUnlockStatus');
+      if (nicknameInput) nicknameInput.disabled = !nicknameUnlocked;
+      if (nicknameButton) { nicknameButton.classList.toggle('hidden', nicknameUnlocked); nicknameButton.disabled = profileUnlockInProgress || Number(userPoints.total || 0) < PROFILE_UNLOCK_COSTS.nickname; }
+      if (avatarButton) { avatarButton.classList.toggle('hidden', avatarUnlocked); avatarButton.disabled = profileUnlockInProgress || Number(userPoints.total || 0) < PROFILE_UNLOCK_COSTS.avatar; }
+      if (nicknameStatus) nicknameStatus.textContent = nicknameUnlocked ? '已永久解鎖，可免費修改暱稱。' : `永久解鎖修改權需 ${PROFILE_UNLOCK_COSTS.nickname} 積分。`;
+      if (avatarStatus) avatarStatus.textContent = avatarUnlocked ? '已永久解鎖，可免費更換自選頭像；也可改回 Google 頭像。' : `永久解鎖自選頭像需 ${PROFILE_UNLOCK_COSTS.avatar} 積分；Google 頭像仍可免費使用。`;
+      document.querySelectorAll('#profileAvatarChoices [data-avatar]').forEach(button => {
+        const lockedChoice = !!button.dataset.avatar && !avatarUnlocked;
+        button.disabled = lockedChoice;
+        const selected = button.dataset.avatar === (profile.avatar || '');
+        button.classList.toggle('border-purple-300', selected);
+        button.classList.toggle('bg-purple-900/70', selected);
+        button.setAttribute('aria-pressed', String(selected));
       });
+    }
+
+    function renderLeaderboard() {
+      const list = document.getElementById('memberLeaderboardList');
+      const count = document.getElementById('leaderboardMemberCount');
+      if (!list || !count) return;
+      const entries = Object.entries(leaderboardData || {}).filter(([, entry]) => entry && typeof entry === 'object')
+        .sort((a, b) => (Number(b[1].badgeCount) || 0) - (Number(a[1].badgeCount) || 0)
+          || (Number(b[1].totalListens) || 0) - (Number(a[1].totalListens) || 0)
+          || (Number(b[1].points) || 0) - (Number(a[1].points) || 0));
+      count.textContent = `${entries.length} 位同學`;
+      if (!entries.length) { list.innerHTML = '<p class="text-xs text-slate-500">目前還沒有排行榜資料。</p>'; return; }
+      list.innerHTML = entries.slice(0, 50).map(([uid, entry], index) => {
+        const self = !!currentUser && uid === currentUser.uid;
+        const avatar = entry.avatar ? `<span class="grid h-8 w-8 place-items-center rounded-full border border-cyan-200/15 bg-slate-800 text-lg">${esc(entry.avatar)}</span>` : `<span class="grid h-8 w-8 place-items-center rounded-full border border-slate-700 bg-slate-800 text-sm font-black text-cyan-100">${esc(String(entry.displayName || '同').charAt(0))}</span>`;
+        return `<article class="leaderboard-row ${self ? 'is-self' : ''}"><span class="leaderboard-rank">${index + 1}</span><span class="flex min-w-0 items-center gap-2">${avatar}<span class="min-w-0"><b class="block truncate text-xs text-white">${esc(entry.displayName || '905 同學')}${self ? '（你）' : ''}</b><span class="text-[10px] text-slate-400">${Number(entry.badgeCount) || 0} / ${MEMBER_ACHIEVEMENTS.length} 枚徽章</span></span></span><span class="leaderboard-metrics">聽歌 ${Number(entry.totalListens) || 0} 次<br>${Number(entry.points) || 0} 積分</span></article>`;
+      }).join('');
+    }
+
+    function syncLeaderboardProfile() {
+      if (!currentUser || !sharedDb) return;
+      const profile = userPrefs.profile || {};
+      const fallbackName = currentUser.displayName && !String(currentUser.displayName).includes('@') ? currentUser.displayName : '905 同學';
+      const displayName = String(profile.nickname || fallbackName).trim().slice(0, 20) || '905 同學';
+      const safeAvatar = hasProfileUnlock('avatar') ? String(profile.avatar || '').slice(0, 8) : '';
+      const desired = {
+        displayName,
+        avatar: safeAvatar,
+        badgeCount: MEMBER_ACHIEVEMENTS.filter(item => hasMemberAchievement(item.id)).length,
+        totalListens: getPlayMetrics().total,
+        points: Math.max(0, Math.min(1000, Number(userPoints.total) || 0))
+      };
+      sharedDb.ref('leaderboard/' + currentUser.uid).transaction(current => {
+        const old = current || {};
+        const next = { ...desired, totalListens: Math.max(desired.totalListens, Number(old.totalListens) || 0), updatedAt: Date.now() };
+        const keys = Object.keys(desired);
+        if (keys.every(key => String(old[key] ?? '') === String(next[key])) && Number(old.updatedAt)) return;
+        return next;
+      }).catch(error => console.warn('排行榜同步失敗：', error));
+    }
+
+    function persistMemberActivity(key, value = true) {
+      if (!currentUser || !sharedDb) return;
+      userPrefs.memberActivity = { ...(userPrefs.memberActivity || {}), [key]: value };
+      sharedDb.ref(`userPrefs/${currentUser.uid}/memberActivity/${key}`).set(value).catch(error => console.warn('會員任務紀錄同步失敗：', error));
+      checkMemberAchievements();
+    }
+
+    function recordRatedSong(songId) {
+      if (!currentUser || !sharedDb) return;
+      const ratedSongs = { ...((userPrefs.memberActivity && userPrefs.memberActivity.ratedSongs) || {}) };
+      const key = String(songId);
+      if (ratedSongs[key]) return;
+      ratedSongs[key] = true;
+      userPrefs.memberActivity = { ...(userPrefs.memberActivity || {}), ratedSongs };
+      sharedDb.ref(`userPrefs/${currentUser.uid}/memberActivity/ratedSongs/${key}`).set(true).catch(error => console.warn('評分成就同步失敗：', error));
+      checkMemberAchievements();
+    }
+
+    async function unlockProfileFeature(kind) {
+      if (!currentUser || !sharedDb || profileUnlockInProgress || !['nickname', 'avatar'].includes(kind)) return;
+      if (hasProfileUnlock(kind)) return;
+      const cost = PROFILE_UNLOCK_COSTS[kind];
+      const status = document.getElementById(kind === 'nickname' ? 'nicknameUnlockStatus' : 'avatarUnlockStatus');
+      if (Number(userPoints.total || 0) < cost) { if (status) status.textContent = `積分不足；需要 ${cost} 分，目前 ${Number(userPoints.total || 0)} 分。`; return; }
+      profileUnlockInProgress = true;
+      renderProfileUnlocks();
+      try {
+        const field = kind === 'nickname' ? 'nicknameUnlocked' : 'avatarUnlocked';
+        const result = await sharedDb.ref('userPoints/' + currentUser.uid).transaction(current => {
+          const total = current && Number.isFinite(Number(current.total)) ? Number(current.total) : 0;
+          if (!current || total < cost || current[field] === true) return;
+          return { ...current, total: total - cost, [field]: true };
+        });
+        if (result.committed) userPoints = result.snapshot.val();
+        else if (result.snapshot && result.snapshot.exists()) userPoints = result.snapshot.val();
+        if (status) status.textContent = result.committed ? '解鎖成功！永久開放，不會再次扣分。' : '解鎖未完成，請確認積分或稍後重試。';
+        renderAccountPanel();
+        renderDailyRewardUI();
+        syncLeaderboardProfile();
+      } catch (error) {
+        console.error('個人設定解鎖失敗：', error);
+        if (status) status.textContent = '解鎖失敗，請稍後重試。';
+      } finally {
+        profileUnlockInProgress = false;
+        renderProfileUnlocks();
+      }
     }
 
     function renderDailyRewardUI() {
@@ -3371,12 +3491,12 @@
     async function awardMemberAchievement(id) {
       if (!currentUser || !sharedDb || !ACHIEVEMENT_BY_ID[id] || hasMemberAchievement(id)) return;
       userPrefs.collection = { ...(userPrefs.collection || {}), [id]: true };
-      renderMemberCollection(userPrefs.profile || {});
-      applyMemberDecorations(userPrefs.profile || {});
+      renderMemberCollection();
+      syncLeaderboardProfile();
       try {
         await sharedDb.ref(`userPrefs/${currentUser.uid}/collection/${id}`).set(true);
       } catch (error) {
-        console.warn('儲存班級紀念收藏失敗：', error);
+        console.warn('儲存班級徽章失敗：', error);
       }
     }
 
@@ -3391,7 +3511,7 @@
           const total = current && Number.isFinite(Number(current.total)) ? Number(current.total) : 0;
           const lastClaim = current && Number.isFinite(Number(current.lastClaim)) ? Number(current.lastClaim) : 0;
           if (total >= 1000 || (lastClaim && claimAt - lastClaim < 24 * 60 * 60 * 1000)) return;
-          return { total: Math.min(1000, total + 10), lastClaim: claimAt };
+          return { ...(current || {}), total: Math.min(1000, total + 10), lastClaim: claimAt };
         });
         if (result.committed && Number(result.snapshot.val().lastClaim) === claimAt) {
           userPoints = result.snapshot.val();
@@ -3418,26 +3538,18 @@
       const profile = userPrefs.profile || {};
       const displayName = profile.nickname || currentUser.displayName || '同學';
       document.getElementById('accountWelcomeName').textContent = `嗨，${displayName}`;
-      document.getElementById('profileNickname').value = profile.nickname || currentUser.displayName || '';
+      const nicknameInput = document.getElementById('profileNickname');
+      nicknameInput.value = profile.nickname || currentUser.displayName || '';
       selectedProfileAvatar = typeof profile.avatar === 'string' ? profile.avatar : '';
-      applyMemberDecorations(profile);
-      renderMemberCollection(profile);
+      renderMemberCollection();
+      renderProfileUnlocks(profile);
       renderDailyRewardUI();
-      document.querySelectorAll('#profileAvatarChoices [data-avatar]').forEach(button => {
-        const selected = button.dataset.avatar === selectedProfileAvatar;
-        button.classList.toggle('border-purple-300', selected);
-        button.classList.toggle('bg-purple-900/70', selected);
-        button.setAttribute('aria-pressed', String(selected));
-      });
 
       const preview = document.getElementById('accountAvatarPreview');
-      if (selectedProfileAvatar) {
-        preview.textContent = selectedProfileAvatar;
-      } else if (currentUser.photoURL) {
-        preview.innerHTML = `<img src="${esc(currentUser.photoURL)}" alt="個人頭像" referrerpolicy="no-referrer" class="h-full w-full object-cover">`;
-      } else {
-        preview.textContent = displayName.charAt(0).toUpperCase();
-      }
+      if (selectedProfileAvatar) preview.textContent = selectedProfileAvatar;
+      else if (currentUser.photoURL) preview.innerHTML = `<img src="${esc(currentUser.photoURL)}" alt="個人頭像" referrerpolicy="no-referrer" class="h-full w-full object-cover">`;
+      else preview.textContent = displayName.charAt(0).toUpperCase();
+      renderLeaderboard();
       updateLoginBtn();
     }
     document.body.classList.toggle('is-guest', !currentUser);
@@ -3505,19 +3617,13 @@
     });
     document.getElementById('accountSignOutBtn').addEventListener('click', () => document.getElementById('loginBtn').click());
     document.getElementById('claimDailyRewardBtn').addEventListener('click', claimDailyLoginReward);
-    document.getElementById('profileStickerChoices').addEventListener('click', event => {
-      const button = event.target.closest('[data-sticker-id]');
-      if (!button || button.disabled) return;
-      document.querySelectorAll('#profileStickerChoices [data-sticker-id]').forEach(item => {
-        const selected = item === button;
-        item.classList.toggle('is-selected', selected);
-        item.setAttribute('aria-pressed', String(selected));
-      });
-    });
-    setInterval(renderDailyRewardUI, 60 * 1000);
+    document.getElementById('unlockNicknameBtn').addEventListener('click', () => unlockProfileFeature('nickname'));
+    document.getElementById('unlockAvatarBtn').addEventListener('click', () => unlockProfileFeature('avatar'));
+
 
     document.querySelectorAll('#profileAvatarChoices [data-avatar]').forEach(button => {
       button.addEventListener('click', () => {
+        if (button.disabled) return;
         selectedProfileAvatar = button.dataset.avatar || '';
         document.querySelectorAll('#profileAvatarChoices [data-avatar]').forEach(item => {
           const selected = item === button;
@@ -3526,33 +3632,37 @@
           item.setAttribute('aria-pressed', String(selected));
         });
         const preview = document.getElementById('accountAvatarPreview');
+        const name = document.getElementById('profileNickname').value.trim() || (currentUser && currentUser.displayName) || '同學';
         if (selectedProfileAvatar) preview.textContent = selectedProfileAvatar;
         else if (currentUser && currentUser.photoURL) preview.innerHTML = `<img src="${esc(currentUser.photoURL)}" alt="個人頭像" referrerpolicy="no-referrer" class="h-full w-full object-cover">`;
-        else preview.textContent = (document.getElementById('profileNickname').value.trim() || '同學').charAt(0).toUpperCase();
+        else preview.textContent = name.charAt(0).toUpperCase();
       });
     });
 
     document.getElementById('saveProfileBtn').addEventListener('click', async () => {
       if (!currentUser || !sharedDb) return alert('請先登入並確認資料庫連線');
+      const oldProfile = userPrefs.profile || {};
+      const nicknameUnlocked = hasProfileUnlock('nickname');
+      const avatarUnlocked = hasProfileUnlock('avatar');
+      if (!nicknameUnlocked && !avatarUnlocked) {
+        document.getElementById('profileSaveMsg').textContent = '請先使用積分解鎖暱稱或自選頭像設定。';
+        return;
+      }
       const nickname = document.getElementById('profileNickname').value.trim().slice(0, 20);
       const msg = document.getElementById('profileSaveMsg');
-      if (!nickname) { msg.textContent = '請先輸入暱稱'; return; }
+      if (nicknameUnlocked && !nickname) { msg.textContent = '暱稱不可空白'; return; }
       msg.textContent = '儲存中…';
-      const selectedSticker = document.querySelector('#profileStickerChoices .member-sticker-button.is-selected');
-      const profile = {
-        nickname,
-        avatar: selectedProfileAvatar,
-        avatarFrame: document.getElementById('profileFrameSelect').value,
-        nicknameTag: document.getElementById('profileTagSelect').value,
-        profileBg: document.getElementById('profileBgSelect').value,
-        lyricColor: document.getElementById('profileLyricColorSelect').value,
-        sticker: selectedSticker ? selectedSticker.dataset.stickerId : 'none'
-      };
+      const profile = {};
+      if (nicknameUnlocked) profile.nickname = nickname;
+      else if (oldProfile.nickname) profile.nickname = oldProfile.nickname;
+      if (avatarUnlocked) profile.avatar = selectedProfileAvatar;
+      else if (oldProfile.avatar) profile.avatar = oldProfile.avatar;
       try {
         await sharedDb.ref('userPrefs/' + currentUser.uid + '/profile').set(profile);
         userPrefs.profile = profile;
-        msg.textContent = '已儲存暱稱、頭像框、標籤、背景與歌詞顏色。';
+        msg.textContent = '暱稱／頭像已儲存。';
         renderAccountPanel();
+        syncLeaderboardProfile();
       } catch (err) {
         console.error('儲存個人設定失敗：', err);
         msg.textContent = '儲存失敗，請稍後再試。';
@@ -3583,6 +3693,9 @@
       userHist = {};
       userPrefs = {};
       userPoints = { total: 0, lastClaim: 0 };
+      userPlayData = {};
+      leaderboardData = {};
+      renderLeaderboard();
       if (!currentUser && String(currentPlaylistFilter).startsWith('u:')) {
         currentPlaylistFilter = 'all';
         activeUserList = null;
@@ -3595,9 +3708,10 @@
           const v = snap.val() || {};
           userFavs = new Set(Object.keys(v).filter(k => v[k]).map(Number));
           refreshUserUI();
+          checkMemberAchievements();
         });
         const pl = sharedDb.ref('userPlaylists/' + uid);
-        pl.on('value', snap => { userLists = snap.val() || {}; refreshUserUI(); });
+        pl.on('value', snap => { userLists = snap.val() || {}; refreshUserUI(); checkMemberAchievements(); });
         const h = sharedDb.ref('userHistory/' + uid);
         h.on('value', snap => { userHist = snap.val() || {}; refreshUserUI(); });
         const pr = sharedDb.ref('userPrefs/' + uid);
@@ -3605,14 +3719,27 @@
           userPrefs = snap.val() || {};
           document.getElementById('notifyNew').checked = !!userPrefs.notifyNew;
           renderAccountPanel();
+          checkMemberAchievements();
+          syncLeaderboardProfile();
           checkNewSongs();
         });
         const pointsRef = sharedDb.ref('userPoints/' + uid);
         pointsRef.on('value', snap => {
           userPoints = snap.val() || { total: 0, lastClaim: 0 };
           renderDailyRewardUI();
+          renderProfileUnlocks();
+          syncLeaderboardProfile();
         });
-        userRefs = [f, pl, h, pr, pointsRef];
+        const playsRef = sharedDb.ref('userPlays/' + uid);
+        playsRef.on('value', snap => {
+          userPlayData = snap.val() || {};
+          checkMemberAchievements();
+          syncLeaderboardProfile();
+        });
+        const boardRef = sharedDb.ref('leaderboard');
+        boardRef.on('value', snap => { leaderboardData = snap.val() || {}; renderLeaderboard(); });
+        userRefs = [f, pl, h, pr, pointsRef, playsRef, boardRef];
+        syncLeaderboardProfile();
       }
       refreshUserUI();
     }
@@ -3723,7 +3850,8 @@
     window.rateSong = function (id, val) {
       if (!currentUser || !sharedDb) return alert('請先登入才能評分');
       const ref = sharedDb.ref('ratings/' + id + '/' + currentUser.uid);
-      val === '' ? ref.remove() : ref.set(Number(val));
+      if (val === '') { ref.remove(); return; }
+      ref.set(Number(val)).then(() => recordRatedSong(id)).catch(error => console.warn('歌曲評分同步失敗：', error));
     };
 
     window.openComments = function (id) {
@@ -3796,6 +3924,8 @@
         approved: isAdminUser(),
         time: firebase.database.ServerValue.TIMESTAMP
       });
+      persistMemberActivity('commented');
+      awardMemberAchievement('commenter');
       localStorage.setItem('sg_lastComment', String(Date.now()));
       bumpActivity();
       if (sharedDb) sharedDb.ref('daily/' + todayKey() + '/comments').transaction(n => (n || 0) + 1);
