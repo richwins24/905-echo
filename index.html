@@ -862,6 +862,8 @@
           <div class="mr-auto">
             <p class="text-xs font-bold tracking-wider text-emerald-300">目前狀態：已登入</p>
             <p id="accountWelcomeName" class="mt-1 font-bold text-white">個人帳號</p>
+            <p id="memberLevelDisplay" class="mt-1 text-xs font-bold text-cyan-200" aria-live="polite">Lv.1 初聲同學・0 / 3 枚升級</p>
+            <p class="text-xs text-slate-400">稱號依累積徽章數提升；花費積分不會降級。</p>
             <p class="text-xs text-slate-400">個人資料與歌單會儲存在這個帳號</p>
           </div>
           <button id="accountSignOutBtn" class="rounded-lg bg-slate-800 px-3 py-2 text-xs text-slate-300 hover:bg-slate-700">登出</button>
@@ -2482,6 +2484,13 @@
     const ktvVolumeBar = document.getElementById('ktvVolumeBar');
     const ktvMuteBtn = document.getElementById('ktvMuteBtn');
 
+    function recordKtvVisit() {
+      if (!currentUser || !sharedDb) return;
+      const days = { ...((userPrefs.memberActivity && userPrefs.memberActivity.ktvDays) || {}) };
+      days[todayKey()] = true;
+      persistMemberActivity('ktvDays', days);
+    }
+
     function toggleKtvMode(show) {
       const requestedState = typeof show === 'boolean' ? show : !isKtvMode;
       if (requestedState && !currentUser) {
@@ -2490,7 +2499,9 @@
           <div class="text-center"><button onclick="document.getElementById('reviewClose').click(); document.getElementById('loginBtn').click()" class="rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white hover:bg-purple-500">Google 登入</button></div>`);
         return;
       }
+      const enteringKtv = requestedState && !isKtvMode;
       isKtvMode = requestedState;
+      if (enteringKtv) recordKtvVisit();
       ktvModal.classList.toggle('hidden', !isKtvMode);
       const bottomBar = document.getElementById('playerBar');
       if (bottomBar) {
@@ -2600,6 +2611,9 @@
       awardMemberAchievement('first_song');
       if (!canCount('play_' + id, 60 * 1000)) return;
       if (currentUser) {
+        const day = todayKey();
+        const listeningDays = { ...((userPrefs.memberActivity && userPrefs.memberActivity.listeningDays) || {}) };
+        if (!listeningDays[day]) { listeningDays[day] = true; persistMemberActivity('listeningDays', listeningDays); }
         const hour = new Date().getHours();
         if (hour >= 5 && hour < 9 && !(userPrefs.memberActivity && userPrefs.memberActivity.morningListener)) persistMemberActivity('morningListener');
         if ((hour >= 22 || hour < 4) && !(userPrefs.memberActivity && userPrefs.memberActivity.nightListener)) persistMemberActivity('nightListener');
@@ -3276,23 +3290,44 @@
       { id: 'listen_50', title: '青春留聲機', description: '累積播放 50 次。', sticker: '💿', icon: 'fa-compact-disc', tier: 'silver' },
       { id: 'listen_100', title: '百回聲浪', description: '累積播放 100 次。', sticker: '🌊', icon: 'fa-water', tier: 'gold' },
       { id: 'listen_200', title: '905 傳說歌王', description: '累積播放 200 次。', sticker: '👑', icon: 'fa-crown', tier: 'legend' },
-      { id: 'unique_5', title: '歌單探險家', description: '聽過 5 首不同歌曲。', sticker: '🧭', icon: 'fa-compass', tier: 'bronze' },
-      { id: 'unique_15', title: '旋律收藏地圖', description: '聽過 15 首不同歌曲。', sticker: '🗺️', icon: 'fa-map', tier: 'silver' },
-      { id: 'unique_30', title: '全曲庫漫遊者', description: '聽過 30 首不同歌曲。', sticker: '🌌', icon: 'fa-earth-asia', tier: 'gold' },
-      { id: 'fav_5', title: '心頭好五選', description: '收藏 5 首歌曲。', sticker: '💜', icon: 'fa-heart', tier: 'bronze' },
-      { id: 'fav_15', title: '珍藏歌海', description: '收藏 15 首歌曲。', sticker: '💎', icon: 'fa-gem', tier: 'silver' },
+      { id: 'unique_5', title: '歌曲初相遇', description: '聽過至少 1 首不同歌曲。', sticker: '🧭', icon: 'fa-compass', tier: 'bronze' },
+      { id: 'unique_15', title: '曲庫初探', description: '聽過至少 2 首不同歌曲。', sticker: '🗺️', icon: 'fa-map', tier: 'silver' },
+      { id: 'unique_30', title: '雙曲回聲', description: '聽過至少 2 首不同歌曲，並在 3 個不同日期播放。', sticker: '🌌', icon: 'fa-earth-asia', tier: 'gold' },
+      { id: 'fav_5', title: '心頭好', description: '收藏至少 1 首歌曲。', sticker: '💜', icon: 'fa-heart', tier: 'bronze' },
+      { id: 'fav_15', title: '雙曲珍藏', description: '收藏至少 2 首不同歌曲。', sticker: '💎', icon: 'fa-gem', tier: 'silver' },
       { id: 'playlist_3', title: '三輯回憶', description: '建立 3 份雲端播放清單。', sticker: '📚', icon: 'fa-layer-group', tier: 'silver' },
       { id: 'playlist_5', title: '班級音樂總監', description: '建立 5 份雲端播放清單。', sticker: '🎼', icon: 'fa-sliders', tier: 'gold' },
-      { id: 'genre_3', title: '跨界聆聽者', description: '聽過 3 種不同曲風。', sticker: '🎨', icon: 'fa-shapes', tier: 'silver' },
-      { id: 'genre_6', title: '音樂宇宙旅人', description: '聽過 6 種不同曲風。', sticker: '🪐', icon: 'fa-satellite', tier: 'gold' },
+      { id: 'genre_3', title: 'KTV 初登場', description: '首次開啟全螢幕 KTV。', sticker: '🎨', icon: 'fa-expand', tier: 'silver' },
+      { id: 'genre_6', title: 'KTV 常客', description: '在 3 個不同日期開啟全螢幕 KTV。', sticker: '🪐', icon: 'fa-satellite', tier: 'gold' },
       { id: 'morning_listener', title: '晨光點歌人', description: '在本地時間 05:00–08:59 播放歌曲。', sticker: '🌅', icon: 'fa-cloud-sun', tier: 'bronze' },
       { id: 'night_listener', title: '午夜回聲', description: '在本地時間 22:00–03:59 播放歌曲。', sticker: '🌙', icon: 'fa-moon', tier: 'silver' },
       { id: 'rated_1', title: '樂評初登場', description: '為至少 1 首歌曲評分。', sticker: '⭐', icon: 'fa-star', tier: 'bronze' },
-      { id: 'rated_10', title: '金耳朵評審', description: '為 10 首不同歌曲評分。', sticker: '🏅', icon: 'fa-award', tier: 'gold' },
-      { id: 'playlist_tracks_10', title: '十首珍藏歌單', description: '在雲端播放清單中收藏歌曲累計 10 首。', sticker: '🎁', icon: 'fa-box-open', tier: 'gold' },
+      { id: 'rated_10', title: '雙曲評審', description: '為至少 2 首不同歌曲評分。', sticker: '🏅', icon: 'fa-award', tier: 'gold' },
+      { id: 'playlist_tracks_10', title: '雙曲回憶歌單', description: '在雲端播放清單中加入至少 2 首不同歌曲。', sticker: '🎁', icon: 'fa-box-open', tier: 'gold' },
       { id: 'commenter', title: '回聲留言者', description: '完成第一則歌曲留言。', sticker: '💬', icon: 'fa-comment-dots', tier: 'bronze' }
     ];
     const ACHIEVEMENT_BY_ID = Object.fromEntries(MEMBER_ACHIEVEMENTS.map(item => [item.id, item]));
+    const BADGE_REWARD_POINTS = { bronze: 10, silver: 20, gold: 30, legend: 30 };
+    const MEMBER_LEVELS = [
+      { level: 1, title: '初聲同學', min: 0, next: 3 },
+      { level: 2, title: '旋律同行', min: 3, next: 7 },
+      { level: 3, title: '回憶收藏家', min: 7, next: 13 },
+      { level: 4, title: '青春領航員', min: 13, next: 19 },
+      { level: 5, title: '905 傳說', min: 19, next: 24 }
+    ];
+    function getMemberLevel(badgeCount) {
+      const count = Math.max(0, Math.min(MEMBER_ACHIEVEMENTS.length, Number(badgeCount) || 0));
+      const current = [...MEMBER_LEVELS].reverse().find(level => count >= level.min) || MEMBER_LEVELS[0];
+      const next = MEMBER_LEVELS.find(level => level.min > count) || null;
+      return { ...current, count, next, progress: next ? `${count} / ${next.min} 枚` : `${count} / ${MEMBER_ACHIEVEMENTS.length} 枚・最高稱號` };
+    }
+    function renderMemberLevel() {
+      const element = document.getElementById('memberLevelDisplay');
+      if (!element) return;
+      const count = MEMBER_ACHIEVEMENTS.filter(item => hasMemberAchievement(item.id)).length;
+      const level = getMemberLevel(count);
+      element.textContent = `Lv.${level.level} ${level.title}・${level.progress}`;
+    }
     let userPlayData = {};
     let leaderboardData = {};
     let profileUnlockInProgress = false;
@@ -3333,11 +3368,13 @@
       const conditions = [
         ['listen_5', plays.total >= 5], ['listen_25', plays.total >= 25],
         ['listen_50', plays.total >= 50], ['listen_100', plays.total >= 100], ['listen_200', plays.total >= 200],
-        ['unique_5', plays.uniqueSongs >= 5], ['unique_15', plays.uniqueSongs >= 15], ['unique_30', plays.uniqueSongs >= 30],
-        ['fav_5', favorites >= 5], ['fav_15', favorites >= 15], ['playlist_3', playlists >= 3], ['playlist_5', playlists >= 5],
-        ['genre_3', plays.genres >= 3], ['genre_6', plays.genres >= 6], ['morning_listener', !!activity.morningListener],
-        ['night_listener', !!activity.nightListener], ['rated_1', rated >= 1], ['rated_10', rated >= 10],
-        ['playlist_tracks_10', totalPlaylistTracks() >= 10]
+        ['unique_5', plays.uniqueSongs >= 1], ['unique_15', plays.uniqueSongs >= 2],
+        ['unique_30', plays.uniqueSongs >= 2 && Object.keys(activity.listeningDays || {}).length >= 3],
+        ['fav_5', favorites >= 1], ['fav_15', favorites >= 2], ['playlist_3', playlists >= 3], ['playlist_5', playlists >= 5],
+        ['genre_3', Object.keys(activity.ktvDays || {}).length >= 1], ['genre_6', Object.keys(activity.ktvDays || {}).length >= 3],
+        ['morning_listener', !!activity.morningListener],
+        ['night_listener', !!activity.nightListener], ['rated_1', rated >= 1], ['rated_10', rated >= 2],
+        ['playlist_tracks_10', totalPlaylistTracks() >= 2]
       ];
       conditions.forEach(([id, earned]) => { if (earned) awardMemberAchievement(id); });
     }
@@ -3348,13 +3385,14 @@
       if (!collection) return;
       const earnedCount = MEMBER_ACHIEVEMENTS.filter(item => hasMemberAchievement(item.id)).length;
       if (count) count.textContent = `${earnedCount} / ${MEMBER_ACHIEVEMENTS.length}`;
+      renderMemberLevel();
       collection.innerHTML = MEMBER_ACHIEVEMENTS.map(item => {
         const earned = hasMemberAchievement(item.id);
         const tierLabel = { bronze: '青銅回聲', silver: '銀河旋律', gold: '金色珍藏', legend: '傳說限定' }[item.tier] || '905 收藏';
         return `<article class="member-badge-card ${earned ? 'is-earned' : 'is-locked'}" data-tier="${esc(item.tier)}">
           <span class="member-badge-emblem" aria-hidden="true">${earned ? esc(item.sticker) : '<i class="fa-solid fa-lock"></i>'}</span>
           <span class="member-badge-copy"><span class="member-badge-tier">${esc(tierLabel)}</span><b class="member-badge-title block">${esc(item.title)}</b><span class="member-badge-description block">${esc(item.description)}</span></span>
-          <span class="member-badge-state">${earned ? '已解鎖' : '待挑戰'}</span>
+          <span class="member-badge-state">${earned ? '已解鎖' : '待挑戰'}<br>+${BADGE_REWARD_POINTS[item.tier] || 10} 分</span>
         </article>`;
       }).join('');
     }
@@ -3395,7 +3433,7 @@
       list.innerHTML = entries.slice(0, 10).map(([uid, entry], index) => {
         const self = !!currentUser && uid === currentUser.uid;
         const avatar = entry.avatar ? `<span class="grid h-8 w-8 place-items-center rounded-full border border-cyan-200/15 bg-slate-800 text-lg">${esc(entry.avatar)}</span>` : `<span class="grid h-8 w-8 place-items-center rounded-full border border-slate-700 bg-slate-800 text-sm font-black text-cyan-100">${esc(String(entry.displayName || '同').charAt(0))}</span>`;
-        return `<article class="leaderboard-row ${self ? 'is-self' : ''}"><span class="leaderboard-rank">${index + 1}</span><span class="flex min-w-0 items-center gap-2">${avatar}<span class="min-w-0"><b class="block truncate text-xs text-white">${esc(entry.displayName || '905 同學')}${self ? '（你）' : ''}</b><span class="text-[10px] text-slate-400">${Number(entry.badgeCount) || 0} / ${MEMBER_ACHIEVEMENTS.length} 枚徽章</span></span></span><span class="leaderboard-metrics">聽歌 ${Number(entry.totalListens) || 0} 次<br>${Number(entry.points) || 0} 積分</span></article>`;
+        return `<article class="leaderboard-row ${self ? 'is-self' : ''}"><span class="leaderboard-rank">${index + 1}</span><span class="flex min-w-0 items-center gap-2">${avatar}<span class="min-w-0"><b class="block truncate text-xs text-white">${esc(entry.displayName || '905 同學')}${self ? '（你）' : ''}</b><span class="text-[10px] text-slate-400">Lv.${getMemberLevel(entry.badgeCount).level} ${esc(getMemberLevel(entry.badgeCount).title)}・${Number(entry.badgeCount) || 0} / ${MEMBER_ACHIEVEMENTS.length} 枚徽章</span></span></span><span class="leaderboard-metrics">聽歌 ${Number(entry.totalListens) || 0} 次<br>${Number(entry.points) || 0} 積分</span></article>`;
       }).join('');
     }
 
@@ -3489,6 +3527,44 @@
       button.textContent = total >= 1000 ? '已達上限' : ready ? '領取 +10' : '已領取';
     }
 
+    async function awardBadgePoints(id) {
+      const item = ACHIEVEMENT_BY_ID[id];
+      if (!currentUser || !sharedDb || !item) return;
+      const reward = BADGE_REWARD_POINTS[item.tier] || 10;
+      const ref = sharedDb.ref('userPoints/' + currentUser.uid);
+      try {
+        const result = await ref.transaction(current => {
+          const state = current || { total: 0, lastClaim: 0 };
+          const claims = state.badgeRewardClaims || {};
+          const total = Math.max(0, Number(state.total) || 0);
+          if (claims[id] === true || total + reward > 1000) return;
+          return { ...state, total: total + reward, lastClaim: Number(state.lastClaim) || 0,
+            badgeRewardClaims: { ...claims, [id]: true } };
+        });
+        if (result.snapshot && result.snapshot.exists()) userPoints = result.snapshot.val();
+        renderDailyRewardUI();
+        renderProfileUnlocks();
+        syncLeaderboardProfile();
+      } catch (error) {
+        console.warn('徽章積分核發失敗：', id, error);
+      }
+    }
+
+    let badgeRewardReconcilePromise = null;
+    async function reconcileBadgeRewards() {
+      if (!currentUser || !sharedDb) return;
+      if (badgeRewardReconcilePromise) return badgeRewardReconcilePromise;
+      badgeRewardReconcilePromise = (async () => {
+        for (const item of MEMBER_ACHIEVEMENTS) {
+          if (hasMemberAchievement(item.id) && !(userPoints.badgeRewardClaims && userPoints.badgeRewardClaims[item.id])) {
+            await awardBadgePoints(item.id);
+          }
+        }
+      })();
+      try { await badgeRewardReconcilePromise; }
+      finally { badgeRewardReconcilePromise = null; }
+    }
+
     async function awardMemberAchievement(id) {
       if (!currentUser || !sharedDb || !ACHIEVEMENT_BY_ID[id] || hasMemberAchievement(id)) return;
       userPrefs.collection = { ...(userPrefs.collection || {}), [id]: true };
@@ -3496,8 +3572,9 @@
       syncLeaderboardProfile();
       try {
         await sharedDb.ref(`userPrefs/${currentUser.uid}/collection/${id}`).set(true);
+        await awardBadgePoints(id);
       } catch (error) {
-        console.warn('儲存班級徽章失敗：', error);
+        console.warn('儲存班級徽章或核發積分失敗：', error);
       }
     }
 
@@ -3727,6 +3804,7 @@
           renderAccountPanel();
           checkMemberAchievements();
           syncLeaderboardProfile();
+          reconcileBadgeRewards();
           checkNewSongs();
         });
         const pointsRef = sharedDb.ref('userPoints/' + uid);
@@ -3735,6 +3813,7 @@
           renderDailyRewardUI();
           renderProfileUnlocks();
           syncLeaderboardProfile();
+          reconcileBadgeRewards();
         });
         const playsRef = sharedDb.ref('userPlays/' + uid);
         playsRef.on('value', snap => {
