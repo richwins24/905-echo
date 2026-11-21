@@ -1467,8 +1467,9 @@
       <div id="commentList" class="h-48 overflow-y-auto space-y-2 text-sm"></div>
       <div class="login-only flex gap-2 mt-2">
         <input id="commentInput" maxlength="300" placeholder="寫下你的留言（需登入）" class="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-white">
-        <button id="commentSend" class="px-4 rounded-lg bg-purple-600 hover:bg-purple-500 text-sm">送出</button>
+        <button id="commentSend" type="button" class="px-4 rounded-lg bg-purple-600 hover:bg-purple-500 text-sm">送出</button>
       </div>
+      <p id="commentStatus" class="mt-2 text-xs text-slate-400" role="status" aria-live="polite"></p>
     </div>
   </div>
 
@@ -3980,39 +3981,55 @@
 
     document.getElementById('commentSend').addEventListener('click', async () => {
       const input = document.getElementById('commentInput');
+      const button = document.getElementById('commentSend');
+      const status = document.getElementById('commentStatus');
       const text = input.value.trim();
       if (!text || commentSongId === null) return;
       if (!currentUser || !sharedDb) return alert('請先按「Google 登入」才能留言');
-      const lastAt = Number(localStorage.getItem('sg_lastComment') || 0);
+      let lastAt = 0;
+      try { lastAt = Number(localStorage.getItem('sg_lastComment') || 0); } catch (e) {}
       if (Date.now() - lastAt < 30 * 1000) return alert('留言太頻繁，請 30 秒後再試');
 
-      const snap = await sharedDb.ref('comments/' + commentSongId).once('value');
-      const existing = Object.entries(snap.val() || {}).sort((a, b) => (a[1].time || 0) - (b[1].time || 0));
-      // 每首歌最多保留 3 則；送出新留言前，先從最早的一則開始清除。
-      while (existing.length >= 3) {
-        const [oldId, oldC] = existing.shift();
-        try {
-          await sharedDb.ref('comments/' + commentSongId + '/' + oldId).remove();
-        } catch (err) {
-          if (!(oldC && currentUser && oldC.uid === currentUser.uid)) console.warn('無法刪除舊留言：', err);
+      const targetSongId = commentSongId;
+      button.disabled = true;
+      status.textContent = '正在送出留言…';
+      try {
+        const snap = await sharedDb.ref('comments/' + targetSongId).once('value');
+        const existing = Object.entries(snap.val() || {}).sort((a, b) => (a[1].time || 0) - (b[1].time || 0));
+        // 每首歌最多保留 3 則；送出新留言前，先從最早的一則開始清除。
+        while (existing.length >= 3) {
+          const [oldId, oldC] = existing.shift();
+          try {
+            await sharedDb.ref('comments/' + targetSongId + '/' + oldId).remove();
+          } catch (err) {
+            if (!(oldC && currentUser && oldC.uid === currentUser.uid)) console.warn('無法刪除舊留言：', err);
+          }
         }
+        const publicProfile = userPrefs.profile || {};
+        await sharedDb.ref('comments/' + targetSongId).push().set({
+          uid: currentUser.uid,
+          name: publicProfile.nickname || currentUser.displayName || '使用者',
+          photo: publicProfile.avatar ? '' : (currentUser.photoURL || ''),
+          avatar: publicProfile.avatar || '',
+          text: text.slice(0, 300),
+          approved: isAdminUser(),
+          time: firebase.database.ServerValue.TIMESTAMP
+        });
+
+        input.value = '';
+        status.textContent = '留言已送出；一般留言會先等待管理員審核。';
+        try { localStorage.setItem('sg_lastComment', String(Date.now())); } catch (e) {}
+        persistMemberActivity('commented');
+        awardMemberAchievement('commenter');
+        bumpActivity();
+        sharedDb.ref('daily/' + todayKey() + '/comments').transaction(n => (n || 0) + 1)
+          .catch(error => console.warn('每日留言統計同步失敗：', error));
+      } catch (error) {
+        console.error('留言送出失敗：', error);
+        status.textContent = `送出失敗（${error && error.code ? error.code : '未知錯誤'}）：${error && error.message ? error.message : '請稍後重試。'}`;
+      } finally {
+        button.disabled = false;
       }
-      const publicProfile = userPrefs.profile || {};
-      await sharedDb.ref('comments/' + commentSongId).push().set({
-        uid: currentUser.uid,
-        name: publicProfile.nickname || currentUser.displayName || '使用者',
-        photo: publicProfile.avatar ? '' : (currentUser.photoURL || ''),
-        avatar: publicProfile.avatar || '',
-        text: text.slice(0, 300),
-        approved: isAdminUser(),
-        time: firebase.database.ServerValue.TIMESTAMP
-      });
-      persistMemberActivity('commented');
-      awardMemberAchievement('commenter');
-      localStorage.setItem('sg_lastComment', String(Date.now()));
-      bumpActivity();
-      if (sharedDb) sharedDb.ref('daily/' + todayKey() + '/comments').transaction(n => (n || 0) + 1);
-      input.value = '';
     });
 
     document.getElementById('commentClose').addEventListener('click', () => {
