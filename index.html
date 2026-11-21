@@ -885,6 +885,7 @@
                 <p class="text-xs font-black tracking-[.18em] text-amber-200">905 PROFILE SHOP</p>
                 <p class="mt-1 text-sm font-semibold text-white">用音樂幣解鎖你的專屬外觀</p>
                 <p class="mt-1 text-xs text-slate-400">購買後永久解鎖；暱稱永久開放，已購頭像可免費切換。</p>
+                <p id="paidFeatureTestNotice" class="hidden mt-2 text-xs font-semibold text-emerald-300">測試模式：本帳號可免費解鎖所有付費項目；保留原價顯示，不會扣除音樂幣。</p>
               </div>
               <div class="rounded-xl border border-amber-300/20 bg-slate-950/60 px-4 py-2 text-right">
                 <span class="block text-[10px] text-slate-400">目前音樂幣</span>
@@ -2648,6 +2649,7 @@
       if (!selector || !button || !status) return;
       const effect = LYRIC_EFFECTS.find(item => item.id === selector.value) || LYRIC_EFFECTS[0];
       const balance = Math.max(0, Number(userPoints.total) || 0);
+      const tester = isPaidFeatureTester();
       const owned = hasLyricEffect(effect.id);
       if (effect.price === 0) {
         button.classList.add('hidden');
@@ -2659,10 +2661,11 @@
           button.disabled = activeLyricEffectId === effect.id || lyricFxPurchaseInProgress;
           status.textContent = `${effect.name}已永久解鎖；目前音樂幣 ${balance}。`;
         } else {
-          button.textContent = `解鎖・${effect.price} 音樂幣`;
-          button.disabled = !currentUser || !sharedDb || balance < effect.price || lyricFxPurchaseInProgress;
-          status.textContent = !currentUser ? '登入後可用音樂幣永久解鎖此特效。' : balance < effect.price
-            ? `需要 ${effect.price} 音樂幣，目前有 ${balance}。` : `${effect.name}永久解鎖價 ${effect.price} 音樂幣；解鎖後可隨時切換。`;
+          button.textContent = tester ? `免費測試解鎖・原價 ${effect.price}` : `解鎖・${effect.price} 音樂幣`;
+          button.disabled = !currentUser || !sharedDb || (!tester && balance < effect.price) || lyricFxPurchaseInProgress;
+          status.textContent = !currentUser ? '登入後可用音樂幣永久解鎖此特效。' : tester
+            ? `${effect.name}可免費測試解鎖，不扣音樂幣；原價 ${effect.price} 音樂幣。`
+            : balance < effect.price ? `需要 ${effect.price} 音樂幣，目前有 ${balance}。` : `${effect.name}永久解鎖價 ${effect.price} 音樂幣；解鎖後可隨時切換。`;
         }
       }
     }
@@ -2683,8 +2686,12 @@
       const effect = LYRIC_EFFECTS.find(item => item.id === effectId);
       if (!effect || effect.price <= 0 || !currentUser || !sharedDb || lyricFxPurchaseInProgress) return;
       if (hasLyricEffect(effectId)) { await setLyricEffect(effectId); return; }
-      if (Number(userPoints.total || 0) < effect.price) { updateLyricFxStoreUI(); return; }
-      if (!confirm(`永久解鎖「${effect.name}」需要 ${effect.price} 音樂幣，確定兌換嗎？`)) return;
+      const tester = isPaidFeatureTester();
+      if (!tester && Number(userPoints.total || 0) < effect.price) { updateLyricFxStoreUI(); return; }
+      const confirmation = tester
+        ? `測試帳號可免費解鎖「${effect.name}」（原價 ${effect.price} 音樂幣），不會扣幣。確定測試嗎？`
+        : `永久解鎖「${effect.name}」需要 ${effect.price} 音樂幣，確定兌換嗎？`;
+      if (!confirm(confirmation)) return;
       lyricFxPurchaseInProgress = true;
       updateLyricFxStoreUI();
       try {
@@ -2693,14 +2700,14 @@
           const state = current || {};
           const total = Number.isFinite(Number(state.total)) ? Number(state.total) : 0;
           const owned = state.ownedLyricEffects || {};
-          if (owned[effectId] === true || total < effect.price) return;
-          return { ...state, total: total - effect.price, lastClaim: Number(state.lastClaim) || 0,
+          if (owned[effectId] === true || (!tester && total < effect.price)) return;
+          return { ...state, total: tester ? total : total - effect.price, lastClaim: Number(state.lastClaim) || 0,
             ownedLyricEffects: { ...owned, [effectId]: true } };
         });
         if (result.snapshot && result.snapshot.exists()) userPoints = result.snapshot.val();
         if (result.committed) {
           await setLyricEffect(effectId);
-          statusMessage(`已永久解鎖並套用「${effect.name}」。`);
+          statusMessage(tester ? `免費測試解鎖成功並套用「${effect.name}」；未扣除音樂幣。` : `已永久解鎖並套用「${effect.name}」。`);
         } else {
           statusMessage('兌換未完成，請確認音樂幣或稍後重試。');
         }
@@ -3508,6 +3515,11 @@
     let leaderboardData = {};
     let profileUnlockInProgress = false;
 
+    const PAID_FEATURE_TESTER_EMAIL = 'richwins24@gmail.com';
+    function isPaidFeatureTester() {
+      return !!currentUser && String(currentUser.email || '').trim().toLowerCase() === PAID_FEATURE_TESTER_EMAIL;
+    }
+
     function hasMemberAchievement(id) {
       return !!(userPrefs.collection && userPrefs.collection[id]);
     }
@@ -3599,13 +3611,14 @@
         const owned = hasAvatarAccess(product.id);
         const selected = profile.avatar === product.emoji;
         const priced = Number.isInteger(product.price) && product.price > 0;
-        const canAfford = Number(userPoints.total || 0) >= (priced ? product.price : Infinity);
+        const tester = isPaidFeatureTester();
+        const canAfford = tester || Number(userPoints.total || 0) >= (priced ? product.price : Infinity);
         const costText = priced ? `${product.price} 音樂幣` : '待定價';
-        const buyText = owned ? '已購買' : (priced ? `兌換・${product.price} 音樂幣` : '待定價');
+        const buyText = owned ? '已購買' : (tester ? '免費測試解鎖' : (priced ? `兌換・${product.price} 音樂幣` : '待定價'));
         return `<div class="flex flex-col items-center gap-1 rounded-xl border border-slate-700 bg-slate-800/70 p-2">
           <button type="button" data-avatar="${esc(product.emoji)}" data-avatar-id="${esc(product.id)}" aria-label="選用頭像 ${String(AVATAR_PRODUCTS.indexOf(product) + 1).padStart(2, '0')} ${esc(product.name)}" aria-pressed="${selected}" title="${esc(product.name)}" ${owned ? '' : 'disabled'} class="rounded-xl border ${selected ? 'border-purple-300 bg-purple-900/70' : 'border-slate-700 bg-slate-800'} px-3 py-2 text-xl ${owned ? '' : 'cursor-not-allowed opacity-50'}">${esc(product.emoji)}</button>
           ${product.limited ? '<span class="rounded-full border border-amber-300/25 bg-amber-300/10 px-2 py-0.5 text-[9px] font-bold text-amber-200">畢旅限定</span>' : ''}
-          <span class="text-center text-[10px] text-slate-400">${esc(product.name)}・${owned ? '已擁有' : `價格 ${costText}`}</span>
+          <span class="text-center text-[10px] text-slate-400">${esc(product.name)}・${owned ? '已擁有' : (tester ? `原價 ${costText}・測試免費` : `價格 ${costText}`)}</span>
           <button type="button" data-buy-avatar="${esc(product.id)}" ${owned || !priced || !canAfford || profileUnlockInProgress ? 'disabled' : ''} class="rounded-lg bg-amber-400 px-2 py-1 text-[10px] font-bold text-slate-950 disabled:cursor-not-allowed disabled:opacity-40">${esc(buyText)}</button>
         </div>`;
       }).join('');
@@ -3617,14 +3630,19 @@
       const nicknameButton = document.getElementById('unlockNicknameBtn');
       const nicknameStatus = document.getElementById('nicknameUnlockStatus');
       if (nicknameInput) nicknameInput.disabled = !nicknameUnlocked;
+      const tester = isPaidFeatureTester();
+      const testNotice = document.getElementById('paidFeatureTestNotice');
+      if (testNotice) testNotice.classList.toggle('hidden', !tester);
       if (nicknameButton) {
         nicknameButton.classList.toggle('hidden', nicknameUnlocked);
-        nicknameButton.disabled = profileUnlockInProgress || Number(userPoints.total || 0) < PROFILE_UNLOCK_COSTS.nickname;
-        nicknameButton.textContent = nicknameUnlocked ? '已購買' : `購買暱稱設定・${PROFILE_UNLOCK_COSTS.nickname} 音樂幣`;
+        nicknameButton.disabled = profileUnlockInProgress || (!tester && Number(userPoints.total || 0) < PROFILE_UNLOCK_COSTS.nickname);
+        nicknameButton.textContent = nicknameUnlocked ? (tester ? '測試已解鎖' : '已購買') : tester ? '免費測試解鎖' : `購買暱稱設定・${PROFILE_UNLOCK_COSTS.nickname} 音樂幣`;
       }
       const shopBalance = document.getElementById('profileShopBalance');
       if (shopBalance) shopBalance.textContent = String(Math.max(0, Number(userPoints.total) || 0));
-      if (nicknameStatus) nicknameStatus.textContent = nicknameUnlocked ? '已永久購買，可免費修改 1–20 字暱稱。' : `商店價格：${PROFILE_UNLOCK_COSTS.nickname} 音樂幣；購買後永久開放。`;
+      if (nicknameStatus) nicknameStatus.textContent = tester
+        ? '測試帳號可免費解鎖並試用暱稱設定；不扣音樂幣。'
+        : nicknameUnlocked ? '已永久購買，可免費修改 1–20 字暱稱。' : `商店價格：${PROFILE_UNLOCK_COSTS.nickname} 音樂幣；購買後永久開放。`;
       renderAvatarShop(profile);
     }
 
@@ -3689,20 +3707,22 @@
       if (!currentUser || !sharedDb || profileUnlockInProgress || kind !== 'nickname') return;
       if (hasProfileUnlock(kind)) return;
       const cost = PROFILE_UNLOCK_COSTS[kind];
+      const tester = isPaidFeatureTester();
       const status = document.getElementById(kind === 'nickname' ? 'nicknameUnlockStatus' : 'avatarUnlockStatus');
-      if (Number(userPoints.total || 0) < cost) { if (status) status.textContent = `音樂幣不足；需要 ${cost} 音樂幣，目前 ${Number(userPoints.total || 0)} 音樂幣。`; return; }
+      if (!tester && Number(userPoints.total || 0) < cost) { if (status) status.textContent = `音樂幣不足；需要 ${cost} 音樂幣，目前 ${Number(userPoints.total || 0)} 音樂幣。`; return; }
       profileUnlockInProgress = true;
       renderProfileUnlocks();
       try {
         const field = 'nicknameUnlocked';
         const result = await sharedDb.ref('userPoints/' + currentUser.uid).transaction(current => {
-          const total = current && Number.isFinite(Number(current.total)) ? Number(current.total) : 0;
-          if (!current || total < cost || current[field] === true) return;
-          return { ...current, total: total - cost, [field]: true };
+          const state = current || { total: 0, lastClaim: 0 };
+          const total = Number.isFinite(Number(state.total)) ? Number(state.total) : 0;
+          if ((!tester && total < cost) || state[field] === true) return;
+          return { ...state, total: tester ? total : total - cost, lastClaim: Number(state.lastClaim) || 0, [field]: true };
         });
         if (result.committed) userPoints = result.snapshot.val();
         else if (result.snapshot && result.snapshot.exists()) userPoints = result.snapshot.val();
-        if (status) status.textContent = result.committed ? '解鎖成功！永久開放，不會再次扣音樂幣。' : '解鎖未完成，請確認音樂幣或稍後重試。';
+        if (status) status.textContent = result.committed ? (tester ? '測試解鎖成功！已免費開放，不會扣除音樂幣。' : '解鎖成功！永久開放，不會再次扣音樂幣。') : '解鎖未完成，請確認音樂幣或稍後重試。';
         renderAccountPanel();
         renderDailyRewardUI();
         syncLeaderboardProfile();
@@ -3720,7 +3740,8 @@
       if (!currentUser || !sharedDb || !product) return;
       if (!Number.isInteger(product.price) || product.price <= 0) return;
       if (hasAvatarAccess(avatarId)) return;
-      if (Number(userPoints.total || 0) < product.price) {
+      const tester = isPaidFeatureTester();
+      if (!tester && Number(userPoints.total || 0) < product.price) {
         const status = document.getElementById('avatarUnlockStatus');
         if (status) status.textContent = `音樂幣不足；「${product.name}」需要 ${product.price} 音樂幣，目前 ${Number(userPoints.total || 0)} 音樂幣。`;
         return;
@@ -3733,14 +3754,14 @@
           const state = current || {};
           const total = Number.isFinite(Number(state.total)) ? Number(state.total) : 0;
           const owned = state.ownedAvatars || {};
-          if (owned[avatarId] === true || total < product.price) return;
-          return { ...state, total: total - product.price,
+          if (owned[avatarId] === true || (!tester && total < product.price)) return;
+          return { ...state, total: tester ? total : total - product.price,
             lastClaim: Number(state.lastClaim) || 0,
             ownedAvatars: { ...owned, [avatarId]: true } };
         });
         if (result.snapshot && result.snapshot.exists()) userPoints = result.snapshot.val();
         const status = document.getElementById('avatarUnlockStatus');
-        if (status) status.textContent = result.committed ? `兌換成功：${product.name} 已永久加入收藏。` : '兌換未完成，請確認音樂幣或稍後重試。';
+        if (status) status.textContent = result.committed ? (tester ? `免費測試解鎖成功：「${product.name}」已加入帳號收藏，未扣音樂幣。` : `兌換成功：${product.name} 已永久加入收藏。`) : '兌換未完成，請確認音樂幣或稍後重試。';
         renderAccountPanel();
         renderDailyRewardUI();
         syncLeaderboardProfile();
