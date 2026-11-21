@@ -902,7 +902,7 @@
             </div>
             <section class="rounded-xl border border-purple-400/20 bg-purple-950/20 p-4">
               <div class="mb-3 flex flex-wrap items-end justify-between gap-2">
-                <div><h3 class="text-sm font-bold text-white">頭像商店・30 款</h3><p class="mt-1 text-xs text-slate-400">購買後永久收藏，可重複更換；選好後按下方「儲存暱稱／頭像」。</p></div>
+                <div><h3 class="text-sm font-bold text-white">頭像商店・30 款</h3><p class="mt-1 text-xs text-slate-400">購買後永久收藏並立即套用；已購買款式點一下即可切換。暱稱／基本頭像仍可免費儲存。</p></div>
                 <span class="text-xs font-semibold text-amber-200">目前積分：<b id="avatarShopPoints">0</b></span>
               </div>
               <p id="avatarShopStatus" class="mb-3 text-xs text-cyan-200" role="status">價格 20–150 分；一般設定與基本頭像不需付費。</p>
@@ -3419,6 +3419,7 @@
       }).join('');
     }
 
+    const avatarPurchaseInProgress = new Set();
     function renderAvatarShop() {
       const grid = document.getElementById('avatarShopGrid');
       const points = document.getElementById('avatarShopPoints');
@@ -3429,9 +3430,11 @@
       grid.innerHTML = AVATAR_SHOP_ITEMS.map(item => {
         const has = owned[item.id] === true;
         const affordable = total >= item.price;
+        const pending = avatarPurchaseInProgress.has(item.id);
+        const purchaseBusy = avatarPurchaseInProgress.size > 0;
         const selected = selectedProfileAvatar === item.avatar;
-        const action = has ? (selected ? '已選用' : '點擊選用') : `購買 ${item.price} 分`;
-        return `<button type="button" data-avatar-shop="${item.id}" ${!has && !affordable ? 'disabled' : ''} class="rounded-xl border ${selected ? 'border-purple-300 bg-purple-900/50' : 'border-slate-700 bg-slate-900/70'} p-2 text-center transition hover:border-purple-300 disabled:cursor-not-allowed disabled:opacity-45" aria-label="${esc(item.name)}，${has ? '已擁有' : `價格 ${item.price} 分`}">
+        const action = pending ? '購買中…' : has ? (selected ? '目前使用中' : '點擊套用') : affordable ? `購買 ${item.price} 分` : `需 ${item.price} 分・還差 ${item.price - total}`;
+        return `<button type="button" data-avatar-shop="${item.id}" ${purchaseBusy ? 'disabled' : ''} class="rounded-xl border ${selected ? 'border-purple-300 bg-purple-900/50' : 'border-slate-700 bg-slate-900/70'} p-2 text-center transition hover:border-purple-300 disabled:cursor-not-allowed disabled:opacity-45 ${!has && !affordable ? 'opacity-60' : ''}" aria-label="${esc(item.name)}，${has ? '已擁有' : `價格 ${item.price} 分`}">
           <span class="mx-auto grid h-11 w-11 place-items-center rounded-full bg-slate-800 text-2xl">${esc(item.avatar)}</span>
           <span class="mt-1 block truncate text-xs font-semibold text-white">${esc(item.name)}</span>
           <span class="mt-0.5 block text-[10px] ${has ? 'text-emerald-300' : 'text-amber-200'}">${action}</span>
@@ -3444,22 +3447,40 @@
         else buyShopAvatar(item.id);
       }));
     }
-    function selectShopAvatar(id) {
+    async function applyShopAvatar(item, purchased) {
+      if (!currentUser || !sharedDb) return false;
+      const status = document.getElementById('avatarShopStatus');
+      try {
+        await sharedDb.ref('userPrefs/' + currentUser.uid + '/profile/avatar').set(item.avatar);
+        userPrefs.profile = { ...(userPrefs.profile || {}), avatar: item.avatar };
+        selectedProfileAvatar = item.avatar;
+        const preview = document.getElementById('accountAvatarPreview');
+        if (preview) preview.textContent = item.avatar;
+        if (status) status.textContent = purchased ? `已購買並立即套用「${item.name}」。` : `已切換為「${item.name}」。`;
+        renderProfileUnlocks();
+        syncLeaderboardProfile();
+        return true;
+      } catch (error) {
+        console.error('套用商店頭像失敗：', error);
+        if (status) status.textContent = `頭像已${purchased ? '購買' : '收藏'}，但套用失敗；請確認 Firebase 規則後再試。`;
+        renderProfileUnlocks();
+        return false;
+      }
+    }
+    async function selectShopAvatar(id) {
       const item = AVATAR_SHOP_ITEMS.find(candidate => candidate.id === id);
       if (!item || !userPoints.avatarShopPurchases || userPoints.avatarShopPurchases[id] !== true) return;
-      selectedProfileAvatar = item.avatar;
-      const preview = document.getElementById('accountAvatarPreview');
-      if (preview) preview.textContent = item.avatar;
-      const status = document.getElementById('avatarShopStatus');
-      if (status) status.textContent = `已選擇「${item.name}」，按下方儲存按鈕即可套用。`;
-      renderProfileUnlocks();
+      await applyShopAvatar(item, false);
     }
     async function buyShopAvatar(id) {
       const item = AVATAR_SHOP_ITEMS.find(candidate => candidate.id === id);
       if (!item) return;
       if (!currentUser || !sharedDb) { alert('請先登入後再購買頭像。'); return; }
+      if (avatarPurchaseInProgress.size > 0) return;
       const status = document.getElementById('avatarShopStatus');
       if (Number(userPoints.total || 0) < item.price) { if (status) status.textContent = `積分不足；「${item.name}」需要 ${item.price} 分。`; return; }
+      avatarPurchaseInProgress.add(id);
+      renderProfileUnlocks();
       try {
         const result = await sharedDb.ref('userPoints/' + currentUser.uid).transaction(current => {
           if (!current) return;
@@ -3470,21 +3491,21 @@
         });
         if (result.committed) {
           userPoints = result.snapshot.val();
-          selectedProfileAvatar = item.avatar;
-          const preview = document.getElementById('accountAvatarPreview');
-          if (preview) preview.textContent = item.avatar;
-          if (status) status.textContent = `已購買「${item.name}」並選取；按下方儲存按鈕套用。`;
           renderDailyRewardUI();
           renderProfileUnlocks();
           syncLeaderboardProfile();
+          await applyShopAvatar(item, true);
         } else {
           if (result.snapshot && result.snapshot.exists()) userPoints = result.snapshot.val();
-          if (status) status.textContent = '購買未完成；請確認積分或稍後重試。';
+          if (status) status.textContent = '購買未完成；可能已購買或積分不足，請重新整理確認。';
           renderProfileUnlocks();
         }
       } catch (error) {
         console.error('頭像購買失敗：', error);
-        if (status) status.textContent = '購買失敗，請稍後重試。';
+        if (status) status.textContent = '購買失敗；請確認積分及 Firebase 規則後再試。';
+      } finally {
+        avatarPurchaseInProgress.delete(id);
+        renderProfileUnlocks();
       }
     }
     function renderProfileUnlocks(profile = userPrefs.profile || {}) {
