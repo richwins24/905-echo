@@ -1487,7 +1487,7 @@
   </div>
 
   <div id="lyricFxShopModal" class="hidden fixed inset-0 z-[120] flex items-center justify-center bg-black/75 p-4" role="presentation">
-    <section class="w-full max-w-lg rounded-2xl border border-purple-400/40 bg-slate-900 p-5 shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="lyricFxShopTitle">
+    <section class="max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-purple-400/40 bg-slate-900 p-5 shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="lyricFxShopTitle">
       <div class="mb-4 flex items-start justify-between gap-3">
         <div>
           <h2 id="lyricFxShopTitle" class="text-base font-bold text-white"><i class="fa-solid fa-wand-magic-sparkles mr-2 text-purple-300" aria-hidden="true"></i>字幕特效商店</h2>
@@ -1496,29 +1496,8 @@
         <button id="closeLyricFxShopBtn" type="button" class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-slate-700 text-slate-300 transition hover:bg-slate-800 hover:text-white" aria-label="關閉字幕特效商店" title="關閉">✕</button>
       </div>
       <div class="space-y-3">
-        <label for="lyricFx" class="sr-only">選擇歌詞特效</label>
-        <select id="lyricFx" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200" aria-describedby="lyricFxShopStatus">
-              <option value="none">原始歌詞・免費</option>
-              <option value="glow">經典發光・免費</option>
-              <option value="trip-stars">畢旅星光・150 音樂幣</option>
-              <option value="sea-breeze">海風流光・300 音樂幣</option>
-              <option value="sunset">夕陽漸層・500 音樂幣</option>
-              <option value="postcard">旅行明信片・800 音樂幣</option>
-              <optgroup label="運動會限定・音樂幣解鎖">
-                <option value="track-ribbon">運動會彩帶・250 音樂幣</option>
-                <option value="medal-gold">金牌時刻・300 音樂幣</option>
-                <option value="stadium-neon">球場聚光・350 音樂幣</option>
-                <option value="team-pride">班級應援・400 音樂幣</option>
-                <option value="sprint-flame">衝刺火焰・450 音樂幣</option>
-                <option value="victory-confetti">勝利彩花・500 音樂幣</option>
-                <option value="finish-checker">終點格旗・550 音樂幣</option>
-                <option value="podium-prism">頒獎台幻彩・600 音樂幣</option>
-                <option value="sports-postcard">運動明信片・650 音樂幣</option>
-                <option value="rainbow-relay">彩虹接力・700 音樂幣</option>
-              </optgroup>
-            </select>
-        <div class="flex justify-end"><button id="buyLyricFxBtn" type="button" class="rounded-full border border-purple-400/50 bg-purple-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-purple-500 disabled:cursor-not-allowed disabled:opacity-40">解鎖特效</button></div>
-        <div id="lyricFxShopStatus" class="mb-2 min-h-4 text-right text-[10px] text-slate-400" role="status" aria-live="polite">原始與經典發光免費；畢旅與運動會主題特效可用音樂幣永久解鎖。</div>
+        <div id="lyricFxShopList" class="grid max-h-[62vh] grid-cols-1 gap-3 overflow-y-auto pr-1 sm:grid-cols-2" aria-label="所有字幕特效商品"></div>
+        <div id="lyricFxShopStatus" class="min-h-5 border-t border-slate-800 pt-3 text-xs text-slate-400" role="status" aria-live="polite">原始與經典發光免費；畢旅與運動會特效可逐項解鎖。</div>
       </div>
     </section>
   </div>
@@ -2692,35 +2671,44 @@
         ktvBox.classList.remove(...LYRIC_EFFECTS.map(item => 'fx-' + item.id));
         ktvBox.classList.add('fx-' + activeLyricEffectId);
       }
-      const selector = document.getElementById('lyricFx');
-      if (selector) selector.value = activeLyricEffectId;
     }
     function updateLyricFxStoreUI() {
-      const selector = document.getElementById('lyricFx');
-      const button = document.getElementById('buyLyricFxBtn');
+      const list = document.getElementById('lyricFxShopList');
       const status = document.getElementById('lyricFxShopStatus');
-      if (!selector || !button || !status) return;
-      const effect = LYRIC_EFFECTS.find(item => item.id === selector.value) || LYRIC_EFFECTS[0];
+      if (!list || !status) return;
       const balance = Math.max(0, Number(userPoints.total) || 0);
       const tester = isPaidFeatureTester();
-      const owned = hasLyricEffect(effect.id);
-      if (effect.price === 0) {
-        button.classList.add('hidden');
-        status.textContent = `${effect.name}免費使用；目前音樂幣 ${balance}。`;
-      } else {
-        button.classList.remove('hidden');
-        if (owned) {
-          button.textContent = activeLyricEffectId === effect.id ? '使用中' : '套用此特效';
-          button.disabled = activeLyricEffectId === effect.id || lyricFxPurchaseInProgress;
-          status.textContent = `${effect.name}已永久解鎖；目前音樂幣 ${balance}。`;
-        } else {
-          button.textContent = tester ? `免費測試解鎖・原價 ${effect.price}` : `解鎖・${effect.price} 音樂幣`;
-          button.disabled = !currentUser || !sharedDb || (!tester && balance < effect.price) || lyricFxPurchaseInProgress;
-          status.textContent = !currentUser ? '登入後可用音樂幣永久解鎖此特效。' : tester
-            ? `${effect.name}可免費測試解鎖，不扣音樂幣；原價 ${effect.price} 音樂幣。`
-            : balance < effect.price ? `需要 ${effect.price} 音樂幣，目前有 ${balance}。` : `${effect.name}永久解鎖價 ${effect.price} 音樂幣；解鎖後可隨時切換。`;
-        }
-      }
+      const sportsEffects = new Set(['track-ribbon', 'medal-gold', 'stadium-neon', 'team-pride', 'sprint-flame', 'victory-confetti', 'finish-checker', 'podium-prism', 'sports-postcard', 'rainbow-relay']);
+      list.innerHTML = LYRIC_EFFECTS.map(effect => {
+        const active = activeLyricEffectId === effect.id;
+        const owned = hasLyricEffect(effect.id);
+        const locked = effect.price > 0 && !owned;
+        const disabled = active || (locked && (!currentUser || !sharedDb || (!tester && balance < effect.price))) || lyricFxPurchaseInProgress;
+        const action = locked ? 'buy' : 'apply';
+        const actionLabel = active ? '使用中' : locked
+          ? (tester ? `免費測試解鎖・原價 ${effect.price}` : `解鎖・${effect.price} 音樂幣`)
+          : '套用特效';
+        const detail = effect.price === 0 ? '免費使用'
+          : owned ? '已永久解鎖・可免費切換'
+          : tester ? `測試免費解鎖・原價 ${effect.price} 音樂幣`
+          : currentUser ? `永久解鎖價 ${effect.price} 音樂幣` : `登入後解鎖・${effect.price} 音樂幣`;
+        const actionClass = active
+          ? 'border border-emerald-400/30 bg-emerald-950/50 text-emerald-200'
+          : locked ? 'bg-amber-400 text-slate-950 hover:bg-amber-300'
+          : 'bg-purple-600 text-white hover:bg-purple-500';
+        return `<article class="flex min-h-[104px] flex-col justify-between gap-3 rounded-xl border ${active ? 'border-emerald-400/50 bg-emerald-950/20' : 'border-slate-700 bg-slate-800/70'} p-3">
+          <div class="flex items-start justify-between gap-2">
+            <div class="min-w-0"><h3 class="truncate text-sm font-bold text-white">${esc(effect.name)}</h3><p class="mt-1 text-[11px] text-slate-400">${esc(detail)}</p></div>
+            <div class="flex shrink-0 flex-col items-end gap-1">
+              <span class="rounded-full border ${effect.price === 0 ? 'border-emerald-300/20 bg-emerald-300/10 text-emerald-200' : 'border-amber-300/20 bg-amber-300/10 text-amber-200'} px-2 py-0.5 text-[10px] font-semibold">${effect.price === 0 ? '免費' : `${effect.price} 音樂幣`}</span>
+              ${sportsEffects.has(effect.id) ? '<span class="rounded-full bg-cyan-300/10 px-2 py-0.5 text-[9px] font-semibold text-cyan-200">運動會限定</span>' : ''}
+            </div>
+          </div>
+          <button type="button" data-lyric-fx-action="${action}" data-effect-id="${esc(effect.id)}" aria-pressed="${active}" aria-label="${esc(actionLabel)}：${esc(effect.name)}" ${disabled ? 'disabled' : ''} class="w-full rounded-lg px-3 py-2 text-xs font-bold transition disabled:cursor-not-allowed disabled:opacity-50 ${actionClass}">${esc(actionLabel)}</button>
+        </article>`;
+      }).join('');
+      const activeEffect = LYRIC_EFFECTS.find(item => item.id === activeLyricEffectId) || LYRIC_EFFECTS[0];
+      status.textContent = `目前使用「${activeEffect.name}」・音樂幣 ${balance}${tester ? '・測試帳號解鎖不扣幣' : ''}。`;
     }
     async function setLyricEffect(effectId) {
       activeLyricEffectId = effectId;
@@ -2783,19 +2771,20 @@
       try { localStorage.setItem('sg_lyric_style', JSON.stringify({ ...getLyricStyle(), ...patch })); } catch (e) {}
       applyLyricStyle();
     }
-    document.getElementById('lyricFx').addEventListener('change', async event => {
-      const effectId = event.target.value;
-      if (hasLyricEffect(effectId)) await setLyricEffect(effectId);
-      else updateLyricFxStoreUI();
+    document.getElementById('lyricFxShopList').addEventListener('click', event => {
+      const button = event.target.closest('[data-lyric-fx-action]');
+      if (!button || button.disabled) return;
+      const effectId = button.dataset.effectId;
+      if (button.dataset.lyricFxAction === 'buy') unlockLyricEffect(effectId);
+      else if (hasLyricEffect(effectId)) setLyricEffect(effectId);
     });
-    document.getElementById('buyLyricFxBtn').addEventListener('click', () => unlockLyricEffect(document.getElementById('lyricFx').value));
     const lyricFxShopModal = document.getElementById('lyricFxShopModal');
     const openLyricFxShopBtn = document.getElementById('openLyricFxShopBtn');
     const closeLyricFxShopBtn = document.getElementById('closeLyricFxShopBtn');
     function setLyricFxShopOpen(open) {
       lyricFxShopModal.classList.toggle('hidden', !open);
       openLyricFxShopBtn.setAttribute('aria-expanded', String(open));
-      if (open) setTimeout(() => document.getElementById('lyricFx').focus(), 0);
+      if (open) setTimeout(() => (document.querySelector('#lyricFxShopList button:not(:disabled)') || closeLyricFxShopBtn).focus(), 0);
       else openLyricFxShopBtn.focus();
     }
     openLyricFxShopBtn.addEventListener('click', () => setLyricFxShopOpen(true));
@@ -3593,6 +3582,7 @@
     function isPaidFeatureTester() {
       return !!currentUser && String(currentUser.email || '').trim().toLowerCase() === PAID_FEATURE_TESTER_EMAIL;
     }
+    updateLyricFxStoreUI();
 
     function hasMemberAchievement(id) {
       return !!(userPrefs.collection && userPrefs.collection[id]);
