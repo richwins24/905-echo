@@ -870,13 +870,24 @@
         </div>
         <details id="profileSettingsDetails" class="overflow-hidden rounded-xl border border-slate-700 bg-slate-950/40">
           <summary class="cursor-pointer list-none px-4 py-3 font-semibold text-white marker:hidden">
-            <i class="fa-solid fa-user-gear mr-2 text-purple-300"></i>個人暱稱與頭像設定
-            <span class="ml-1 text-xs font-normal text-slate-400">（積分解鎖後永久使用）</span>
+            <i class="fa-solid fa-store mr-2 text-amber-300"></i>個人外觀商店
+            <span class="ml-1 text-xs font-normal text-slate-400">（使用積分永久解鎖）</span>
           </summary>
           <div class="space-y-4 border-t border-slate-800 p-4">
+            <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-300/20 bg-gradient-to-r from-amber-400/10 via-slate-900/70 to-purple-500/10 p-4">
+              <div>
+                <p class="text-xs font-black tracking-[.18em] text-amber-200">905 PROFILE SHOP</p>
+                <p class="mt-1 text-sm font-semibold text-white">用積分解鎖你的專屬外觀</p>
+                <p class="mt-1 text-xs text-slate-400">購買後永久解鎖；暱稱與頭像之後都可免費更改。</p>
+              </div>
+              <div class="rounded-xl border border-amber-300/20 bg-slate-950/60 px-4 py-2 text-right">
+                <span class="block text-[10px] text-slate-400">目前積分</span>
+                <b id="profileShopBalance" class="text-xl font-black text-amber-300">0</b><span class="ml-1 text-xs text-slate-400">分</span>
+              </div>
+            </div>
             <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-800 bg-slate-900/60 p-3">
-              <div><p class="text-sm font-semibold text-white">自訂暱稱</p><p id="nicknameUnlockStatus" class="mt-1 text-xs text-slate-400">永久解鎖修改權：100 積分</p></div>
-              <button id="unlockNicknameBtn" type="button" class="rounded-lg bg-amber-400 px-3 py-2 text-xs font-bold text-slate-950 hover:bg-amber-300">解鎖暱稱・100 分</button>
+              <div><p class="text-sm font-semibold text-white">暱稱設定永久解鎖</p><p id="nicknameUnlockStatus" class="mt-1 text-xs text-slate-400">商店價格：100 積分</p></div>
+              <button id="unlockNicknameBtn" type="button" class="rounded-lg bg-amber-400 px-3 py-2 text-xs font-bold text-slate-950 hover:bg-amber-300">購買暱稱設定・100 分</button>
             </div>
             <label class="block text-sm text-slate-300">
               顯示暱稱
@@ -885,19 +896,14 @@
             </label>
             <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-3">
               <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
-                <div><p class="text-sm font-semibold text-white">自選頭像</p><p id="avatarUnlockStatus" class="mt-1 text-xs text-slate-400">永久解鎖自選頭像：150 積分；Google 頭像仍可免費使用。</p></div>
-                <button id="unlockAvatarBtn" type="button" class="rounded-lg bg-amber-400 px-3 py-2 text-xs font-bold text-slate-950 hover:bg-amber-300">解鎖自選頭像・150 分</button>
+                <div><p class="text-sm font-semibold text-white">30 款頭像・各自獨立兌換</p><p id="avatarUnlockStatus" class="mt-1 text-xs text-slate-400">每款頭像使用積分個別購買；目前等待設定各款價格。Google 頭像可免費使用。</p></div>
               </div>
-              <div id="profileAvatarChoices" class="flex flex-wrap gap-2" aria-label="選擇頭像">
-                <button type="button" data-avatar="" aria-label="使用 Google 頭像" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xs text-slate-200">Google 頭像</button>
-                <button type="button" data-avatar="🎧" aria-label="頭像耳機" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🎧</button>
-                <button type="button" data-avatar="🎵" aria-label="頭像音符" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🎵</button>
-                <button type="button" data-avatar="🌟" aria-label="頭像星星" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🌟</button>
-                <button type="button" data-avatar="🌈" aria-label="頭像彩虹" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🌈</button>
-                <button type="button" data-avatar="🎹" aria-label="頭像鋼琴" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🎹</button>
-                <button type="button" data-avatar="🌙" aria-label="頭像月亮" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🌙</button>
-                <button type="button" data-avatar="🌱" aria-label="頭像新芽" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">🌱</button>
-                <button type="button" data-avatar="💜" aria-label="頭像紫心" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xl">💜</button>
+              <p class="mb-3 text-xs text-slate-400">已購買的頭像可隨時免費切換；尚未定價的商品暫不可兌換。</p>
+              <div id="profileAvatarChoices" class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4" aria-label="選擇 Google 頭像或兌換 30 款個人頭像">
+                <div class="flex flex-col items-center gap-2 rounded-xl border border-slate-700 bg-slate-800/70 p-3">
+                  <button type="button" data-avatar="" aria-label="使用 Google 頭像" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xs text-slate-200">Google 頭像</button>
+                  <span class="text-center text-[10px] text-emerald-300">免費使用</span>
+                </div>
               </div>
             </div>
             <div class="flex flex-wrap items-center gap-3">
@@ -1467,9 +1473,8 @@
       <div id="commentList" class="h-48 overflow-y-auto space-y-2 text-sm"></div>
       <div class="login-only flex gap-2 mt-2">
         <input id="commentInput" maxlength="300" placeholder="寫下你的留言（需登入）" class="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-white">
-        <button id="commentSend" type="button" class="px-4 rounded-lg bg-purple-600 hover:bg-purple-500 text-sm">送出</button>
+        <button id="commentSend" class="px-4 rounded-lg bg-purple-600 hover:bg-purple-500 text-sm">送出</button>
       </div>
-      <p id="commentStatus" class="mt-2 text-xs text-slate-400" role="status" aria-live="polite"></p>
     </div>
   </div>
 
@@ -1964,12 +1969,18 @@
 
     function renderPlaylistChips() {
       const guestItems = Object.entries(guestPlaylists).map(([k, v]) => ({ id: "g:" + k, name: "📱 本機 · " + (v.name || "未命名"), n: Object.keys(v.ids || {}).length }));
-      const userItems = currentUser ? Object.entries(userLists).map(([k, v]) => ({ id: "u:" + k, name: "☁️ " + (v.name || "未命名"), n: Object.keys(v.ids || {}).length })) : [];
+      const userItems = currentUser ? Object.entries(userLists).map(([k, v]) => ({ id: "u:" + k, name: "☁️ " + (v.name || "未命名"), n: Object.keys(v.ids || {}).length, canDelete: true })) : [];
       const items = [{ id: "all", name: "所有歌曲", n: songs.length }, ...guestItems, ...userItems];
       playlistChips.innerHTML = items.map(p => {
         const active = String(p.id) === String(currentPlaylistFilter);
-        return `<button onclick="openPlaylist('${p.id}')" class="shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium border transition ${active ? 'bg-slate-100 text-slate-900 border-slate-100' : 'bg-slate-900 text-slate-300 border-slate-700 hover:border-slate-500'}">${esc(p.name)} <span class="opacity-60">${p.n}</span></button>`;
+        return `<div class="inline-flex shrink-0 items-center gap-1">
+          <button type="button" onclick="openPlaylist('${p.id}')" class="shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium border transition ${active ? 'bg-slate-100 text-slate-900 border-slate-100' : 'bg-slate-900 text-slate-300 border-slate-700 hover:border-slate-500'}">${esc(p.name)} <span class="opacity-60">${p.n}</span></button>
+          ${p.canDelete ? `<button type="button" data-delete-user-list="${esc(p.id.slice(2))}" class="grid h-8 w-8 place-items-center rounded-lg border border-red-500/20 bg-red-950/30 text-red-300 hover:bg-red-900/60" title="刪除自己的雲端播放清單" aria-label="刪除自己的雲端播放清單"><i class="fa-solid fa-trash-can text-[11px]"></i></button>` : ''}
+        </div>`;
       }).join('');
+      playlistChips.querySelectorAll('[data-delete-user-list]').forEach(button => {
+        button.addEventListener('click', () => removeOwnUserPlaylist(button.dataset.deleteUserList));
+      });
       const activeList = getActivePlaylist();
       plBanner.classList.toggle('hidden', !activeList);
       document.getElementById('playlistAddBtn').classList.toggle('hidden', !activeList);
@@ -3280,7 +3291,40 @@
       b.title = '點擊登出';
     }
 
-    const PROFILE_UNLOCK_COSTS = { nickname: 100, avatar: 150 };
+    const PROFILE_UNLOCK_COSTS = { nickname: 100 };
+    // 頭像價格先留 null；收到管理者提供的個別價格後，將各款 price 改為正整數積分。
+    const AVATAR_PRODUCTS = [
+      { id: 'avatar01', emoji: '🎧', name: '耳機', price: 100 },
+      { id: 'avatar02', emoji: '🎵', name: '音符', price: 100 },
+      { id: 'avatar03', emoji: '🌟', name: '星星', price: 100 },
+      { id: 'avatar04', emoji: '🌈', name: '彩虹', price: 200 },
+      { id: 'avatar05', emoji: '🎹', name: '鋼琴', price: 200 },
+      { id: 'avatar06', emoji: '🌙', name: '月亮', price: 200 },
+      { id: 'avatar07', emoji: '🌱', name: '新芽', price: 300 },
+      { id: 'avatar08', emoji: '💜', name: '紫心', price: 300 },
+      { id: 'avatar09', emoji: '🎤', name: '麥克風', price: 300 },
+      { id: 'avatar10', emoji: '🎼', name: '樂譜', price: 400 },
+      { id: 'avatar11', emoji: '🎸', name: '吉他', price: 400 },
+      { id: 'avatar12', emoji: '🥁', name: '鼓', price: 400 },
+      { id: 'avatar13', emoji: '🎻', name: '小提琴', price: 500 },
+      { id: 'avatar14', emoji: '🎷', name: '薩克斯風', price: 500 },
+      { id: 'avatar15', emoji: '🎺', name: '小喇叭', price: 500 },
+      { id: 'avatar16', emoji: '🪕', name: '班卓琴', price: 600 },
+      { id: 'avatar17', emoji: '📻', name: '收音機', price: 600 },
+      { id: 'avatar18', emoji: '💿', name: '光碟', price: 600 },
+      { id: 'avatar19', emoji: '🎶', name: '雙音符', price: 700 },
+      { id: 'avatar20', emoji: '🎨', name: '調色盤', price: 700 },
+      { id: 'avatar21', emoji: '🚀', name: '火箭', price: 700 },
+      { id: 'avatar22', emoji: '🌸', name: '櫻花', price: 800 },
+      { id: 'avatar23', emoji: '🍀', name: '四葉草', price: 800 },
+      { id: 'avatar24', emoji: '☀️', name: '太陽', price: 800 },
+      { id: 'avatar25', emoji: '🌊', name: '海浪', price: 900 },
+      { id: 'avatar26', emoji: '🔥', name: '火焰', price: 900 },
+      { id: 'avatar27', emoji: '🦋', name: '蝴蝶', price: 900 },
+      { id: 'avatar28', emoji: '🐱', name: '貓咪', price: 1000 },
+      { id: 'avatar29', emoji: '🐼', name: '熊貓', price: 1000 },
+      { id: 'avatar30', emoji: '🐰', name: '兔子', price: 1000 }
+    ];
     const MEMBER_ACHIEVEMENTS = [
       { id: 'daily_checkin', title: '905 報到星火', description: '領取每日登入積分，記下今天也來到 905。', sticker: '✨', icon: 'fa-sun', tier: 'bronze' },
       { id: 'first_song', title: '青春初聲', description: '完成第一次歌曲播放。', sticker: '🎵', icon: 'fa-music', tier: 'bronze' },
@@ -3337,9 +3381,24 @@
       return !!(userPrefs.collection && userPrefs.collection[id]);
     }
 
+    function hasAvatarAccess(avatarId) {
+      if (!avatarId) return true;
+      const product = AVATAR_PRODUCTS.find(item => item.id === avatarId);
+      if (!product) return false;
+      const owned = userPoints.ownedAvatars || {};
+      const legacySelected = (userPrefs.profile || {}).avatar === product.emoji;
+      return userPoints.avatarUnlocked === true || owned[avatarId] === true || legacySelected;
+    }
+
     function hasProfileUnlock(kind) {
-      const legacyValue = kind === 'nickname' ? userPrefs.profile && userPrefs.profile.nickname : userPrefs.profile && userPrefs.profile.avatar;
-      return userPoints[kind === 'nickname' ? 'nicknameUnlocked' : 'avatarUnlocked'] === true || !!legacyValue;
+      if (kind === 'nickname') {
+        return userPoints.nicknameUnlocked === true || !!(userPrefs.profile && userPrefs.profile.nickname);
+      }
+      if (kind === 'avatar') {
+        const owned = userPoints.ownedAvatars || {};
+        return userPoints.avatarUnlocked === true || Object.values(owned).some(value => value === true) || !!(userPrefs.profile && userPrefs.profile.avatar);
+      }
+      return false;
     }
 
     function getPlayMetrics() {
@@ -3398,27 +3457,43 @@
       }).join('');
     }
 
+    function renderAvatarShop(profile = userPrefs.profile || {}) {
+      const container = document.getElementById('profileAvatarChoices');
+      if (!container) return;
+      const googleSelected = !(profile.avatar || '');
+      container.innerHTML = `<div class="flex flex-col items-center gap-2 rounded-xl border ${googleSelected ? 'border-purple-300 bg-purple-900/30' : 'border-slate-700 bg-slate-800/70'} p-3">
+        <button type="button" data-avatar="" aria-label="使用 Google 頭像" aria-pressed="${googleSelected}" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xs text-slate-200">Google 頭像</button>
+        <span class="text-center text-[10px] text-emerald-300">免費使用</span>
+      </div>` + AVATAR_PRODUCTS.map(product => {
+        const owned = hasAvatarAccess(product.id);
+        const selected = profile.avatar === product.emoji;
+        const priced = Number.isInteger(product.price) && product.price > 0;
+        const canAfford = Number(userPoints.total || 0) >= (priced ? product.price : Infinity);
+        const costText = priced ? `${product.price} 積分` : '待定價';
+        const buyText = owned ? '已購買' : (priced ? `兌換・${product.price} 分` : '待定價');
+        return `<div class="flex flex-col items-center gap-1 rounded-xl border border-slate-700 bg-slate-800/70 p-2">
+          <button type="button" data-avatar="${esc(product.emoji)}" data-avatar-id="${esc(product.id)}" aria-label="選用頭像 ${String(AVATAR_PRODUCTS.indexOf(product) + 1).padStart(2, '0')} ${esc(product.name)}" aria-pressed="${selected}" title="${esc(product.name)}" ${owned ? '' : 'disabled'} class="rounded-xl border ${selected ? 'border-purple-300 bg-purple-900/70' : 'border-slate-700 bg-slate-800'} px-3 py-2 text-xl ${owned ? '' : 'cursor-not-allowed opacity-50'}">${esc(product.emoji)}</button>
+          <span class="text-center text-[10px] text-slate-400">${esc(product.name)}・${owned ? '已擁有' : `價格 ${costText}`}</span>
+          <button type="button" data-buy-avatar="${esc(product.id)}" ${owned || !priced || !canAfford || profileUnlockInProgress ? 'disabled' : ''} class="rounded-lg bg-amber-400 px-2 py-1 text-[10px] font-bold text-slate-950 disabled:cursor-not-allowed disabled:opacity-40">${esc(buyText)}</button>
+        </div>`;
+      }).join('');
+    }
+
     function renderProfileUnlocks(profile = userPrefs.profile || {}) {
       const nicknameUnlocked = hasProfileUnlock('nickname');
-      const avatarUnlocked = hasProfileUnlock('avatar');
       const nicknameInput = document.getElementById('profileNickname');
       const nicknameButton = document.getElementById('unlockNicknameBtn');
-      const avatarButton = document.getElementById('unlockAvatarBtn');
       const nicknameStatus = document.getElementById('nicknameUnlockStatus');
-      const avatarStatus = document.getElementById('avatarUnlockStatus');
       if (nicknameInput) nicknameInput.disabled = !nicknameUnlocked;
-      if (nicknameButton) { nicknameButton.classList.toggle('hidden', nicknameUnlocked); nicknameButton.disabled = profileUnlockInProgress || Number(userPoints.total || 0) < PROFILE_UNLOCK_COSTS.nickname; }
-      if (avatarButton) { avatarButton.classList.toggle('hidden', avatarUnlocked); avatarButton.disabled = profileUnlockInProgress || Number(userPoints.total || 0) < PROFILE_UNLOCK_COSTS.avatar; }
-      if (nicknameStatus) nicknameStatus.textContent = nicknameUnlocked ? '已永久解鎖，可免費修改暱稱。' : `永久解鎖修改權需 ${PROFILE_UNLOCK_COSTS.nickname} 積分。`;
-      if (avatarStatus) avatarStatus.textContent = avatarUnlocked ? '已永久解鎖，可免費更換自選頭像；也可改回 Google 頭像。' : `永久解鎖自選頭像需 ${PROFILE_UNLOCK_COSTS.avatar} 積分；Google 頭像仍可免費使用。`;
-      document.querySelectorAll('#profileAvatarChoices [data-avatar]').forEach(button => {
-        const lockedChoice = !!button.dataset.avatar && !avatarUnlocked;
-        button.disabled = lockedChoice;
-        const selected = button.dataset.avatar === (profile.avatar || '');
-        button.classList.toggle('border-purple-300', selected);
-        button.classList.toggle('bg-purple-900/70', selected);
-        button.setAttribute('aria-pressed', String(selected));
-      });
+      if (nicknameButton) {
+        nicknameButton.classList.toggle('hidden', nicknameUnlocked);
+        nicknameButton.disabled = profileUnlockInProgress || Number(userPoints.total || 0) < PROFILE_UNLOCK_COSTS.nickname;
+        nicknameButton.textContent = nicknameUnlocked ? '已購買' : `購買暱稱設定・${PROFILE_UNLOCK_COSTS.nickname} 分`;
+      }
+      const shopBalance = document.getElementById('profileShopBalance');
+      if (shopBalance) shopBalance.textContent = String(Math.max(0, Number(userPoints.total) || 0));
+      if (nicknameStatus) nicknameStatus.textContent = nicknameUnlocked ? '已永久購買，可免費修改 1–20 字暱稱。' : `商店價格：${PROFILE_UNLOCK_COSTS.nickname} 積分；購買後永久開放。`;
+      renderAvatarShop(profile);
     }
 
     function renderLeaderboard() {
@@ -3479,7 +3554,7 @@
     }
 
     async function unlockProfileFeature(kind) {
-      if (!currentUser || !sharedDb || profileUnlockInProgress || !['nickname', 'avatar'].includes(kind)) return;
+      if (!currentUser || !sharedDb || profileUnlockInProgress || kind !== 'nickname') return;
       if (hasProfileUnlock(kind)) return;
       const cost = PROFILE_UNLOCK_COSTS[kind];
       const status = document.getElementById(kind === 'nickname' ? 'nicknameUnlockStatus' : 'avatarUnlockStatus');
@@ -3487,7 +3562,7 @@
       profileUnlockInProgress = true;
       renderProfileUnlocks();
       try {
-        const field = kind === 'nickname' ? 'nicknameUnlocked' : 'avatarUnlocked';
+        const field = 'nicknameUnlocked';
         const result = await sharedDb.ref('userPoints/' + currentUser.uid).transaction(current => {
           const total = current && Number.isFinite(Number(current.total)) ? Number(current.total) : 0;
           if (!current || total < cost || current[field] === true) return;
@@ -3502,6 +3577,45 @@
       } catch (error) {
         console.error('個人設定解鎖失敗：', error);
         if (status) status.textContent = '解鎖失敗，請稍後重試。';
+      } finally {
+        profileUnlockInProgress = false;
+        renderProfileUnlocks();
+      }
+    }
+
+    async function buyAvatar(avatarId) {
+      const product = AVATAR_PRODUCTS.find(item => item.id === avatarId);
+      if (!currentUser || !sharedDb || !product) return;
+      if (!Number.isInteger(product.price) || product.price <= 0) return;
+      if (hasAvatarAccess(avatarId)) return;
+      if (Number(userPoints.total || 0) < product.price) {
+        const status = document.getElementById('avatarUnlockStatus');
+        if (status) status.textContent = `積分不足；「${product.name}」需要 ${product.price} 分，目前 ${Number(userPoints.total || 0)} 分。`;
+        return;
+      }
+      profileUnlockInProgress = true;
+      renderProfileUnlocks();
+      try {
+        const ref = sharedDb.ref('userPoints/' + currentUser.uid);
+        const result = await ref.transaction(current => {
+          const state = current || {};
+          const total = Number.isFinite(Number(state.total)) ? Number(state.total) : 0;
+          const owned = state.ownedAvatars || {};
+          if (owned[avatarId] === true || total < product.price) return;
+          return { ...state, total: total - product.price,
+            lastClaim: Number(state.lastClaim) || 0,
+            ownedAvatars: { ...owned, [avatarId]: true } };
+        });
+        if (result.snapshot && result.snapshot.exists()) userPoints = result.snapshot.val();
+        const status = document.getElementById('avatarUnlockStatus');
+        if (status) status.textContent = result.committed ? `兌換成功：${product.name} 已永久加入收藏。` : '兌換未完成，請確認積分或稍後重試。';
+        renderAccountPanel();
+        renderDailyRewardUI();
+        syncLeaderboardProfile();
+      } catch (error) {
+        console.error('頭像兌換失敗：', error);
+        const status = document.getElementById('avatarUnlockStatus');
+        if (status) status.textContent = '兌換失敗，請稍後重試；若持續發生，請檢查 Realtime Database 規則。';
       } finally {
         profileUnlockInProgress = false;
         renderProfileUnlocks();
@@ -3697,34 +3811,33 @@
     document.getElementById('accountSignOutBtn').addEventListener('click', () => document.getElementById('loginBtn').click());
     document.getElementById('claimDailyRewardBtn').addEventListener('click', claimDailyLoginReward);
     document.getElementById('unlockNicknameBtn').addEventListener('click', () => unlockProfileFeature('nickname'));
-    document.getElementById('unlockAvatarBtn').addEventListener('click', () => unlockProfileFeature('avatar'));
 
 
-    document.querySelectorAll('#profileAvatarChoices [data-avatar]').forEach(button => {
-      button.addEventListener('click', () => {
-        if (button.disabled) return;
-        selectedProfileAvatar = button.dataset.avatar || '';
-        document.querySelectorAll('#profileAvatarChoices [data-avatar]').forEach(item => {
-          const selected = item === button;
-          item.classList.toggle('border-purple-300', selected);
-          item.classList.toggle('bg-purple-900/70', selected);
-          item.setAttribute('aria-pressed', String(selected));
-        });
-        const preview = document.getElementById('accountAvatarPreview');
-        const name = document.getElementById('profileNickname').value.trim() || (currentUser && currentUser.displayName) || '同學';
-        if (selectedProfileAvatar) preview.textContent = selectedProfileAvatar;
-        else if (currentUser && currentUser.photoURL) preview.innerHTML = `<img src="${esc(currentUser.photoURL)}" alt="個人頭像" referrerpolicy="no-referrer" class="h-full w-full object-cover">`;
-        else preview.textContent = name.charAt(0).toUpperCase();
-      });
+    document.getElementById('profileAvatarChoices').addEventListener('click', event => {
+      const buyButton = event.target.closest('[data-buy-avatar]');
+      if (buyButton) {
+        if (!buyButton.disabled) buyAvatar(buyButton.dataset.buyAvatar);
+        return;
+      }
+      const button = event.target.closest('[data-avatar]');
+      if (!button || button.disabled) return;
+      selectedProfileAvatar = button.dataset.avatar || '';
+      const profile = { ...(userPrefs.profile || {}), avatar: selectedProfileAvatar };
+      renderAvatarShop(profile);
+      const preview = document.getElementById('accountAvatarPreview');
+      const name = document.getElementById('profileNickname').value.trim() || (currentUser && currentUser.displayName) || '同學';
+      if (selectedProfileAvatar) preview.textContent = selectedProfileAvatar;
+      else if (currentUser && currentUser.photoURL) preview.innerHTML = `<img src="${esc(currentUser.photoURL)}" alt="個人頭像" referrerpolicy="no-referrer" class="h-full w-full object-cover">`;
+      else preview.textContent = name.charAt(0).toUpperCase();
     });
 
     document.getElementById('saveProfileBtn').addEventListener('click', async () => {
       if (!currentUser || !sharedDb) return alert('請先登入並確認資料庫連線');
       const oldProfile = userPrefs.profile || {};
       const nicknameUnlocked = hasProfileUnlock('nickname');
-      const avatarUnlocked = hasProfileUnlock('avatar');
-      if (!nicknameUnlocked && !avatarUnlocked) {
-        document.getElementById('profileSaveMsg').textContent = '請先使用積分解鎖暱稱或自選頭像設定。';
+      const avatarAllowed = !selectedProfileAvatar || AVATAR_PRODUCTS.some(product => product.emoji === selectedProfileAvatar && hasAvatarAccess(product.id));
+      if (!nicknameUnlocked && !avatarAllowed) {
+        document.getElementById('profileSaveMsg').textContent = '請先以積分購買所選頭像；Google 頭像可免費使用。';
         return;
       }
       const nickname = document.getElementById('profileNickname').value.trim().slice(0, 20);
@@ -3734,7 +3847,7 @@
       const profile = {};
       if (nicknameUnlocked) profile.nickname = nickname;
       else if (oldProfile.nickname) profile.nickname = oldProfile.nickname;
-      if (avatarUnlocked) profile.avatar = selectedProfileAvatar;
+      if (avatarAllowed) profile.avatar = selectedProfileAvatar;
       else if (oldProfile.avatar) profile.avatar = oldProfile.avatar;
       try {
         await sharedDb.ref('userPrefs/' + currentUser.uid + '/profile').set(profile);
@@ -3840,7 +3953,12 @@
       document.getElementById('playlistStorageHint').textContent = currentUser
         ? '雲端清單會同步到你的帳號；標示「本機」的舊清單只保存在這台瀏覽器。'
         : '登入後才能建立並同步播放清單。';
-      document.getElementById('delUserListBtn').classList.toggle('hidden', !activeUserList);
+      const selectedFilter = String(currentPlaylistFilter);
+      const deletableCurrentList = !!activeUserList && (
+        (selectedFilter.startsWith('g:') && !!guestPlaylists[activeUserList]) ||
+        (selectedFilter.startsWith('u:') && !!currentUser && Object.prototype.hasOwnProperty.call(userLists, activeUserList))
+      );
+      document.getElementById('delUserListBtn').classList.toggle('hidden', !deletableCurrentList);
       renderAccountPanel();
       renderSongs(getFilteredSongs());
       renderVote();
@@ -3876,22 +3994,34 @@
       }
     });
 
+    async function removeOwnUserPlaylist(listId) {
+      if (!currentUser || !sharedDb) return alert('請先登入以刪除雲端播放清單。');
+      if (!listId || !Object.prototype.hasOwnProperty.call(userLists, listId)) {
+        return alert('只能刪除目前登入帳號自己建立的播放清單。');
+      }
+      const list = userLists[listId];
+      if (!confirm(`確定刪除「${list.name || '未命名'}」播放清單？（不會刪除歌曲）`)) return;
+      try {
+        await sharedDb.ref('userPlaylists/' + currentUser.uid + '/' + listId).remove();
+        if (String(currentPlaylistFilter) === 'u:' + listId) openPlaylist('all');
+      } catch (e) {
+        console.error('刪除自己的雲端播放清單失敗：', e);
+        alert(`刪除失敗（${e && e.code ? e.code : 'unknown'}），請確認資料庫規則允許登入者刪除 userPlaylists/${currentUser.uid} 底下自己的清單。`);
+      }
+    }
+
     document.getElementById('delUserListBtn').addEventListener('click', async () => {
       if (!activeUserList) return;
-      if (!confirm('確定刪除此播放清單？（不會刪除歌曲）')) return;
       if (String(currentPlaylistFilter).startsWith('g:')) {
+        if (!guestPlaylists[activeUserList]) return;
+        if (!confirm('確定刪除此本機播放清單？（不會刪除歌曲）')) return;
         delete guestPlaylists[activeUserList];
         if (!saveGuestPlaylists()) return;
         openPlaylist('all');
         return;
       }
-      if (!currentUser || !sharedDb) return;
-      try {
-        await sharedDb.ref('userPlaylists/' + currentUser.uid + '/' + activeUserList).remove();
-        openPlaylist('all');
-      } catch (e) {
-        console.error('刪除雲端播放清單失敗：', e);
-        alert('刪除失敗，請稍後再試。');
+      if (String(currentPlaylistFilter).startsWith('u:')) {
+        await removeOwnUserPlaylist(activeUserList);
       }
     });
 
@@ -3981,58 +4111,39 @@
 
     document.getElementById('commentSend').addEventListener('click', async () => {
       const input = document.getElementById('commentInput');
-      const button = document.getElementById('commentSend');
-      const status = document.getElementById('commentStatus');
       const text = input.value.trim();
       if (!text || commentSongId === null) return;
       if (!currentUser || !sharedDb) return alert('請先按「Google 登入」才能留言');
-      let lastAt = 0;
-      try { lastAt = Number(localStorage.getItem('sg_lastComment') || 0); } catch (e) {}
+      const lastAt = Number(localStorage.getItem('sg_lastComment') || 0);
       if (Date.now() - lastAt < 30 * 1000) return alert('留言太頻繁，請 30 秒後再試');
 
-      const targetSongId = commentSongId;
-      let phase = '讀取留言清單';
-      button.disabled = true;
-      status.textContent = '正在送出留言…';
-      try {
-        const snap = await sharedDb.ref('comments/' + targetSongId).once('value');
-        const existing = Object.entries(snap.val() || {}).sort((a, b) => (a[1].time || 0) - (b[1].time || 0));
-        // 每首歌最多保留 3 則；送出新留言前，先從最早的一則開始清除。
-        phase = '清理舊留言';
-        while (existing.length >= 3) {
-          const [oldId, oldC] = existing.shift();
-          try {
-            await sharedDb.ref('comments/' + targetSongId + '/' + oldId).remove();
-          } catch (err) {
-            if (!(oldC && currentUser && oldC.uid === currentUser.uid)) console.warn('無法刪除舊留言：', err);
-          }
+      const snap = await sharedDb.ref('comments/' + commentSongId).once('value');
+      const existing = Object.entries(snap.val() || {}).sort((a, b) => (a[1].time || 0) - (b[1].time || 0));
+      // 每首歌最多保留 3 則；送出新留言前，先從最早的一則開始清除。
+      while (existing.length >= 3) {
+        const [oldId, oldC] = existing.shift();
+        try {
+          await sharedDb.ref('comments/' + commentSongId + '/' + oldId).remove();
+        } catch (err) {
+          if (!(oldC && currentUser && oldC.uid === currentUser.uid)) console.warn('無法刪除舊留言：', err);
         }
-        const publicProfile = userPrefs.profile || {};
-        phase = '新增留言';
-        await sharedDb.ref('comments/' + targetSongId).push().set({
-          uid: currentUser.uid,
-          name: publicProfile.nickname || currentUser.displayName || '使用者',
-          photo: publicProfile.avatar ? '' : (currentUser.photoURL || ''),
-          avatar: publicProfile.avatar || '',
-          text: text.slice(0, 300),
-          approved: isAdminUser(),
-          time: firebase.database.ServerValue.TIMESTAMP
-        });
-
-        input.value = '';
-        status.textContent = '留言已送出；一般留言會先等待管理員審核。';
-        try { localStorage.setItem('sg_lastComment', String(Date.now())); } catch (e) {}
-        persistMemberActivity('commented');
-        awardMemberAchievement('commenter');
-        bumpActivity();
-        sharedDb.ref('daily/' + todayKey() + '/comments').transaction(n => (n || 0) + 1)
-          .catch(error => console.warn('每日留言統計同步失敗：', error));
-      } catch (error) {
-        console.error(`留言送出失敗（${phase}）：`, error);
-        status.textContent = `在「${phase}」時失敗（${error && error.code ? error.code : '未知錯誤'}）：${error && error.message ? error.message : '請稍後重試。'}`;
-      } finally {
-        button.disabled = false;
       }
+      const publicProfile = userPrefs.profile || {};
+      await sharedDb.ref('comments/' + commentSongId).push().set({
+        uid: currentUser.uid,
+        name: publicProfile.nickname || currentUser.displayName || '使用者',
+        photo: publicProfile.avatar ? '' : (currentUser.photoURL || ''),
+        avatar: publicProfile.avatar || '',
+        text: text.slice(0, 300),
+        approved: isAdminUser(),
+        time: firebase.database.ServerValue.TIMESTAMP
+      });
+      persistMemberActivity('commented');
+      awardMemberAchievement('commenter');
+      localStorage.setItem('sg_lastComment', String(Date.now()));
+      bumpActivity();
+      if (sharedDb) sharedDb.ref('daily/' + todayKey() + '/comments').transaction(n => (n || 0) + 1);
+      input.value = '';
     });
 
     document.getElementById('commentClose').addEventListener('click', () => {
