@@ -929,17 +929,18 @@
               </div>
               <div id="memberAchievementGrid" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-live="polite"></div>
             </div>
-            <section id="memberLeaderboard" class="border-t border-slate-800 pt-4" aria-labelledby="memberLeaderboardTitle">
-              <div class="mb-3 flex flex-wrap items-end justify-between gap-2">
-                <div><h3 id="memberLeaderboardTitle" class="text-sm font-bold text-white"><i class="fa-solid fa-ranking-star mr-2 text-cyan-300"></i>登入同學排行榜</h3><p class="mt-1 text-xs text-slate-400">依徽章數、總聽歌次數排序；只顯示暱稱／預設名稱，不公開電子郵件。</p></div>
-                <span id="leaderboardMemberCount" class="text-xs text-slate-400">0 位同學</span>
-              </div>
-              <div id="memberLeaderboardList" class="space-y-2" aria-live="polite"><p class="text-xs text-slate-500">登入後即可加入排行榜。</p></div>
-              <p class="mt-3 text-[10px] leading-5 text-slate-500">聽歌次數沿用帳號播放紀錄；排行榜只對已登入同學開放，顯示暱稱、頭像符號、徽章總數、聽歌次數與積分。</p>
-            </section>
           </div>
         </details>
       </div>
+    </section>
+
+    <section id="memberLeaderboard" class="mx-auto mb-6 max-w-7xl overflow-hidden rounded-2xl border border-slate-700/80 bg-slate-900/80 px-4 p-4 shadow-lg md:p-5" aria-labelledby="memberLeaderboardTitle">
+      <div class="mb-3 flex flex-wrap items-end justify-between gap-2">
+        <div><h3 id="memberLeaderboardTitle" class="text-sm font-bold text-white"><i class="fa-solid fa-ranking-star mr-2 text-cyan-300"></i>登入同學排行榜 TOP 10</h3><p class="mt-1 text-xs text-slate-400">依徽章數、總聽歌次數排序；只顯示暱稱／預設名稱，不公開電子郵件。</p></div>
+        <span id="leaderboardMemberCount" class="text-xs text-slate-400">0 位同學</span>
+      </div>
+      <div id="memberLeaderboardList" class="space-y-2" aria-live="polite"><p class="text-xs text-slate-500">排行榜載入中…</p></div>
+      <p class="mt-3 text-[10px] leading-5 text-slate-500">任何人皆可瀏覽；登入 Google 後即可加入排行榜。只顯示前 10 名；登出或離開網站不會移除已登入建立的排行榜紀錄。顯示暱稱、頭像符號、徽章總數、聽歌次數與積分，不公開電子郵件。</p>
     </section>
 
       <div id="featureCompareDetails" class="hidden mt-3 rounded-2xl border border-slate-700/80 bg-slate-900/95 p-3 shadow-lg md:p-4">
@@ -3389,9 +3390,9 @@
         .sort((a, b) => (Number(b[1].badgeCount) || 0) - (Number(a[1].badgeCount) || 0)
           || (Number(b[1].totalListens) || 0) - (Number(a[1].totalListens) || 0)
           || (Number(b[1].points) || 0) - (Number(a[1].points) || 0));
-      count.textContent = `${entries.length} 位同學`;
+      count.textContent = `顯示前 ${Math.min(entries.length, 10)} / 共 ${entries.length} 位`;
       if (!entries.length) { list.innerHTML = '<p class="text-xs text-slate-500">目前還沒有排行榜資料。</p>'; return; }
-      list.innerHTML = entries.slice(0, 50).map(([uid, entry], index) => {
+      list.innerHTML = entries.slice(0, 10).map(([uid, entry], index) => {
         const self = !!currentUser && uid === currentUser.uid;
         const avatar = entry.avatar ? `<span class="grid h-8 w-8 place-items-center rounded-full border border-cyan-200/15 bg-slate-800 text-lg">${esc(entry.avatar)}</span>` : `<span class="grid h-8 w-8 place-items-center rounded-full border border-slate-700 bg-slate-800 text-sm font-black text-cyan-100">${esc(String(entry.displayName || '同').charAt(0))}</span>`;
         return `<article class="leaderboard-row ${self ? 'is-self' : ''}"><span class="leaderboard-rank">${index + 1}</span><span class="flex min-w-0 items-center gap-2">${avatar}<span class="min-w-0"><b class="block truncate text-xs text-white">${esc(entry.displayName || '905 同學')}${self ? '（你）' : ''}</b><span class="text-[10px] text-slate-400">${Number(entry.badgeCount) || 0} / ${MEMBER_ACHIEVEMENTS.length} 枚徽章</span></span></span><span class="leaderboard-metrics">聽歌 ${Number(entry.totalListens) || 0} 次<br>${Number(entry.points) || 0} 積分</span></article>`;
@@ -3696,6 +3697,11 @@
       userPlayData = {};
       leaderboardData = {};
       renderLeaderboard();
+      const boardRef = sharedDb ? sharedDb.ref('leaderboard') : null;
+      if (boardRef) {
+        boardRef.on('value', snap => { leaderboardData = snap.val() || {}; renderLeaderboard(); });
+        userRefs.push(boardRef);
+      }
       if (!currentUser && String(currentPlaylistFilter).startsWith('u:')) {
         currentPlaylistFilter = 'all';
         activeUserList = null;
@@ -3736,9 +3742,7 @@
           checkMemberAchievements();
           syncLeaderboardProfile();
         });
-        const boardRef = sharedDb.ref('leaderboard');
-        boardRef.on('value', snap => { leaderboardData = snap.val() || {}; renderLeaderboard(); });
-        userRefs = [f, pl, h, pr, pointsRef, playsRef, boardRef];
+        userRefs.push(f, pl, h, pr, pointsRef, playsRef);
         syncLeaderboardProfile();
       }
       refreshUserUI();
