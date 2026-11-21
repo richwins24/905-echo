@@ -109,6 +109,13 @@
       font-weight: 800;
       text-shadow: 0 0 25px rgba(236, 72, 153, 0.75), 0 0 50px rgba(168, 85, 247, 0.5);
     }
+    #ktvLyricsBox.fx-glow .ktv-line.on { text-shadow: 0 0 12px var(--played, #c084fc), 0 0 28px #a855f7; }
+    #lyricsBox.fx-trip-stars .lyric-line.on, #ktvLyricsBox.fx-trip-stars .ktv-line.on { color:#fef3c7; text-shadow:0 0 8px #fbbf24,0 0 22px rgba(251,191,36,.8),0 0 40px rgba(251,191,36,.38); }
+    #lyricsBox.fx-sea-breeze .lyric-line.on, #ktvLyricsBox.fx-sea-breeze .ktv-line.on { color:#a5f3fc; text-shadow:0 0 8px rgba(34,211,238,.8),0 0 28px rgba(6,182,212,.68); }
+    #lyricsBox.fx-sunset .lyric-line.on, #ktvLyricsBox.fx-sunset .ktv-line.on { color:#fed7aa; text-shadow:0 0 8px rgba(251,146,60,.85),0 0 24px rgba(236,72,153,.65),0 0 40px rgba(249,115,22,.35); }
+    #lyricsBox.fx-postcard .lyric-line.on, #ktvLyricsBox.fx-postcard .ktv-line.on { display:inline-block; border:1px solid rgba(253,186,116,.7); border-radius:.75rem; padding:.12em .55em; color:#fff7ed; background:linear-gradient(100deg,rgba(124,45,18,.38),rgba(15,23,42,.34),rgba(14,116,144,.32)); box-shadow:0 0 22px rgba(251,146,60,.22),inset 0 0 14px rgba(255,255,255,.07); }
+    @media (prefers-reduced-motion: no-preference) { #lyricsBox.fx-trip-stars .lyric-line.on, #ktvLyricsBox.fx-trip-stars .ktv-line.on { animation: lyricStarPulse 2.6s ease-in-out infinite alternate; } }
+    @keyframes lyricStarPulse { from { filter:brightness(.95); } to { filter:brightness(1.2); } }
 
     /* ===== 跑馬燈動畫 ===== */
     .marquee-container {
@@ -708,7 +715,7 @@
 
 
 
-    /* ===== 905 會員徽章典藏、每日積分與登入排行榜 ===== */
+    /* ===== 905 會員徽章典藏、每日音樂幣與登入排行榜 ===== */
     .member-reward-card { border: 1px solid rgba(148,163,184,.16); border-radius: 1rem; background: rgba(15,23,42,.58); }
     .member-badge-card { position:relative; display:flex; min-height:7.2rem; gap:.75rem; overflow:hidden; border:1px solid rgba(148,163,184,.17); border-radius:1rem; padding:.85rem; background:linear-gradient(145deg,rgba(15,23,42,.94),rgba(30,41,59,.72)); transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease; }
     .member-badge-card::after { content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(115deg,transparent 15%,rgba(255,255,255,.045) 48%,transparent 72%); opacity:.35; }
@@ -860,7 +867,7 @@
             <p class="text-xs font-bold tracking-wider text-emerald-300">目前狀態：已登入</p>
             <p id="accountWelcomeName" class="mt-1 font-bold text-white">個人帳號</p>
             <p id="memberLevelDisplay" class="mt-1 text-xs font-bold text-cyan-200" aria-live="polite">Lv.1 初聲同學・0 / 3 枚升級</p>
-            <p class="text-xs text-slate-400">稱號依累積徽章數提升；花費積分不會降級。</p>
+            <p class="text-xs text-slate-400">稱號依累積徽章數提升；花費音樂幣不會降級。</p>
             <p class="text-xs text-slate-400">個人資料與歌單會儲存在這個帳號</p>
           </div>
           <button id="accountSignOutBtn" class="rounded-lg bg-slate-800 px-3 py-2 text-xs text-slate-300 hover:bg-slate-700">登出</button>
@@ -868,7 +875,7 @@
         <button id="toggleProfileShopBtn" type="button" aria-controls="profileShopPanel" aria-expanded="false" title="展開個人外觀商店" class="shrink-0 inline-flex items-center gap-2 rounded-full bg-purple-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-purple-500 border border-purple-400/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-purple-300">
           <i class="fa-solid fa-store text-amber-200" aria-hidden="true"></i>
           <span>個人外觀商店</span>
-          <span class="text-[10px] font-normal text-white/80">使用積分永久解鎖</span>
+          <span class="text-[10px] font-normal text-white/80">使用音樂幣永久解鎖</span>
           <i id="profileShopChevron" class="fa-solid fa-chevron-down text-[10px] text-white/80 transition-transform" aria-hidden="true"></i>
         </button>
         <div id="profileShopPanel" class="hidden mt-3 overflow-hidden rounded-xl border border-slate-700 bg-slate-950/40">
@@ -876,17 +883,17 @@
             <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-300/20 bg-gradient-to-r from-amber-400/10 via-slate-900/70 to-purple-500/10 p-4">
               <div>
                 <p class="text-xs font-black tracking-[.18em] text-amber-200">905 PROFILE SHOP</p>
-                <p class="mt-1 text-sm font-semibold text-white">用積分解鎖你的專屬外觀</p>
-                <p class="mt-1 text-xs text-slate-400">購買後永久解鎖；暱稱與頭像之後都可免費更改。</p>
+                <p class="mt-1 text-sm font-semibold text-white">用音樂幣解鎖你的專屬外觀</p>
+                <p class="mt-1 text-xs text-slate-400">購買後永久解鎖；暱稱永久開放，已購頭像可免費切換。</p>
               </div>
               <div class="rounded-xl border border-amber-300/20 bg-slate-950/60 px-4 py-2 text-right">
-                <span class="block text-[10px] text-slate-400">目前積分</span>
-                <b id="profileShopBalance" class="text-xl font-black text-amber-300">0</b><span class="ml-1 text-xs text-slate-400">分</span>
+                <span class="block text-[10px] text-slate-400">目前音樂幣</span>
+                <b id="profileShopBalance" class="text-xl font-black text-amber-300">0</b><span class="ml-1 text-xs text-slate-400">音樂幣</span>
               </div>
             </div>
             <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-800 bg-slate-900/60 p-3">
-              <div><p class="text-sm font-semibold text-white">暱稱設定永久解鎖</p><p id="nicknameUnlockStatus" class="mt-1 text-xs text-slate-400">商店價格：100 積分</p></div>
-              <button id="unlockNicknameBtn" type="button" class="rounded-lg bg-amber-400 px-3 py-2 text-xs font-bold text-slate-950 hover:bg-amber-300">購買暱稱設定・100 分</button>
+              <div><p class="text-sm font-semibold text-white">暱稱設定永久解鎖</p><p id="nicknameUnlockStatus" class="mt-1 text-xs text-slate-400">商店價格：100 音樂幣</p></div>
+              <button id="unlockNicknameBtn" type="button" class="rounded-lg bg-amber-400 px-3 py-2 text-xs font-bold text-slate-950 hover:bg-amber-300">購買暱稱設定・100 音樂幣</button>
             </div>
             <label class="block text-sm text-slate-300">
               顯示暱稱
@@ -895,10 +902,10 @@
             </label>
             <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-3">
               <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
-                <div><p class="text-sm font-semibold text-white">30 款頭像・各自獨立兌換</p><p id="avatarUnlockStatus" class="mt-1 text-xs text-slate-400">30 款頭像各自使用積分兌換，價格 100–1000 分；Google 頭像可免費使用。</p></div>
+                <div><p class="text-sm font-semibold text-white">40 款頭像・含 10 款畢旅限定</p><p id="avatarUnlockStatus" class="mt-1 text-xs text-slate-400">40 款頭像各自使用音樂幣兌換；含 10 款畢旅紀念限定頭像。Google 頭像可免費使用。</p></div>
               </div>
               <p class="mb-3 text-xs text-slate-400">頭像需逐款兌換；購買後可隨時免費切換。</p>
-              <div id="profileAvatarChoices" class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4" aria-label="選擇 Google 頭像或兌換 30 款個人頭像">
+              <div id="profileAvatarChoices" class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4" aria-label="選擇 Google 頭像或兌換 40 款個人頭像">
                 <div class="flex flex-col items-center gap-2 rounded-xl border border-slate-700 bg-slate-800/70 p-3">
                   <button type="button" data-avatar="" aria-label="使用 Google 頭像" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xs text-slate-200">Google 頭像</button>
                   <span class="text-center text-[10px] text-emerald-300">免費使用</span>
@@ -920,12 +927,12 @@
 <div class="member-reward-card flex flex-wrap items-center justify-between gap-4 p-4">
               <div>
                 <p class="text-xs font-bold tracking-wider text-amber-200">每日登入獎勵</p>
-                <p class="mt-1 text-xs text-slate-400">每天登入可得 10 積分，領取間隔至少 24 小時，累積上限 1000 分；積分可解鎖暱稱與頭像設定。</p>
+                <p class="mt-1 text-xs text-slate-400">每天登入可得 10 音樂幣，領取間隔至少 24 小時，累積上限 1000 音樂幣；可用於兌換暱稱、頭像與歌詞特效。</p>
                 <p id="dailyRewardStatus" class="mt-2 text-xs text-slate-300" role="status" aria-live="polite">登入後自動檢查今日獎勵。</p>
               </div>
               <div class="flex items-center gap-3">
-                <div class="text-right"><span id="memberPointsDisplay" class="text-2xl font-black text-amber-300">0</span><span class="ml-1 text-xs text-slate-400">/ 1000 分</span></div>
-                <button id="claimDailyRewardBtn" type="button" class="rounded-lg bg-amber-400 px-3 py-2 text-xs font-bold text-slate-950 hover:bg-amber-300">領取 +10</button>
+                <div class="text-right"><span id="memberPointsDisplay" class="text-2xl font-black text-amber-300">0</span><span class="ml-1 text-xs text-slate-400">/ 1000 音樂幣</span></div>
+                <button id="claimDailyRewardBtn" type="button" class="rounded-lg bg-amber-400 px-3 py-2 text-xs font-bold text-slate-950 hover:bg-amber-300">領取 +10 音樂幣</button>
               </div>
             </div>
             <div>
@@ -941,7 +948,7 @@
         <span id="leaderboardMemberCount" class="text-xs text-slate-400">0 位同學</span>
       </div>
       <div id="memberLeaderboardList" class="space-y-2" aria-live="polite"><p class="text-xs text-slate-500">排行榜載入中…</p></div>
-      <p class="mt-3 text-[10px] leading-5 text-slate-500">任何人皆可瀏覽；登入 Google 後即可加入排行榜。只顯示前 10 名；登出或離開網站不會移除已登入建立的排行榜紀錄。顯示暱稱、頭像符號、徽章總數、聽歌次數與積分，不公開電子郵件。</p>
+      <p class="mt-3 text-[10px] leading-5 text-slate-500">任何人皆可瀏覽；登入 Google 後即可加入排行榜。只顯示前 10 名；登出或離開網站不會移除已登入建立的排行榜紀錄。顯示暱稱、頭像符號、徽章總數、聽歌次數與音樂幣，不公開電子郵件。</p>
     </section>
         </div>
       </div>
@@ -996,7 +1003,7 @@
                 <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-purple-900/40 px-2.5 py-1 font-semibold text-purple-200"><i class="fa-solid fa-check"></i>可互動</span></td>
               </tr>
               <tr>
-                <th scope="row" class="px-4 py-3 font-medium text-slate-200"><i class="fa-solid fa-id-card mr-2 text-indigo-300"></i>自訂顯示暱稱與頭像（積分解鎖）</th>
+                <th scope="row" class="px-4 py-3 font-medium text-slate-200"><i class="fa-solid fa-id-card mr-2 text-indigo-300"></i>自訂顯示暱稱與頭像（音樂幣解鎖）</th>
                 <td class="px-4 py-3 text-center"><span class="text-slate-500">—</span></td>
                 <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1 rounded-full bg-purple-900/40 px-2.5 py-1 font-semibold text-purple-200"><i class="fa-solid fa-check"></i>可設定</span></td>
               </tr>
@@ -1565,13 +1572,20 @@
       <div class="max-w-2xl mx-auto border border-purple-500/40 rounded-2xl p-4 shadow-2xl" style="background:#0f172a">
         <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
           <p id="lyricsTitle" class="text-xs text-slate-400"></p>
-          <div class="flex items-center gap-2 text-[11px] text-slate-400">
-            <select id="lyricFx" class="bg-slate-800 border border-slate-700 rounded px-1 py-0.5 text-[11px] text-slate-200">
-              <option value="none">無特效</option>
-              <option value="glow">發光</option>
+          <div class="flex flex-wrap items-center justify-end gap-2 text-[11px] text-slate-400">
+            <label for="lyricFx" class="sr-only">選擇歌詞特效</label>
+            <select id="lyricFx" class="max-w-[12rem] bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-[11px] text-slate-200" aria-describedby="lyricFxShopStatus">
+              <option value="none">原始歌詞・免費</option>
+              <option value="glow">經典發光・免費</option>
+              <option value="trip-stars">畢旅星光・150 音樂幣</option>
+              <option value="sea-breeze">海風流光・300 音樂幣</option>
+              <option value="sunset">夕陽漸層・500 音樂幣</option>
+              <option value="postcard">旅行明信片・800 音樂幣</option>
             </select>
+            <button id="buyLyricFxBtn" type="button" class="rounded-full border border-purple-400/50 bg-purple-600 px-3 py-1.5 text-[10px] font-semibold text-white transition hover:bg-purple-500 disabled:cursor-not-allowed disabled:opacity-40">解鎖特效</button>
           </div>
         </div>
+        <div id="lyricFxShopStatus" class="mb-2 min-h-4 text-right text-[10px] text-slate-400" role="status" aria-live="polite">原始與經典發光免費；畢旅主題特效可用音樂幣永久解鎖。</div>
         <div id="lyricsBox" class="h-48 overflow-y-auto text-center space-y-3"></div>
       </div>
     </div>
@@ -2589,23 +2603,132 @@
       if (audio.paused) audio.play();
     });
 
+    const LYRIC_EFFECTS = [
+      { id: 'none', name: '原始歌詞', price: 0 },
+      { id: 'glow', name: '經典發光', price: 0 },
+      { id: 'trip-stars', name: '畢旅星光', price: 150 },
+      { id: 'sea-breeze', name: '海風流光', price: 300 },
+      { id: 'sunset', name: '夕陽漸層', price: 500 },
+      { id: 'postcard', name: '旅行明信片', price: 800 }
+    ];
+    let activeLyricEffectId = 'none';
+    let lyricEffectInitialized = false;
+    let lyricFxPurchaseInProgress = false;
     function getLyricStyle() {
       try { return JSON.parse(localStorage.getItem('sg_lyric_style')) || {}; } catch (e) { return {}; }
     }
+    function hasLyricEffect(effectId) {
+      const effect = LYRIC_EFFECTS.find(item => item.id === effectId);
+      return !!effect && (effect.price === 0 || (userPoints.ownedLyricEffects || {})[effectId] === true);
+    }
     function applyLyricStyle() {
-      const st = getLyricStyle();
-      const played = '#ffffff', todo = '#64748b', fx = st.fx === 'glow' ? 'glow' : 'none';
+      if (!lyricEffectInitialized) {
+        const saved = getLyricStyle().fx;
+        activeLyricEffectId = saved === 'glow' ? 'glow' : 'none';
+        lyricEffectInitialized = true;
+      }
       const box = document.getElementById('lyricsBox');
-      box.style.setProperty('--played', played);
-      box.style.setProperty('--todo', todo);
-      box.className = 'h-48 overflow-y-auto text-center space-y-3 fx-' + fx;
-      document.getElementById('lyricFx').value = fx;
+      const ktvBox = document.getElementById('ktvLyricsBox');
+      if (box) {
+        box.style.setProperty('--played', '#ffffff');
+        box.style.setProperty('--todo', '#64748b');
+        box.className = 'h-48 overflow-y-auto text-center space-y-3 fx-' + activeLyricEffectId;
+      }
+      if (ktvBox) {
+        ktvBox.classList.remove(...LYRIC_EFFECTS.map(item => 'fx-' + item.id));
+        ktvBox.classList.add('fx-' + activeLyricEffectId);
+      }
+      const selector = document.getElementById('lyricFx');
+      if (selector) selector.value = activeLyricEffectId;
+    }
+    function updateLyricFxStoreUI() {
+      const selector = document.getElementById('lyricFx');
+      const button = document.getElementById('buyLyricFxBtn');
+      const status = document.getElementById('lyricFxShopStatus');
+      if (!selector || !button || !status) return;
+      const effect = LYRIC_EFFECTS.find(item => item.id === selector.value) || LYRIC_EFFECTS[0];
+      const balance = Math.max(0, Number(userPoints.total) || 0);
+      const owned = hasLyricEffect(effect.id);
+      if (effect.price === 0) {
+        button.classList.add('hidden');
+        status.textContent = `${effect.name}免費使用；目前音樂幣 ${balance}。`;
+      } else {
+        button.classList.remove('hidden');
+        if (owned) {
+          button.textContent = activeLyricEffectId === effect.id ? '使用中' : '套用此特效';
+          button.disabled = activeLyricEffectId === effect.id || lyricFxPurchaseInProgress;
+          status.textContent = `${effect.name}已永久解鎖；目前音樂幣 ${balance}。`;
+        } else {
+          button.textContent = `解鎖・${effect.price} 音樂幣`;
+          button.disabled = !currentUser || !sharedDb || balance < effect.price || lyricFxPurchaseInProgress;
+          status.textContent = !currentUser ? '登入後可用音樂幣永久解鎖此特效。' : balance < effect.price
+            ? `需要 ${effect.price} 音樂幣，目前有 ${balance}。` : `${effect.name}永久解鎖價 ${effect.price} 音樂幣；解鎖後可隨時切換。`;
+        }
+      }
+    }
+    async function setLyricEffect(effectId) {
+      activeLyricEffectId = effectId;
+      const effect = LYRIC_EFFECTS.find(item => item.id === effectId);
+      const localFallback = effect && effect.price > 0 ? 'none' : effectId;
+      try { localStorage.setItem('sg_lyric_style', JSON.stringify({ ...getLyricStyle(), fx: localFallback })); } catch (e) {}
+      userPrefs.lyricEffectId = effectId;
+      applyLyricStyle();
+      updateLyricFxStoreUI();
+      if (currentUser && sharedDb) {
+        try { await sharedDb.ref(`userPrefs/${currentUser.uid}/lyricEffectId`).set(effectId); }
+        catch (error) { console.warn('歌詞特效偏好同步失敗：', error); }
+      }
+    }
+    async function unlockLyricEffect(effectId) {
+      const effect = LYRIC_EFFECTS.find(item => item.id === effectId);
+      if (!effect || effect.price <= 0 || !currentUser || !sharedDb || lyricFxPurchaseInProgress) return;
+      if (hasLyricEffect(effectId)) { await setLyricEffect(effectId); return; }
+      if (Number(userPoints.total || 0) < effect.price) { updateLyricFxStoreUI(); return; }
+      if (!confirm(`永久解鎖「${effect.name}」需要 ${effect.price} 音樂幣，確定兌換嗎？`)) return;
+      lyricFxPurchaseInProgress = true;
+      updateLyricFxStoreUI();
+      try {
+        const ref = sharedDb.ref(`userPoints/${currentUser.uid}`);
+        const result = await ref.transaction(current => {
+          const state = current || {};
+          const total = Number.isFinite(Number(state.total)) ? Number(state.total) : 0;
+          const owned = state.ownedLyricEffects || {};
+          if (owned[effectId] === true || total < effect.price) return;
+          return { ...state, total: total - effect.price, lastClaim: Number(state.lastClaim) || 0,
+            ownedLyricEffects: { ...owned, [effectId]: true } };
+        });
+        if (result.snapshot && result.snapshot.exists()) userPoints = result.snapshot.val();
+        if (result.committed) {
+          await setLyricEffect(effectId);
+          statusMessage(`已永久解鎖並套用「${effect.name}」。`);
+        } else {
+          statusMessage('兌換未完成，請確認音樂幣或稍後重試。');
+        }
+        renderDailyRewardUI();
+        renderProfileUnlocks();
+        syncLeaderboardProfile();
+      } catch (error) {
+        console.error('歌詞特效兌換失敗：', error);
+        statusMessage('兌換失敗，請檢查資料庫規則或稍後重試。');
+      } finally {
+        lyricFxPurchaseInProgress = false;
+        updateLyricFxStoreUI();
+      }
+      function statusMessage(text) {
+        const status = document.getElementById('lyricFxShopStatus');
+        if (status) status.textContent = text;
+      }
     }
     function saveLyricStyle(patch) {
       try { localStorage.setItem('sg_lyric_style', JSON.stringify({ ...getLyricStyle(), ...patch })); } catch (e) {}
       applyLyricStyle();
     }
-    document.getElementById('lyricFx').addEventListener('change', e => saveLyricStyle({ fx: e.target.value }));
+    document.getElementById('lyricFx').addEventListener('change', async event => {
+      const effectId = event.target.value;
+      if (hasLyricEffect(effectId)) await setLyricEffect(effectId);
+      else updateLyricFxStoreUI();
+    });
+    document.getElementById('buyLyricFxBtn').addEventListener('click', () => unlockLyricEffect(document.getElementById('lyricFx').value));
     applyLyricStyle();
 
     function openLyricsPanel(on) {
@@ -3290,7 +3413,7 @@
     }
 
     const PROFILE_UNLOCK_COSTS = { nickname: 100 };
-    // 頭像價格先留 null；收到管理者提供的個別價格後，將各款 price 改為正整數積分。
+    // 頭像商品使用永久音樂幣兌換；avatar31–avatar40 為畢旅紀念限定系列。
     const AVATAR_PRODUCTS = [
       { id: 'avatar01', emoji: '🎧', name: '耳機', price: 100 },
       { id: 'avatar02', emoji: '🎵', name: '音符', price: 100 },
@@ -3321,10 +3444,20 @@
       { id: 'avatar27', emoji: '🦋', name: '蝴蝶', price: 900 },
       { id: 'avatar28', emoji: '🐱', name: '貓咪', price: 1000 },
       { id: 'avatar29', emoji: '🐼', name: '熊貓', price: 1000 },
-      { id: 'avatar30', emoji: '🐰', name: '兔子', price: 1000 }
+      { id: 'avatar30', emoji: '🐰', name: '兔子', price: 1000 },
+      { id: 'avatar31', emoji: '🚌', name: '畢旅巴士', price: 200, limited: true },
+      { id: 'avatar32', emoji: '🧳', name: '旅行行李', price: 300, limited: true },
+      { id: 'avatar33', emoji: '🧭', name: '旅途指南針', price: 400, limited: true },
+      { id: 'avatar34', emoji: '🗺️', name: '905 路線地圖', price: 500, limited: true },
+      { id: 'avatar35', emoji: '🎒', name: '青春背包', price: 600, limited: true },
+      { id: 'avatar36', emoji: '📸', name: '旅行合照', price: 700, limited: true },
+      { id: 'avatar37', emoji: '🏖️', name: '海邊日光', price: 800, limited: true },
+      { id: 'avatar38', emoji: '🌅', name: '出發晨曦', price: 900, limited: true },
+      { id: 'avatar39', emoji: '🎡', name: '畢旅摩天輪', price: 1000, limited: true },
+      { id: 'avatar40', emoji: '🏕️', name: '星夜露營', price: 1000, limited: true },
     ];
     const MEMBER_ACHIEVEMENTS = [
-      { id: 'daily_checkin', title: '905 報到星火', description: '領取每日登入積分，記下今天也來到 905。', sticker: '✨', icon: 'fa-sun', tier: 'bronze' },
+      { id: 'daily_checkin', title: '905 報到星火', description: '領取每日登入音樂幣，記下今天也來到 905。', sticker: '✨', icon: 'fa-sun', tier: 'bronze' },
       { id: 'first_song', title: '青春初聲', description: '完成第一次歌曲播放。', sticker: '🎵', icon: 'fa-music', tier: 'bronze' },
       { id: 'playlist_creator', title: '回憶策展人', description: '建立第一份專屬播放清單。', sticker: '📼', icon: 'fa-compact-disc', tier: 'silver' },
       { id: 'trip_memory', title: '畢旅時光膠囊', description: '完成畢旅行程明信片配對遊戲。', sticker: '🚌', icon: 'fa-route', tier: 'legend' },
@@ -3450,7 +3583,7 @@
         return `<article class="member-badge-card ${earned ? 'is-earned' : 'is-locked'}" data-tier="${esc(item.tier)}">
           <span class="member-badge-emblem" aria-hidden="true">${earned ? esc(item.sticker) : '<i class="fa-solid fa-lock"></i>'}</span>
           <span class="member-badge-copy"><span class="member-badge-tier">${esc(tierLabel)}</span><b class="member-badge-title block">${esc(item.title)}</b><span class="member-badge-description block">${esc(item.description)}</span></span>
-          <span class="member-badge-state">${earned ? '已解鎖' : '待挑戰'}<br>+${BADGE_REWARD_POINTS[item.tier] || 10} 分</span>
+          <span class="member-badge-state">${earned ? '已解鎖' : '待挑戰'}<br>+${BADGE_REWARD_POINTS[item.tier] || 10} 音樂幣</span>
         </article>`;
       }).join('');
     }
@@ -3467,10 +3600,11 @@
         const selected = profile.avatar === product.emoji;
         const priced = Number.isInteger(product.price) && product.price > 0;
         const canAfford = Number(userPoints.total || 0) >= (priced ? product.price : Infinity);
-        const costText = priced ? `${product.price} 積分` : '待定價';
-        const buyText = owned ? '已購買' : (priced ? `兌換・${product.price} 分` : '待定價');
+        const costText = priced ? `${product.price} 音樂幣` : '待定價';
+        const buyText = owned ? '已購買' : (priced ? `兌換・${product.price} 音樂幣` : '待定價');
         return `<div class="flex flex-col items-center gap-1 rounded-xl border border-slate-700 bg-slate-800/70 p-2">
           <button type="button" data-avatar="${esc(product.emoji)}" data-avatar-id="${esc(product.id)}" aria-label="選用頭像 ${String(AVATAR_PRODUCTS.indexOf(product) + 1).padStart(2, '0')} ${esc(product.name)}" aria-pressed="${selected}" title="${esc(product.name)}" ${owned ? '' : 'disabled'} class="rounded-xl border ${selected ? 'border-purple-300 bg-purple-900/70' : 'border-slate-700 bg-slate-800'} px-3 py-2 text-xl ${owned ? '' : 'cursor-not-allowed opacity-50'}">${esc(product.emoji)}</button>
+          ${product.limited ? '<span class="rounded-full border border-amber-300/25 bg-amber-300/10 px-2 py-0.5 text-[9px] font-bold text-amber-200">畢旅限定</span>' : ''}
           <span class="text-center text-[10px] text-slate-400">${esc(product.name)}・${owned ? '已擁有' : `價格 ${costText}`}</span>
           <button type="button" data-buy-avatar="${esc(product.id)}" ${owned || !priced || !canAfford || profileUnlockInProgress ? 'disabled' : ''} class="rounded-lg bg-amber-400 px-2 py-1 text-[10px] font-bold text-slate-950 disabled:cursor-not-allowed disabled:opacity-40">${esc(buyText)}</button>
         </div>`;
@@ -3486,11 +3620,11 @@
       if (nicknameButton) {
         nicknameButton.classList.toggle('hidden', nicknameUnlocked);
         nicknameButton.disabled = profileUnlockInProgress || Number(userPoints.total || 0) < PROFILE_UNLOCK_COSTS.nickname;
-        nicknameButton.textContent = nicknameUnlocked ? '已購買' : `購買暱稱設定・${PROFILE_UNLOCK_COSTS.nickname} 分`;
+        nicknameButton.textContent = nicknameUnlocked ? '已購買' : `購買暱稱設定・${PROFILE_UNLOCK_COSTS.nickname} 音樂幣`;
       }
       const shopBalance = document.getElementById('profileShopBalance');
       if (shopBalance) shopBalance.textContent = String(Math.max(0, Number(userPoints.total) || 0));
-      if (nicknameStatus) nicknameStatus.textContent = nicknameUnlocked ? '已永久購買，可免費修改 1–20 字暱稱。' : `商店價格：${PROFILE_UNLOCK_COSTS.nickname} 積分；購買後永久開放。`;
+      if (nicknameStatus) nicknameStatus.textContent = nicknameUnlocked ? '已永久購買，可免費修改 1–20 字暱稱。' : `商店價格：${PROFILE_UNLOCK_COSTS.nickname} 音樂幣；購買後永久開放。`;
       renderAvatarShop(profile);
     }
 
@@ -3507,7 +3641,7 @@
       list.innerHTML = entries.slice(0, 10).map(([uid, entry], index) => {
         const self = !!currentUser && uid === currentUser.uid;
         const avatar = entry.avatar ? `<span class="grid h-8 w-8 place-items-center rounded-full border border-cyan-200/15 bg-slate-800 text-lg">${esc(entry.avatar)}</span>` : `<span class="grid h-8 w-8 place-items-center rounded-full border border-slate-700 bg-slate-800 text-sm font-black text-cyan-100">${esc(String(entry.displayName || '同').charAt(0))}</span>`;
-        return `<article class="leaderboard-row ${self ? 'is-self' : ''}"><span class="leaderboard-rank">${index + 1}</span><span class="flex min-w-0 items-center gap-2">${avatar}<span class="min-w-0"><b class="block truncate text-xs text-white">${esc(entry.displayName || '905 同學')}${self ? '（你）' : ''}</b><span class="text-[10px] text-slate-400">Lv.${getMemberLevel(entry.badgeCount).level} ${esc(getMemberLevel(entry.badgeCount).title)}・${Number(entry.badgeCount) || 0} / ${MEMBER_ACHIEVEMENTS.length} 枚徽章</span></span></span><span class="leaderboard-metrics">聽歌 ${Number(entry.totalListens) || 0} 次<br>${Number(entry.points) || 0} 積分</span></article>`;
+        return `<article class="leaderboard-row ${self ? 'is-self' : ''}"><span class="leaderboard-rank">${index + 1}</span><span class="flex min-w-0 items-center gap-2">${avatar}<span class="min-w-0"><b class="block truncate text-xs text-white">${esc(entry.displayName || '905 同學')}${self ? '（你）' : ''}</b><span class="text-[10px] text-slate-400">Lv.${getMemberLevel(entry.badgeCount).level} ${esc(getMemberLevel(entry.badgeCount).title)}・${Number(entry.badgeCount) || 0} / ${MEMBER_ACHIEVEMENTS.length} 枚徽章</span></span></span><span class="leaderboard-metrics">聽歌 ${Number(entry.totalListens) || 0} 次<br>${Number(entry.points) || 0} 音樂幣</span></article>`;
       }).join('');
     }
 
@@ -3556,7 +3690,7 @@
       if (hasProfileUnlock(kind)) return;
       const cost = PROFILE_UNLOCK_COSTS[kind];
       const status = document.getElementById(kind === 'nickname' ? 'nicknameUnlockStatus' : 'avatarUnlockStatus');
-      if (Number(userPoints.total || 0) < cost) { if (status) status.textContent = `積分不足；需要 ${cost} 分，目前 ${Number(userPoints.total || 0)} 分。`; return; }
+      if (Number(userPoints.total || 0) < cost) { if (status) status.textContent = `音樂幣不足；需要 ${cost} 音樂幣，目前 ${Number(userPoints.total || 0)} 音樂幣。`; return; }
       profileUnlockInProgress = true;
       renderProfileUnlocks();
       try {
@@ -3568,7 +3702,7 @@
         });
         if (result.committed) userPoints = result.snapshot.val();
         else if (result.snapshot && result.snapshot.exists()) userPoints = result.snapshot.val();
-        if (status) status.textContent = result.committed ? '解鎖成功！永久開放，不會再次扣分。' : '解鎖未完成，請確認積分或稍後重試。';
+        if (status) status.textContent = result.committed ? '解鎖成功！永久開放，不會再次扣音樂幣。' : '解鎖未完成，請確認音樂幣或稍後重試。';
         renderAccountPanel();
         renderDailyRewardUI();
         syncLeaderboardProfile();
@@ -3588,7 +3722,7 @@
       if (hasAvatarAccess(avatarId)) return;
       if (Number(userPoints.total || 0) < product.price) {
         const status = document.getElementById('avatarUnlockStatus');
-        if (status) status.textContent = `積分不足；「${product.name}」需要 ${product.price} 分，目前 ${Number(userPoints.total || 0)} 分。`;
+        if (status) status.textContent = `音樂幣不足；「${product.name}」需要 ${product.price} 音樂幣，目前 ${Number(userPoints.total || 0)} 音樂幣。`;
         return;
       }
       profileUnlockInProgress = true;
@@ -3606,7 +3740,7 @@
         });
         if (result.snapshot && result.snapshot.exists()) userPoints = result.snapshot.val();
         const status = document.getElementById('avatarUnlockStatus');
-        if (status) status.textContent = result.committed ? `兌換成功：${product.name} 已永久加入收藏。` : '兌換未完成，請確認積分或稍後重試。';
+        if (status) status.textContent = result.committed ? `兌換成功：${product.name} 已永久加入收藏。` : '兌換未完成，請確認音樂幣或稍後重試。';
         renderAccountPanel();
         renderDailyRewardUI();
         syncLeaderboardProfile();
@@ -3631,13 +3765,13 @@
       points.textContent = String(total);
       button.disabled = !currentUser || !sharedDb || !ready || total >= 1000 || dailyRewardInProgress;
       button.classList.toggle('opacity-50', button.disabled);
-      if (!currentUser) status.textContent = '請先登入以累積每日積分。';
+      if (!currentUser) status.textContent = '請先登入以累積每日音樂幣。';
       else if (!sharedDb) status.textContent = '資料庫尚未連線，暫時無法領取。';
-      else if (total >= 1000) status.textContent = '已達積分上限 1000 分，感謝你陪伴 905。';
+      else if (total >= 1000) status.textContent = '已達音樂幣上限 1000 音樂幣，感謝你陪伴 905。';
       else if (dailyRewardInProgress) status.textContent = '正在確認登入獎勵…';
-      else if (!ready) status.textContent = `今日登入獎勵已領取；積分 ${total}/1000。`;
+      else if (!ready) status.textContent = `今日登入獎勵已領取；音樂幣 ${total}/1000。`;
       else status.textContent = '登入獎勵可領取，登入時也會自動檢查。';
-      button.textContent = total >= 1000 ? '已達上限' : ready ? '領取 +10' : '已領取';
+      button.textContent = total >= 1000 ? '已達上限' : ready ? '領取 +10 音樂幣' : '已領取';
     }
 
     async function awardBadgePoints(id) {
@@ -3659,7 +3793,7 @@
         renderProfileUnlocks();
         syncLeaderboardProfile();
       } catch (error) {
-        console.warn('徽章積分核發失敗：', id, error);
+        console.warn('徽章音樂幣核發失敗：', id, error);
       }
     }
 
@@ -3687,7 +3821,7 @@
         await sharedDb.ref(`userPrefs/${currentUser.uid}/collection/${id}`).set(true);
         await awardBadgePoints(id);
       } catch (error) {
-        console.warn('儲存班級徽章或核發積分失敗：', error);
+        console.warn('儲存班級徽章或核發音樂幣失敗：', error);
       }
     }
 
@@ -3856,7 +3990,7 @@
       const nicknameUnlocked = hasProfileUnlock('nickname');
       const avatarAllowed = !selectedProfileAvatar || AVATAR_PRODUCTS.some(product => product.emoji === selectedProfileAvatar && hasAvatarAccess(product.id));
       if (!nicknameUnlocked && !avatarAllowed) {
-        document.getElementById('profileSaveMsg').textContent = '請先以積分購買所選頭像；Google 頭像可免費使用。';
+        document.getElementById('profileSaveMsg').textContent = '請先以音樂幣購買所選頭像；Google 頭像可免費使用。';
         return;
       }
       const nickname = document.getElementById('profileNickname').value.trim().slice(0, 20);
@@ -3904,6 +4038,9 @@
       userHist = {};
       userPrefs = {};
       userPoints = { total: 0, lastClaim: 0 };
+      if (LYRIC_EFFECTS.find(item => item.id === activeLyricEffectId && item.price > 0)) activeLyricEffectId = 'none';
+      applyLyricStyle();
+      updateLyricFxStoreUI();
       userPlayData = {};
       leaderboardData = {};
       renderLeaderboard();
@@ -3933,6 +4070,11 @@
         const pr = sharedDb.ref('userPrefs/' + uid);
         pr.on('value', snap => {
           userPrefs = snap.val() || {};
+          if (userPrefs.lyricEffectId && LYRIC_EFFECTS.some(item => item.id === userPrefs.lyricEffectId)) {
+            activeLyricEffectId = userPrefs.lyricEffectId;
+          }
+          applyLyricStyle();
+          updateLyricFxStoreUI();
           document.getElementById('notifyNew').checked = !!userPrefs.notifyNew;
           renderAccountPanel();
           checkMemberAchievements();
@@ -3943,6 +4085,11 @@
         const pointsRef = sharedDb.ref('userPoints/' + uid);
         pointsRef.on('value', snap => {
           userPoints = snap.val() || { total: 0, lastClaim: 0 };
+          if (LYRIC_EFFECTS.find(item => item.id === activeLyricEffectId && item.price > 0) && !hasLyricEffect(activeLyricEffectId)) {
+            activeLyricEffectId = 'none';
+            applyLyricStyle();
+          }
+          updateLyricFxStoreUI();
           renderDailyRewardUI();
           renderProfileUnlocks();
           syncLeaderboardProfile();
