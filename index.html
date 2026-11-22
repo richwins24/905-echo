@@ -37,6 +37,22 @@
     .lyric-line { color: var(--todo); opacity: .58; cursor: pointer; transition: color .85s cubic-bezier(.22,1,.36,1), opacity .85s ease, transform .85s cubic-bezier(.22,1,.36,1), text-shadow .85s ease; }
     .lyric-line.on { color: #ffffff; opacity: 1; transform: scale(1.025); transform-origin: center; font-weight: 700; }
     #lyricsBox.fx-glow .lyric-line.on { text-shadow: 0 0 5px var(--played), 0 0 10px var(--played); }
+    /* 心事系列其他特效 */
+    #lyricsBox.fx-heart-bloom .lyric-line.on, #ktvLyricsBox.fx-heart-bloom .ktv-line.on {
+      color: #fbcfe8; text-shadow: 0 0 8px rgba(244,114,182,.8), 0 0 24px rgba(192,132,252,.55);
+    }
+    #lyricsBox.fx-heart-night .lyric-line.on, #ktvLyricsBox.fx-heart-night .ktv-line.on {
+      color: #ddd6fe; text-shadow: 0 0 8px rgba(129,140,248,.85), 0 0 26px rgba(99,102,241,.65), 0 0 42px rgba(244,114,182,.28);
+    }
+    /* 畢業旅行限定系列 */
+    #lyricsBox.fx-trip-memory .lyric-line.on, #ktvLyricsBox.fx-trip-memory .ktv-line.on {
+      display: inline-block; color: #fff7ed; border: 1px solid rgba(253,186,116,.58); border-radius: .75rem;
+      padding: .12em .55em; background: linear-gradient(110deg, rgba(190,24,93,.38), rgba(30,64,175,.36), rgba(5,150,105,.32));
+      box-shadow: 0 0 22px rgba(56,189,248,.2), inset 0 0 14px rgba(255,255,255,.08);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      #lyricsBox.fx-trip-memory .lyric-line.on, #ktvLyricsBox.fx-trip-memory .ktv-line.on { animation: lyricStarPulse 2.6s ease-in-out infinite alternate; }
+    }
     /* 「沒有人知道我的心事」專屬：夜色藍紫與粉色心跳光暈 */
     #lyricsBox.fx-heart-song .lyric-line.on, #ktvLyricsBox.fx-heart-song .ktv-line.on {
       color: transparent;
@@ -1520,7 +1536,7 @@
       </div>
       <div class="space-y-3">
         <div id="lyricFxShopList" class="grid max-h-[62vh] grid-cols-1 gap-3 overflow-y-auto pr-1 sm:grid-cols-2" aria-label="所有字幕特效商品"></div>
-        <div id="lyricFxShopStatus" class="min-h-5 border-t border-slate-800 pt-3 text-xs text-slate-400" role="status" aria-live="polite">原始與經典發光免費；畢旅與運動會特效可逐項解鎖。</div>
+        <div id="lyricFxShopStatus" class="min-h-5 border-t border-slate-800 pt-3 text-xs text-slate-400" role="status" aria-live="polite">三大主題系列各有 1 款免費特效；其餘使用音樂幣永久解鎖。</div>
       </div>
     </section>
   </div>
@@ -2655,23 +2671,27 @@
     });
 
     const LYRIC_EFFECTS = [
-      { id: 'none', name: '原始歌詞', price: 0 },
-      { id: 'glow', name: '經典發光', price: 0 },
-      { id: 'heart-song', name: '心事流光', price: 0 },
-      { id: 'trip-stars', name: '畢旅星光', price: 150 },
-      { id: 'sea-breeze', name: '海風流光', price: 300 },
-      { id: 'sunset', name: '夕陽漸層', price: 500 },
-      { id: 'postcard', name: '旅行明信片', price: 800 },
-      { id: 'track-ribbon', name: '運動會彩帶', price: 250 },
-      { id: 'medal-gold', name: '金牌時刻', price: 300 },
-      { id: 'stadium-neon', name: '球場聚光', price: 350 },
-      { id: 'team-pride', name: '班級應援', price: 400 },
-      { id: 'sprint-flame', name: '衝刺火焰', price: 450 },
-      { id: 'victory-confetti', name: '勝利彩花', price: 500 },
-      { id: 'finish-checker', name: '終點格旗', price: 550 },
-      { id: 'podium-prism', name: '頒獎台幻彩', price: 600 },
-      { id: 'sports-postcard', name: '運動明信片', price: 650 },
-      { id: 'rainbow-relay', name: '彩虹接力', price: 700 }
+      { id: 'none', name: '原始歌詞', price: 0, group: 'common' },
+      { id: 'glow', name: '經典發光', price: 0, group: 'common' },
+
+      // 心事系列：3 款，其中「心事流光」免費
+      { id: 'heart-song', name: '心事流光', price: 0, group: 'heart' },
+      { id: 'heart-bloom', name: '心事花火', price: 300, group: 'heart' },
+      { id: 'heart-night', name: '心事夜空', price: 500, group: 'heart' },
+
+      // 畢業旅行限定：5 款，其中「畢旅星光」免費
+      { id: 'trip-stars', name: '畢旅星光', price: 0, group: 'travel', limited: true },
+      { id: 'sea-breeze', name: '海風流光', price: 300, group: 'travel', limited: true },
+      { id: 'sunset', name: '夕陽漸層', price: 500, group: 'travel', limited: true },
+      { id: 'postcard', name: '旅行明信片', price: 800, group: 'travel', limited: true },
+      { id: 'trip-memory', name: '青春旅途', price: 1000, group: 'travel', limited: true },
+
+      // 運動會系列：5 款，其中「運動會彩帶」免費
+      { id: 'track-ribbon', name: '運動會彩帶', price: 0, group: 'sports', limited: true },
+      { id: 'medal-gold', name: '金牌時刻', price: 300, group: 'sports', limited: true },
+      { id: 'stadium-neon', name: '球場聚光', price: 350, group: 'sports', limited: true },
+      { id: 'sprint-flame', name: '衝刺火焰', price: 450, group: 'sports', limited: true },
+      { id: 'victory-confetti', name: '勝利彩花', price: 500, group: 'sports', limited: true }
     ];
     let activeLyricEffectId = 'none';
     let lyricEffectInitialized = false;
@@ -2707,7 +2727,7 @@
       if (!list || !status) return;
       const balance = Math.max(0, Number(userPoints.total) || 0);
       const tester = isPaidFeatureTester();
-      const sportsEffects = new Set(['track-ribbon', 'medal-gold', 'stadium-neon', 'team-pride', 'sprint-flame', 'victory-confetti', 'finish-checker', 'podium-prism', 'sports-postcard', 'rainbow-relay']);
+      const sportsEffects = new Set(['track-ribbon', 'medal-gold', 'stadium-neon', 'sprint-flame', 'victory-confetti']);
       list.innerHTML = LYRIC_EFFECTS.map(effect => {
         const active = activeLyricEffectId === effect.id;
         const owned = hasLyricEffect(effect.id);
@@ -2730,7 +2750,7 @@
             <div class="min-w-0"><h3 class="truncate text-sm font-bold text-white">${esc(effect.name)}</h3><p class="mt-1 text-[11px] text-slate-400">${esc(detail)}</p></div>
             <div class="flex shrink-0 flex-col items-end gap-1">
               <span class="rounded-full border ${effect.price === 0 ? 'border-emerald-300/20 bg-emerald-300/10 text-emerald-200' : 'border-amber-300/20 bg-amber-300/10 text-amber-200'} px-2 py-0.5 text-[10px] font-semibold">${effect.price === 0 ? '免費' : `${effect.price} 音樂幣`}</span>
-              ${sportsEffects.has(effect.id) ? '<span class="rounded-full bg-cyan-300/10 px-2 py-0.5 text-[9px] font-semibold text-cyan-200">運動會限定</span>' : ''}
+              ${effect.group === 'travel' ? '<span class="rounded-full bg-amber-300/10 px-2 py-0.5 text-[9px] font-semibold text-amber-200">畢業旅行限定</span>' : sportsEffects.has(effect.id) ? '<span class="rounded-full bg-cyan-300/10 px-2 py-0.5 text-[9px] font-semibold text-cyan-200">運動會限定</span>' : effect.group === 'heart' ? '<span class="rounded-full bg-pink-300/10 px-2 py-0.5 text-[9px] font-semibold text-pink-200">心事系列</span>' : ''}
             </div>
           </div>
           <button type="button" data-lyric-fx-action="${action}" data-effect-id="${esc(effect.id)}" aria-pressed="${active}" aria-label="${esc(actionLabel)}：${esc(effect.name)}" ${disabled ? 'disabled' : ''} class="w-full rounded-lg px-3 py-2 text-xs font-bold transition disabled:cursor-not-allowed disabled:opacity-50 ${actionClass}">${esc(actionLabel)}</button>
