@@ -1535,6 +1535,16 @@
         <button id="closeLyricFxShopBtn" type="button" class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-slate-700 text-slate-300 transition hover:bg-slate-800 hover:text-white" aria-label="關閉字幕特效商店" title="關閉">✕</button>
       </div>
       <div class="space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-800 bg-slate-950/50 px-3 py-2">
+          <label for="lyricFxSortSel" class="flex items-center gap-2 text-xs font-semibold text-slate-300"><i class="fa-solid fa-arrow-down-wide-short text-purple-300" aria-hidden="true"></i>排列方式</label>
+          <select id="lyricFxSortSel" class="rounded-lg border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-xs text-slate-200 focus:border-purple-400 focus:outline-none" aria-label="字幕特效排列方式">
+            <option value="group">主題系列（同系列一起）</option>
+            <option value="group-price-asc">同系列・價格由低至高</option>
+            <option value="group-price-desc">同系列・價格由高至低</option>
+            <option value="price-asc">全部價格由低至高</option>
+            <option value="price-desc">全部價格由高至低</option>
+          </select>
+        </div>
         <div id="lyricFxShopList" class="grid max-h-[62vh] grid-cols-1 gap-3 overflow-y-auto pr-1 sm:grid-cols-2" aria-label="所有字幕特效商品"></div>
         <div id="lyricFxShopStatus" class="min-h-5 border-t border-slate-800 pt-3 text-xs text-slate-400" role="status" aria-live="polite">三大主題系列各有 1 款免費特效；其餘使用音樂幣永久解鎖。</div>
       </div>
@@ -2696,6 +2706,17 @@
     let activeLyricEffectId = 'none';
     let lyricEffectInitialized = false;
     let lyricFxPurchaseInProgress = false;
+    let lyricFxSortMode = 'group';
+    function getSortedLyricEffects() {
+      const effects = [...LYRIC_EFFECTS];
+      const groupOrder = { common: 0, heart: 1, travel: 2, sports: 3 };
+      const byPriceAsc = (a, b) => a.price - b.price || a.name.localeCompare(b.name, 'zh-Hant');
+      const byPriceDesc = (a, b) => b.price - a.price || a.name.localeCompare(b.name, 'zh-Hant');
+      if (lyricFxSortMode === 'price-asc') return effects.sort(byPriceAsc);
+      if (lyricFxSortMode === 'price-desc') return effects.sort(byPriceDesc);
+      return effects.sort((a, b) => (groupOrder[a.group] ?? 99) - (groupOrder[b.group] ?? 99)
+        || (lyricFxSortMode === 'group-price-desc' ? byPriceDesc(a, b) : lyricFxSortMode === 'group-price-asc' ? byPriceAsc(a, b) : 0));
+    }
     function getLyricStyle() {
       try { return JSON.parse(localStorage.getItem('sg_lyric_style')) || {}; } catch (e) { return {}; }
     }
@@ -2728,7 +2749,7 @@
       const balance = Math.max(0, Number(userPoints.total) || 0);
       const tester = isPaidFeatureTester();
       const sportsEffects = new Set(['track-ribbon', 'medal-gold', 'stadium-neon', 'sprint-flame', 'victory-confetti']);
-      list.innerHTML = LYRIC_EFFECTS.map(effect => {
+      list.innerHTML = getSortedLyricEffects().map(effect => {
         const active = activeLyricEffectId === effect.id;
         const owned = hasLyricEffect(effect.id);
         const locked = effect.price > 0 && !owned;
@@ -2826,6 +2847,11 @@
       const effectId = button.dataset.effectId;
       if (button.dataset.lyricFxAction === 'buy') unlockLyricEffect(effectId);
       else if (hasLyricEffect(effectId)) setLyricEffect(effectId);
+    });
+    const lyricFxSortSel = document.getElementById('lyricFxSortSel');
+    lyricFxSortSel.addEventListener('change', event => {
+      lyricFxSortMode = event.target.value;
+      updateLyricFxStoreUI();
     });
     const lyricFxShopModal = document.getElementById('lyricFxShopModal');
     const openLyricFxShopBtn = document.getElementById('openLyricFxShopBtn');
