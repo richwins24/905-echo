@@ -37,6 +37,19 @@
     .lyric-line { color: var(--todo); opacity: .58; cursor: pointer; transition: color .85s cubic-bezier(.22,1,.36,1), opacity .85s ease, transform .85s cubic-bezier(.22,1,.36,1), text-shadow .85s ease; }
     .lyric-line.on { color: #ffffff; opacity: 1; transform: scale(1.025); transform-origin: center; font-weight: 700; }
     #lyricsBox.fx-glow .lyric-line.on { text-shadow: 0 0 5px var(--played), 0 0 10px var(--played); }
+    /* 「沒有人知道我的心事」專屬：夜色藍紫與粉色心跳光暈 */
+    #lyricsBox.fx-heart-song .lyric-line.on, #ktvLyricsBox.fx-heart-song .ktv-line.on {
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      background: linear-gradient(100deg, #c4b5fd 0%, #fbcfe8 48%, #a5b4fc 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      filter: drop-shadow(0 0 8px rgba(196,181,253,.6)) drop-shadow(0 0 18px rgba(244,114,182,.32));
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      #lyricsBox.fx-heart-song .lyric-line.on, #ktvLyricsBox.fx-heart-song .ktv-line.on { animation: heartLyricPulse 2.8s ease-in-out infinite alternate; }
+    }
+    @keyframes heartLyricPulse { from { filter: drop-shadow(0 0 6px rgba(196,181,253,.45)) drop-shadow(0 0 12px rgba(244,114,182,.22)); } to { filter: drop-shadow(0 0 12px rgba(196,181,253,.8)) drop-shadow(0 0 25px rgba(244,114,182,.42)); } }
 
     /* ===== Apple Music 風格動態流動光暈全螢幕 KTV ===== */
     #ktvModal {
@@ -2201,6 +2214,11 @@
         if (!ok) return;
       }
       currentId = id;
+      // 心事單曲預設使用專屬字幕特效；若使用者已選擇其他特效則保留手動選擇。
+      if (String(s.title || '').includes('沒有人知道') && ['none', 'glow'].includes(activeLyricEffectId)) {
+        activeLyricEffectId = 'heart-song';
+        try { localStorage.setItem('sg_lyric_style', JSON.stringify({ ...getLyricStyle(), fx: 'heart-song' })); } catch (e) {}
+      }
       playHistory.push(id);
       if (currentUser && sharedDb) sharedDb.ref('userHistory/' + currentUser.uid + '/' + id).set(Date.now());
       renderRecentRow();
@@ -2639,6 +2657,7 @@
     const LYRIC_EFFECTS = [
       { id: 'none', name: '原始歌詞', price: 0 },
       { id: 'glow', name: '經典發光', price: 0 },
+      { id: 'heart-song', name: '心事流光', price: 0 },
       { id: 'trip-stars', name: '畢旅星光', price: 150 },
       { id: 'sea-breeze', name: '海風流光', price: 300 },
       { id: 'sunset', name: '夕陽漸層', price: 500 },
@@ -2667,7 +2686,7 @@
     function applyLyricStyle() {
       if (!lyricEffectInitialized) {
         const saved = getLyricStyle().fx;
-        activeLyricEffectId = saved === 'glow' ? 'glow' : 'none';
+        activeLyricEffectId = ['glow', 'heart-song'].includes(saved) ? saved : 'none';
         lyricEffectInitialized = true;
       }
       const box = document.getElementById('lyricsBox');
