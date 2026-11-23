@@ -170,7 +170,7 @@
     /* ===== 首次登入教學模式 ===== */
     #onboardingTutorialModal { background: transparent; }
     #onboardingTutorialSpotlight { position: fixed; z-index: 1; pointer-events: none; border: 2px solid rgba(251, 207, 232, .95); border-radius: 14px; background: transparent; box-shadow: 0 0 0 9999px rgba(2, 6, 23, .82), 0 0 0 6px rgba(244, 114, 182, .18), 0 0 28px rgba(244, 114, 182, .75); transition: left .28s ease, top .28s ease, width .28s ease, height .28s ease; }
-    #onboardingTutorialModal .tutorial-card { position: relative; z-index: 2; max-height: min(88vh, 720px); box-shadow: 0 28px 90px rgba(0,0,0,.58); }
+    #onboardingTutorialModal .tutorial-card { position: fixed; z-index: 2; width: min(22rem, calc(100vw - 2rem)); max-height: min(54vh, 390px); overflow-y: auto; padding: 1rem !important; border: 1px solid rgba(244, 114, 182, .58); border-radius: 1rem; background: rgba(15, 23, 42, .96); box-shadow: 0 16px 42px rgba(0,0,0,.48), 0 0 20px rgba(244, 114, 182, .18); transition: left .28s ease, top .28s ease; }
     #onboardingTutorialModal .tutorial-step { animation: tutorialStepIn .24s ease-out both; }
     #onboardingTutorialModal .tutorial-location { border: 1px solid rgba(196,181,253,.22); background: rgba(129,140,248,.08); }
     .onboarding-target-highlight { outline: 3px solid rgba(244,114,182,.75) !important; outline-offset: 5px !important; scroll-margin-top: 90px; }
@@ -3607,6 +3607,41 @@
       if (markDone) markOnboardingTutorialDone();
     }
 
+    function positionOnboardingTutorialCard() {
+      const step = ONBOARDING_TUTORIAL_STEPS[onboardingTutorialIndex];
+      const card = document.querySelector('#onboardingTutorialModal .tutorial-card');
+      if (!step || !card || card.offsetWidth === 0) return;
+      const target = document.querySelector(step.target);
+      if (!target || target.offsetParent === null) return;
+      const rect = target.getBoundingClientRect();
+      const margin = 14;
+      const gap = 16;
+      const cardWidth = card.offsetWidth;
+      const cardHeight = card.offsetHeight;
+      const roomRight = window.innerWidth - rect.right - margin;
+      const roomLeft = rect.left - margin;
+      let left;
+      let top;
+      if (roomRight >= cardWidth + gap) {
+        left = rect.right + gap;
+        top = rect.top + (rect.height - cardHeight) / 2;
+      } else if (roomLeft >= cardWidth + gap) {
+        left = rect.left - cardWidth - gap;
+        top = rect.top + (rect.height - cardHeight) / 2;
+      } else {
+        const enoughAbove = rect.top - margin >= cardHeight + gap;
+        const enoughBelow = window.innerHeight - rect.bottom - margin >= cardHeight + gap;
+        if (enoughAbove && (!enoughBelow || rect.top > window.innerHeight / 2)) {
+          top = rect.top - cardHeight - gap;
+        } else {
+          top = enoughBelow ? rect.bottom + gap : Math.max(margin, (window.innerHeight - cardHeight) / 2);
+        }
+        left = rect.left + (rect.width - cardWidth) / 2;
+      }
+      card.style.left = `${Math.max(margin, Math.min(window.innerWidth - cardWidth - margin, left))}px`;
+      card.style.top = `${Math.max(margin, Math.min(window.innerHeight - cardHeight - margin, top))}px`;
+    }
+
     function updateOnboardingSpotlight() {
       const step = ONBOARDING_TUTORIAL_STEPS[onboardingTutorialIndex];
       const spotlight = document.getElementById('onboardingTutorialSpotlight');
@@ -3620,6 +3655,7 @@
       spotlight.style.top = `${Math.max(4, rect.top - padding)}px`;
       spotlight.style.width = `${Math.max(20, rect.width + padding * 2)}px`;
       spotlight.style.height = `${Math.max(20, rect.height + padding * 2)}px`;
+      positionOnboardingTutorialCard();
     }
 
     function renderOnboardingTutorialStep() {
@@ -3654,6 +3690,10 @@
       const modal = document.getElementById('onboardingTutorialModal');
       modal.classList.remove('hidden');
       modal.classList.add('flex');
+      requestAnimationFrame(() => {
+        updateOnboardingSpotlight();
+        positionOnboardingTutorialCard();
+      });
     }
 
     document.getElementById('onboardingTutorialPrev').addEventListener('click', () => {
@@ -3672,7 +3712,10 @@
     document.getElementById('onboardingTutorialModal').addEventListener('click', event => {
       if (event.target.id === 'onboardingTutorialModal') closeOnboardingTutorial(true);
     });
-    window.addEventListener('resize', updateOnboardingSpotlight);
+    window.addEventListener('resize', () => {
+      updateOnboardingSpotlight();
+      positionOnboardingTutorialCard();
+    });
     window.addEventListener('scroll', updateOnboardingSpotlight, true);
 
     function updateLoginBtn() {
