@@ -167,6 +167,13 @@
     #profileShopPanel, #memberRewardsPanel { overflow-y: auto; }
     #profileShopPanel > section, #memberRewardsPanel > section { overscroll-behavior: contain; }
 
+    /* ===== 首次登入教學模式 ===== */
+    #onboardingTutorialModal { background: rgba(2, 6, 23, .82); backdrop-filter: blur(8px); }
+    #onboardingTutorialModal .tutorial-card { max-height: min(88vh, 720px); box-shadow: 0 28px 90px rgba(0,0,0,.58); }
+    #onboardingTutorialModal .tutorial-step { animation: tutorialStepIn .24s ease-out both; }
+    @keyframes tutorialStepIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) { #onboardingTutorialModal .tutorial-step { animation: none; } }
+
     /* ===== 跑馬燈動畫 ===== */
     .marquee-container {
       display: flex;
@@ -1523,6 +1530,29 @@
       </div>
       <p id="introText" class="text-sm text-slate-200 leading-7 whitespace-pre-wrap max-h-[60vh] overflow-y-auto"></p>
     </div>
+  </div>
+
+  <!-- 首次登入功能教學；完成或跳過後才會再次不顯示 -->
+  <div id="onboardingTutorialModal" class="hidden fixed inset-0 z-[130] items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="onboardingTutorialTitle">
+    <section class="tutorial-card w-full max-w-2xl overflow-y-auto rounded-3xl border border-purple-400/40 bg-slate-900 p-5 sm:p-7">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="text-[10px] font-black tracking-[.24em] text-purple-300">905 QUICK START</p>
+          <h2 id="onboardingTutorialTitle" class="mt-1 text-xl font-black text-white sm:text-2xl">歡迎來到 905 · 青春的回聲</h2>
+          <p class="mt-2 text-sm leading-6 text-slate-400">第一次登入，我帶你快速認識網站功能。你可以逐步閱讀，也可以隨時跳過。</p>
+        </div>
+        <button id="onboardingTutorialSkipTop" type="button" class="shrink-0 rounded-lg px-2 py-1 text-xs text-slate-400 hover:bg-slate-800 hover:text-white">跳過</button>
+      </div>
+      <div class="mt-5 h-1.5 overflow-hidden rounded-full bg-slate-800"><div id="onboardingTutorialProgress" class="h-full rounded-full bg-gradient-to-r from-purple-500 to-pink-400 transition-all"></div></div>
+      <div id="onboardingTutorialBody" class="tutorial-step mt-6 min-h-[190px]"></div>
+      <div class="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-slate-800 pt-4">
+        <span id="onboardingTutorialCount" class="text-xs text-slate-500"></span>
+        <div class="flex items-center gap-2">
+          <button id="onboardingTutorialPrev" type="button" class="rounded-lg border border-slate-700 px-3 py-2 text-xs text-slate-300 hover:bg-slate-800">上一步</button>
+          <button id="onboardingTutorialNext" type="button" class="rounded-lg bg-purple-600 px-4 py-2 text-xs font-bold text-white hover:bg-purple-500">下一步</button>
+        </div>
+      </div>
+    </section>
   </div>
 
   <div id="lyricFxShopModal" class="hidden fixed inset-0 z-[120] flex items-center justify-center bg-black/75 p-4" role="presentation">
@@ -3537,6 +3567,76 @@
       console.warn('共用次數未連線：', e);
     }
 
+    // ===== 首次登入功能教學模式（僅新增導覽，不影響原有功能） =====
+    const ONBOARDING_TUTORIAL_KEY = 'onboardingTutorialDone';
+    let onboardingTutorialShown = false;
+    let onboardingTutorialIndex = 0;
+    const ONBOARDING_TUTORIAL_STEPS = [
+      { icon: 'fa-music', color: 'text-sky-300', title: '瀏覽、搜尋與播放歌曲', text: '在歌曲卡片上點選播放；上方搜尋框可以搜尋曲名或分類，分類按鈕與排序選單可以快速整理曲庫。', target: '#musicGrid' },
+      { icon: 'fa-sliders', color: 'text-purple-300', title: '播放器與更多設定', text: '底部播放器可以播放、暫停、切換歌曲、前進或倒退 5 秒。按「更多設定」可調整播放倍速、循環模式、音量與靜音。', target: '#playerBar' },
+      { icon: 'fa-align-center', color: 'text-pink-300', title: '歌詞與全螢幕 KTV', text: '按播放器的「歌詞」查看同步歌詞；按「全螢幕 KTV」進入沉浸模式，還能調整歌詞字級。', target: '#playerBar' },
+      { icon: 'fa-heart', color: 'text-rose-300', title: '收藏與個人播放清單', text: '登入後可以收藏歌曲、建立雲端播放清單，並在不同裝置同步。訪客播放清單則只會保存在目前瀏覽器。', target: '#accountArea' },
+      { icon: 'fa-star', color: 'text-amber-300', title: '按讚、評分、留言與投票', text: '登入後可對歌曲按讚、評分、留言，也能參加每月一次的 905 班人氣歌曲投票。', target: '#voteBox' },
+      { icon: 'fa-user-astronaut', color: 'text-cyan-300', title: '會員中心、音樂幣與徽章', text: '會員中心可以設定暱稱與頭像、領取每日音樂幣、完成任務收集徽章，並查看登入同學排行榜。', target: '#accountArea' },
+      { icon: 'fa-palette', color: 'text-fuchsia-300', title: '主題風格與活動企劃', text: '右上角「主題風格」可以切換介面色彩；網站也有心事單曲、青春里程碑與畢業旅行等限定內容。', target: '#themeMenuBtn' },
+      { icon: 'fa-calendar-days', color: 'text-emerald-300', title: '倒數、里程碑與班級資訊', text: '首頁的倒數看板、青春里程碑、班級廣播與公告，會陪你記錄 905 一起走過的日子。', target: '#gradHeroBanner' }
+    ];
+
+    function markOnboardingTutorialDone() {
+      if (!currentUser || !sharedDb) return;
+      const path = `userPrefs/${currentUser.uid}/${ONBOARDING_TUTORIAL_KEY}`;
+      sharedDb.ref(path).set(true).catch(error => console.warn('首次登入教學狀態儲存失敗：', error));
+    }
+
+    function closeOnboardingTutorial(markDone = true) {
+      const modal = document.getElementById('onboardingTutorialModal');
+      if (!modal) return;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      if (markDone) markOnboardingTutorialDone();
+    }
+
+    function renderOnboardingTutorialStep() {
+      const step = ONBOARDING_TUTORIAL_STEPS[onboardingTutorialIndex];
+      const body = document.getElementById('onboardingTutorialBody');
+      const progress = document.getElementById('onboardingTutorialProgress');
+      const count = document.getElementById('onboardingTutorialCount');
+      const prev = document.getElementById('onboardingTutorialPrev');
+      const next = document.getElementById('onboardingTutorialNext');
+      if (!step || !body) return;
+      body.classList.remove('tutorial-step');
+      void body.offsetWidth;
+      body.classList.add('tutorial-step');
+      body.innerHTML = `<div class="flex items-start gap-4"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-purple-400/30 bg-purple-500/10 ${step.color}"><i class="fa-solid ${step.icon} text-xl"></i></span><div><p class="text-xs font-bold tracking-wider text-purple-300">功能導覽 ${onboardingTutorialIndex + 1}</p><h3 class="mt-1 text-lg font-black text-white">${step.title}</h3><p class="mt-3 text-sm leading-7 text-slate-300">${step.text}</p></div></div>`;
+      progress.style.width = `${((onboardingTutorialIndex + 1) / ONBOARDING_TUTORIAL_STEPS.length) * 100}%`;
+      count.textContent = `${onboardingTutorialIndex + 1} / ${ONBOARDING_TUTORIAL_STEPS.length}`;
+      prev.disabled = onboardingTutorialIndex === 0;
+      prev.classList.toggle('opacity-40', prev.disabled);
+      next.textContent = onboardingTutorialIndex === ONBOARDING_TUTORIAL_STEPS.length - 1 ? '開始使用' : '下一步';
+    }
+
+    function openOnboardingTutorial() {
+      if (onboardingTutorialShown || !currentUser || userPrefs[ONBOARDING_TUTORIAL_KEY] === true) return;
+      onboardingTutorialShown = true;
+      onboardingTutorialIndex = 0;
+      renderOnboardingTutorialStep();
+      const modal = document.getElementById('onboardingTutorialModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    document.getElementById('onboardingTutorialPrev').addEventListener('click', () => {
+      if (onboardingTutorialIndex > 0) { onboardingTutorialIndex--; renderOnboardingTutorialStep(); }
+    });
+    document.getElementById('onboardingTutorialNext').addEventListener('click', () => {
+      if (onboardingTutorialIndex < ONBOARDING_TUTORIAL_STEPS.length - 1) { onboardingTutorialIndex++; renderOnboardingTutorialStep(); }
+      else closeOnboardingTutorial(true);
+    });
+    document.getElementById('onboardingTutorialSkipTop').addEventListener('click', () => closeOnboardingTutorial(true));
+    document.getElementById('onboardingTutorialModal').addEventListener('click', event => {
+      if (event.target.id === 'onboardingTutorialModal') closeOnboardingTutorial(true);
+    });
+
     function updateLoginBtn() {
       const b = document.getElementById('loginBtn');
       if (!b) return;
@@ -4244,6 +4344,9 @@
           document.getElementById('notifyNew').checked = !!userPrefs.notifyNew;
           renderAccountPanel();
           checkMemberAchievements();
+          if (currentUser && userPrefs[ONBOARDING_TUTORIAL_KEY] !== true) {
+            setTimeout(openOnboardingTutorial, 450);
+          }
           syncLeaderboardProfile();
           reconcileBadgeRewards();
           checkNewSongs();
