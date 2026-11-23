@@ -3580,14 +3580,17 @@
     let onboardingTutorialShown = false;
     let onboardingTutorialIndex = 0;
     const ONBOARDING_TUTORIAL_STEPS = [
-      { icon: 'fa-music', color: 'text-sky-300', title: '瀏覽、搜尋與播放歌曲', location: '位置：頁面中段「歌曲列表」、頁首搜尋框與分類／排序列', text: '在歌曲卡片上點選播放；上方搜尋框可以搜尋曲名或分類，分類按鈕與排序選單可以快速整理曲庫。', target: '#musicGrid' },
-      { icon: 'fa-sliders', color: 'text-purple-300', title: '播放器與更多設定', location: '位置：畫面最下方固定播放器', text: '底部播放器可以播放、暫停、切換歌曲、前進或倒退 5 秒。按「更多設定」可調整播放倍速、循環模式、音量與靜音。', target: '#playerBar' },
-      { icon: 'fa-align-center', color: 'text-pink-300', title: '歌詞與全螢幕 KTV', location: '位置：畫面最下方播放器右側', text: '按播放器的「歌詞」查看同步歌詞；按「全螢幕 KTV」進入沉浸模式，還能調整歌詞字級。', target: '#playerBar' },
-      { icon: 'fa-heart', color: 'text-rose-300', title: '收藏與個人播放清單', location: '位置：登入後出現的「會員中心」與歌曲卡片操作區', text: '登入後可以收藏歌曲、建立雲端播放清單，並在不同裝置同步。訪客播放清單則只會保存在目前瀏覽器。', target: '#accountArea' },
-      { icon: 'fa-star', color: 'text-amber-300', title: '按讚、評分、留言與投票', location: '位置：歌曲卡片下方互動按鈕，以及頁面中段「905 班人氣歌曲榜」', text: '登入後可對歌曲按讚、評分、留言，也能參加每月一次的 905 班人氣歌曲投票。', target: '#voteBox' },
-      { icon: 'fa-user-astronaut', color: 'text-cyan-300', title: '會員中心、音樂幣與徽章', location: '位置：登入後頁首下方「會員中心」', text: '會員中心可以設定暱稱與頭像、領取每日音樂幣、完成任務收集徽章，並查看登入同學排行榜。', target: '#accountArea' },
-      { icon: 'fa-palette', color: 'text-fuchsia-300', title: '主題風格與活動企劃', location: '位置：頁首右側「主題風格」按鈕，以及首頁特色活動區', text: '右上角「主題風格」可以切換介面色彩；網站也有心事單曲、青春里程碑與畢業旅行等限定內容。', target: '#themeMenuBtn' },
-      { icon: 'fa-calendar-days', color: 'text-emerald-300', title: '倒數、里程碑與班級資訊', location: '位置：首頁上方倒數看板、青春里程碑與班級廣播', text: '首頁的倒數看板、青春里程碑、班級廣播與公告，會陪你記錄 905 一起走過的日子。', target: '#gradHeroBanner' }
+      { icon: 'fa-magnifying-glass', color: 'text-sky-300', title: '搜尋歌曲', location: '位置：頁首搜尋框', text: '在這裡輸入歌名或分類，就能快速找到想聽的歌曲。', target: '#searchInput' },
+      { icon: 'fa-filter', color: 'text-cyan-300', title: '分類與歌曲列表', location: '位置：歌曲列表上方的分類按鈕', text: '按分類按鈕可以篩選歌曲；下方歌曲卡片可以直接點選播放。', target: '#genreFilters' },
+      { icon: 'fa-sliders', color: 'text-purple-300', title: '播放控制', location: '位置：畫面最下方固定播放器', text: '這裡可以播放、暫停、上一首、下一首、前進或倒退 5 秒。', target: '#playerBar' },
+      { icon: 'fa-gear', color: 'text-indigo-300', title: '更多播放設定', location: '位置：最下方播放器右側「更多設定」按鈕', text: '按下後可以調整播放倍速、循環模式、音量與靜音。', target: '#moreSettingsBtn' },
+      { icon: 'fa-align-center', color: 'text-pink-300', title: '同步歌詞', location: '位置：最下方播放器右側「歌詞」按鈕', text: '按下「歌詞」即可開啟目前歌曲的同步歌詞面板。', target: '#lyricsBtn' },
+      { icon: 'fa-expand', color: 'text-fuchsia-300', title: '全螢幕 KTV', location: '位置：最下方播放器右側「全螢幕 KTV」按鈕', text: '登入後按這裡可進入沉浸式 KTV，並調整歌詞大小。', target: '#ktvOpenBtn' },
+      { icon: 'fa-user-astronaut', color: 'text-cyan-300', title: '會員中心', location: '位置：登入後頁首下方的會員中心區塊', text: '登入後可以在這裡管理個人資料、收藏、播放清單、音樂幣與徽章。', target: '#accountArea' },
+      { icon: 'fa-star', color: 'text-amber-300', title: '按讚、評分與留言', location: '位置：歌曲卡片下方的互動按鈕', text: '登入後可對歌曲按讚、評分與留言，留下你的聆聽回饋。', target: '#musicGrid > div:first-child' },
+      { icon: 'fa-trophy', color: 'text-yellow-300', title: '905 班人氣歌曲榜', location: '位置：頁面中段「905 班人氣歌曲榜」', text: '登入後每期可以支持一首歌曲，投票結果會即時更新。', target: '#voteBox' },
+      { icon: 'fa-palette', color: 'text-fuchsia-300', title: '主題風格', location: '位置：頁首右側「主題風格」按鈕', text: '按這裡可以切換藍色、綠色、紫色、心事與其他主題風格。', target: '#themeMenuBtn' },
+      { icon: 'fa-calendar-days', color: 'text-emerald-300', title: '倒數與青春里程碑', location: '位置：首頁上方倒數看板', text: '這裡會顯示會考、畢業倒數與 905 一起走過的青春里程。', target: '#gradHeroBanner' }
     ];
 
     function markOnboardingTutorialDone() {
