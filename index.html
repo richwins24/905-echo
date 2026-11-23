@@ -168,8 +168,9 @@
     #profileShopPanel > section, #memberRewardsPanel > section { overscroll-behavior: contain; }
 
     /* ===== 首次登入教學模式 ===== */
-    #onboardingTutorialModal { background: rgba(2, 6, 23, .82); backdrop-filter: blur(8px); }
-    #onboardingTutorialModal .tutorial-card { max-height: min(88vh, 720px); box-shadow: 0 28px 90px rgba(0,0,0,.58); }
+    #onboardingTutorialModal { background: transparent; }
+    #onboardingTutorialSpotlight { position: fixed; z-index: 1; pointer-events: none; border: 2px solid rgba(251, 207, 232, .95); border-radius: 14px; background: transparent; box-shadow: 0 0 0 9999px rgba(2, 6, 23, .82), 0 0 0 6px rgba(244, 114, 182, .18), 0 0 28px rgba(244, 114, 182, .75); transition: left .28s ease, top .28s ease, width .28s ease, height .28s ease; }
+    #onboardingTutorialModal .tutorial-card { position: relative; z-index: 2; max-height: min(88vh, 720px); box-shadow: 0 28px 90px rgba(0,0,0,.58); }
     #onboardingTutorialModal .tutorial-step { animation: tutorialStepIn .24s ease-out both; }
     #onboardingTutorialModal .tutorial-location { border: 1px solid rgba(196,181,253,.22); background: rgba(129,140,248,.08); }
     .onboarding-target-highlight { outline: 3px solid rgba(244,114,182,.75) !important; outline-offset: 5px !important; scroll-margin-top: 90px; }
@@ -1539,6 +1540,7 @@
 
   <!-- 首次登入功能教學；完成或跳過後才會再次不顯示 -->
   <div id="onboardingTutorialModal" class="hidden fixed inset-0 z-[130] items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="onboardingTutorialTitle">
+    <div id="onboardingTutorialSpotlight" class="hidden" aria-hidden="true"></div>
     <section class="tutorial-card w-full max-w-2xl overflow-y-auto rounded-3xl border border-purple-400/40 bg-slate-900 p-5 sm:p-7">
       <div class="flex items-start justify-between gap-4">
         <div>
@@ -3600,7 +3602,24 @@
       modal.classList.add('hidden');
       modal.classList.remove('flex');
       document.querySelectorAll('.onboarding-target-highlight').forEach(element => element.classList.remove('onboarding-target-highlight'));
+      const spotlight = document.getElementById('onboardingTutorialSpotlight');
+      if (spotlight) spotlight.classList.add('hidden');
       if (markDone) markOnboardingTutorialDone();
+    }
+
+    function updateOnboardingSpotlight() {
+      const step = ONBOARDING_TUTORIAL_STEPS[onboardingTutorialIndex];
+      const spotlight = document.getElementById('onboardingTutorialSpotlight');
+      if (!step || !spotlight) return;
+      const target = document.querySelector(step.target);
+      if (!target || target.offsetParent === null) { spotlight.classList.add('hidden'); return; }
+      const rect = target.getBoundingClientRect();
+      const padding = 8;
+      spotlight.classList.remove('hidden');
+      spotlight.style.left = `${Math.max(4, rect.left - padding)}px`;
+      spotlight.style.top = `${Math.max(4, rect.top - padding)}px`;
+      spotlight.style.width = `${Math.max(20, rect.width + padding * 2)}px`;
+      spotlight.style.height = `${Math.max(20, rect.height + padding * 2)}px`;
     }
 
     function renderOnboardingTutorialStep() {
@@ -3618,6 +3637,8 @@
       document.querySelectorAll('.onboarding-target-highlight').forEach(element => element.classList.remove('onboarding-target-highlight'));
       const target = document.querySelector(step.target);
       if (target) { target.classList.add('onboarding-target-highlight'); target.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+      updateOnboardingSpotlight();
+      setTimeout(updateOnboardingSpotlight, 320);
       progress.style.width = `${((onboardingTutorialIndex + 1) / ONBOARDING_TUTORIAL_STEPS.length) * 100}%`;
       count.textContent = `${onboardingTutorialIndex + 1} / ${ONBOARDING_TUTORIAL_STEPS.length}`;
       prev.disabled = onboardingTutorialIndex === 0;
@@ -3651,6 +3672,8 @@
     document.getElementById('onboardingTutorialModal').addEventListener('click', event => {
       if (event.target.id === 'onboardingTutorialModal') closeOnboardingTutorial(true);
     });
+    window.addEventListener('resize', updateOnboardingSpotlight);
+    window.addEventListener('scroll', updateOnboardingSpotlight, true);
 
     function updateLoginBtn() {
       const b = document.getElementById('loginBtn');
