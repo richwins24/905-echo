@@ -913,8 +913,8 @@
                 <div class="flex items-center gap-2.5">
                   <span class="w-3.5 h-3.5 rounded-full bg-amber-300 shadow-sm shadow-amber-300/50"></span>
                   <div>
-                    <p class="font-bold text-white text-xs">畢業旅行（敬請期待）</p>
-                    <p id="travelThemeStatus" class="text-[10px] text-slate-400">需管理員解鎖後開放</p>
+                    <p class="font-bold text-white text-xs">畢業旅行</p>
+                    <p id="travelThemeStatus" class="text-[10px] text-slate-400">所有使用者皆可使用</p>
                   </div>
                 </div>
                 <span class="flex items-center gap-2"><i class="fa-solid fa-lock text-amber-200/70 text-xs" id="travelLockIcon" aria-label="管理員解鎖後開放"></i><i class="fa-solid fa-check text-amber-200 text-xs check-icon hidden" id="check-travel"></i></span>
@@ -3173,11 +3173,7 @@
     }
 
     function applyPresetTheme(theme) {
-      if (theme === 'travel' && !isAdmin) {
-        updateTravelThemeGateUI();
-        alert('畢業旅行主題目前敬請期待，請管理員先解鎖管理模式後再開啟。');
-        return;
-      }
+      // 畢業旅行主題已對所有使用者開放，不再檢查管理員帳號。
       currentThemeMode = theme;
       // 移除動態 inline style
       ['--primary-color', '--primary-hover', '--primary-border', '--primary-text', '--primary-gradient', '--bg-radial', '--aura-color-1', '--aura-color-2'].forEach(p => {
@@ -3212,8 +3208,8 @@
     function updateTravelThemeGateUI() {
       const status = document.getElementById('travelThemeStatus');
       const lockIcon = document.getElementById('travelLockIcon');
-      if (status) status.textContent = isAdmin ? '管理員已解鎖・可預覽' : '敬請期待・需管理員解鎖後開放';
-      if (lockIcon) lockIcon.classList.toggle('hidden', !!isAdmin);
+      if (status) status.textContent = '已開放・所有使用者皆可使用';
+      if (lockIcon) lockIcon.classList.add('hidden');
     }
 
     const themeMenuBtn = document.getElementById('themeMenuBtn');
@@ -3244,7 +3240,7 @@
     try {
       const storedMode = localStorage.getItem('sg_theme_mode');
       // 將尚未選主題或舊版預設藍色導向「心事」；其他已選主題照常保留。
-      const savedMode = (!storedMode || storedMode === 'blue' || storedMode === 'travel') ? 'song' : storedMode;
+      const savedMode = (!storedMode || storedMode === 'blue') ? 'travel' : storedMode;
       const savedHex = localStorage.getItem('sg_custom_hex') || '#3b82f6';
       if (savedMode === 'custom') {
         applyCustomColor(savedHex);
@@ -5133,8 +5129,8 @@
       nextId = songs.reduce((m, s) => Math.max(m, Number(s.id) || 0), 0) + 1;
       refreshAll();
 
-      // 頁面進入時預設播放「沒有人知道的心事」；若瀏覽器阻擋自動播放，仍先載入歌曲資訊。
-      const defaultSong = songs.find(s => String(s.title || '').includes('沒有人知道'));
+      // 頁面進入時預設播放「沿途有你」；若瀏覽器阻擋自動播放，仍先載入歌曲資訊。
+      const defaultSong = songs.find(s => String(s.title || '').includes('沿途有你'));
       if (defaultSong) {
         loadSong(defaultSong.id, 0, false).catch(() => {
           currentId = defaultSong.id;
