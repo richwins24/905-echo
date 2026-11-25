@@ -991,10 +991,10 @@
             </label>
             <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-3">
               <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
-                <div><p class="text-sm font-semibold text-white">40 款頭像・含 10 款畢旅限定</p><p id="avatarUnlockStatus" class="mt-1 text-xs text-slate-400">40 款頭像各自使用音樂幣兌換；含 10 款畢旅紀念限定頭像。Google 頭像可免費使用。</p></div>
+                <div><p class="text-sm font-semibold text-white">5 款頭像</p><p id="avatarUnlockStatus" class="mt-1 text-xs text-slate-400">5 款頭像各自使用音樂幣兌換；Google 頭像可免費使用。</p></div>
               </div>
               <p class="mb-3 text-xs text-slate-400">頭像需逐款兌換；購買後可隨時免費切換。</p>
-              <div id="profileAvatarChoices" class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4" aria-label="選擇 Google 頭像或兌換 40 款個人頭像">
+              <div id="profileAvatarChoices" class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4" aria-label="選擇 Google 頭像或兌換 5 款個人頭像">
                 <div class="flex flex-col items-center gap-2 rounded-xl border border-slate-700 bg-slate-800/70 p-3">
                   <button type="button" data-avatar="" aria-label="使用 Google 頭像" class="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xs text-slate-200">Google 頭像</button>
                   <span class="text-center text-[10px] text-emerald-300">免費使用</span>
@@ -1029,7 +1029,7 @@
             </div>
             <div>
               <div class="mb-3 flex flex-wrap items-end justify-between gap-2">
-                <div><h3 class="text-sm font-bold text-white">905 徽章典藏</h3><p class="mt-1 text-xs text-slate-400">完成聽歌、收藏與互動任務，解鎖 24 枚紀念徽章。</p></div>
+                <div><h3 class="text-sm font-bold text-white">905 徽章典藏</h3><p class="mt-1 text-xs text-slate-400">完成聽歌、收藏與互動任務，解鎖 3 枚紀念徽章。</p></div>
                 <span id="memberAchievementCount" class="rounded-full border border-amber-300/25 bg-amber-300/10 px-3 py-1 text-xs font-bold text-amber-200">0 / 24</span>
               </div>
               <div id="memberAchievementGrid" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-live="polite"></div>
@@ -1608,7 +1608,7 @@
           </select>
         </div>
         <div id="lyricFxShopList" class="grid max-h-[62vh] grid-cols-1 gap-3 overflow-y-auto pr-1 sm:grid-cols-2" aria-label="所有字幕特效商品"></div>
-        <div id="lyricFxShopStatus" class="min-h-5 border-t border-slate-800 pt-3 text-xs text-slate-400" role="status" aria-live="polite">三大主題系列各有 1 款免費特效；其餘使用音樂幣永久解鎖。</div>
+        <div id="lyricFxShopStatus" class="min-h-5 border-t border-slate-800 pt-3 text-xs text-slate-400" role="status" aria-live="polite">目前提供 3 款字幕特效；購買後可永久使用。</div>
       </div>
     </section>
   </div>
@@ -2741,30 +2741,7 @@
       audio.currentTime = line.time;
       if (audio.paused) audio.play();
     });
-
-    const LYRIC_EFFECTS = [
-      { id: 'none', name: '原始歌詞', price: 0, group: 'common' },
-      { id: 'glow', name: '經典發光', price: 0, group: 'common' },
-
-      // 心事系列：3 款，其中「心事流光」免費
-      { id: 'heart-song', name: '心事流光', price: 0, group: 'heart' },
-      { id: 'heart-bloom', name: '心事花火', price: 300, group: 'heart' },
-      { id: 'heart-night', name: '心事夜空', price: 500, group: 'heart' },
-
-      // 畢業旅行限定：5 款，其中「畢旅星光」免費
-      { id: 'trip-stars', name: '畢旅星光', price: 0, group: 'travel', limited: true },
-      { id: 'sea-breeze', name: '海風流光', price: 300, group: 'travel', limited: true },
-      { id: 'sunset', name: '夕陽漸層', price: 500, group: 'travel', limited: true },
-      { id: 'postcard', name: '旅行明信片', price: 800, group: 'travel', limited: true },
-      { id: 'trip-memory', name: '青春旅途', price: 1000, group: 'travel', limited: true },
-
-      // 運動會系列：5 款，其中「運動會彩帶」免費
-      { id: 'track-ribbon', name: '運動會彩帶', price: 0, group: 'sports', limited: true },
-      { id: 'medal-gold', name: '金牌時刻', price: 300, group: 'sports', limited: true },
-      { id: 'stadium-neon', name: '球場聚光', price: 350, group: 'sports', limited: true },
-      { id: 'sprint-flame', name: '衝刺火焰', price: 450, group: 'sports', limited: true },
-      { id: 'victory-confetti', name: '勝利彩花', price: 500, group: 'sports', limited: true }
-    ];
+    let LYRIC_EFFECTS = [];
     let activeLyricEffectId = 'none';
     let lyricEffectInitialized = false;
     let lyricFxPurchaseInProgress = false;
@@ -3763,83 +3740,16 @@
     }
 
     const PROFILE_UNLOCK_COSTS = { nickname: 100 };
-    // 頭像商品使用永久音樂幣兌換；avatar31–avatar40 為畢旅紀念限定系列。
-    const AVATAR_PRODUCTS = [
-      { id: 'avatar01', emoji: '🎧', name: '耳機', price: 100 },
-      { id: 'avatar02', emoji: '🎵', name: '音符', price: 100 },
-      { id: 'avatar03', emoji: '🌟', name: '星星', price: 100 },
-      { id: 'avatar04', emoji: '🌈', name: '彩虹', price: 200 },
-      { id: 'avatar05', emoji: '🎹', name: '鋼琴', price: 200 },
-      { id: 'avatar06', emoji: '🌙', name: '月亮', price: 200 },
-      { id: 'avatar07', emoji: '🌱', name: '新芽', price: 300 },
-      { id: 'avatar08', emoji: '💜', name: '紫心', price: 300 },
-      { id: 'avatar09', emoji: '🎤', name: '麥克風', price: 300 },
-      { id: 'avatar10', emoji: '🎼', name: '樂譜', price: 400 },
-      { id: 'avatar11', emoji: '🎸', name: '吉他', price: 400 },
-      { id: 'avatar12', emoji: '🥁', name: '鼓', price: 400 },
-      { id: 'avatar13', emoji: '🎻', name: '小提琴', price: 500 },
-      { id: 'avatar14', emoji: '🎷', name: '薩克斯風', price: 500 },
-      { id: 'avatar15', emoji: '🎺', name: '小喇叭', price: 500 },
-      { id: 'avatar16', emoji: '🪕', name: '班卓琴', price: 600 },
-      { id: 'avatar17', emoji: '📻', name: '收音機', price: 600 },
-      { id: 'avatar18', emoji: '💿', name: '光碟', price: 600 },
-      { id: 'avatar19', emoji: '🎶', name: '雙音符', price: 700 },
-      { id: 'avatar20', emoji: '🎨', name: '調色盤', price: 700 },
-      { id: 'avatar21', emoji: '🚀', name: '火箭', price: 700 },
-      { id: 'avatar22', emoji: '🌸', name: '櫻花', price: 800 },
-      { id: 'avatar23', emoji: '🍀', name: '四葉草', price: 800 },
-      { id: 'avatar24', emoji: '☀️', name: '太陽', price: 800 },
-      { id: 'avatar25', emoji: '🌊', name: '海浪', price: 900 },
-      { id: 'avatar26', emoji: '🔥', name: '火焰', price: 900 },
-      { id: 'avatar27', emoji: '🦋', name: '蝴蝶', price: 900 },
-      { id: 'avatar28', emoji: '🐱', name: '貓咪', price: 1000 },
-      { id: 'avatar29', emoji: '🐼', name: '熊貓', price: 1000 },
-      { id: 'avatar30', emoji: '🐰', name: '兔子', price: 1000 },
-      { id: 'avatar31', emoji: '🚌', name: '畢旅巴士', price: 200, limited: true },
-      { id: 'avatar32', emoji: '🧳', name: '旅行行李', price: 300, limited: true },
-      { id: 'avatar33', emoji: '🧭', name: '旅途指南針', price: 400, limited: true },
-      { id: 'avatar34', emoji: '🗺️', name: '905 路線地圖', price: 500, limited: true },
-      { id: 'avatar35', emoji: '🎒', name: '青春背包', price: 600, limited: true },
-      { id: 'avatar36', emoji: '📸', name: '旅行合照', price: 700, limited: true },
-      { id: 'avatar37', emoji: '🏖️', name: '海邊日光', price: 800, limited: true },
-      { id: 'avatar38', emoji: '🌅', name: '出發晨曦', price: 900, limited: true },
-      { id: 'avatar39', emoji: '🎡', name: '畢旅摩天輪', price: 1000, limited: true },
-      { id: 'avatar40', emoji: '🏕️', name: '星夜露營', price: 1000, limited: true },
-    ];
-    const MEMBER_ACHIEVEMENTS = [
-      { id: 'daily_checkin', title: '905 報到星火', description: '領取每日登入音樂幣，記下今天也來到 905。', sticker: '✨', icon: 'fa-sun', tier: 'bronze' },
-      { id: 'first_song', title: '青春初聲', description: '完成第一次歌曲播放。', sticker: '🎵', icon: 'fa-music', tier: 'bronze' },
-      { id: 'playlist_creator', title: '回憶策展人', description: '建立第一份專屬播放清單。', sticker: '📼', icon: 'fa-compact-disc', tier: 'silver' },
-      { id: 'trip_memory', title: '畢旅時光膠囊', description: '完成畢旅行程明信片配對遊戲。', sticker: '🚌', icon: 'fa-route', tier: 'legend' },
-      { id: 'listen_5', title: '耳機初啟', description: '累積播放 5 次。', sticker: '🎧', icon: 'fa-headphones', tier: 'bronze' },
-      { id: 'listen_25', title: '副歌接唱王', description: '累積播放 25 次。', sticker: '🎤', icon: 'fa-microphone-lines', tier: 'silver' },
-      { id: 'listen_50', title: '青春留聲機', description: '累積播放 50 次。', sticker: '💿', icon: 'fa-compact-disc', tier: 'silver' },
-      { id: 'listen_100', title: '百回聲浪', description: '累積播放 100 次。', sticker: '🌊', icon: 'fa-water', tier: 'gold' },
-      { id: 'listen_200', title: '905 傳說歌王', description: '累積播放 200 次。', sticker: '👑', icon: 'fa-crown', tier: 'legend' },
-      { id: 'unique_5', title: '歌曲初相遇', description: '聽過至少 1 首不同歌曲。', sticker: '🧭', icon: 'fa-compass', tier: 'bronze' },
-      { id: 'unique_15', title: '曲庫初探', description: '聽過至少 2 首不同歌曲。', sticker: '🗺️', icon: 'fa-map', tier: 'silver' },
-      { id: 'unique_30', title: '雙曲回聲', description: '聽過至少 2 首不同歌曲，並在 3 個不同日期播放。', sticker: '🌌', icon: 'fa-earth-asia', tier: 'gold' },
-      { id: 'fav_5', title: '心頭好', description: '收藏至少 1 首歌曲。', sticker: '💜', icon: 'fa-heart', tier: 'bronze' },
-      { id: 'fav_15', title: '雙曲珍藏', description: '收藏至少 2 首不同歌曲。', sticker: '💎', icon: 'fa-gem', tier: 'silver' },
-      { id: 'playlist_3', title: '三輯回憶', description: '建立 3 份雲端播放清單。', sticker: '📚', icon: 'fa-layer-group', tier: 'silver' },
-      { id: 'playlist_5', title: '班級音樂總監', description: '建立 5 份雲端播放清單。', sticker: '🎼', icon: 'fa-sliders', tier: 'gold' },
-      { id: 'genre_3', title: 'KTV 初登場', description: '首次開啟全螢幕 KTV。', sticker: '🎨', icon: 'fa-expand', tier: 'silver' },
-      { id: 'genre_6', title: 'KTV 常客', description: '在 3 個不同日期開啟全螢幕 KTV。', sticker: '🪐', icon: 'fa-satellite', tier: 'gold' },
-      { id: 'morning_listener', title: '晨光點歌人', description: '在本地時間 05:00–08:59 播放歌曲。', sticker: '🌅', icon: 'fa-cloud-sun', tier: 'bronze' },
-      { id: 'night_listener', title: '午夜回聲', description: '在本地時間 22:00–03:59 播放歌曲。', sticker: '🌙', icon: 'fa-moon', tier: 'silver' },
-      { id: 'rated_1', title: '樂評初登場', description: '為至少 1 首歌曲評分。', sticker: '⭐', icon: 'fa-star', tier: 'bronze' },
-      { id: 'rated_10', title: '雙曲評審', description: '為至少 2 首不同歌曲評分。', sticker: '🏅', icon: 'fa-award', tier: 'gold' },
-      { id: 'playlist_tracks_10', title: '雙曲回憶歌單', description: '在雲端播放清單中加入至少 2 首不同歌曲。', sticker: '🎁', icon: 'fa-box-open', tier: 'gold' },
-      { id: 'commenter', title: '回聲留言者', description: '完成第一則歌曲留言。', sticker: '💬', icon: 'fa-comment-dots', tier: 'bronze' }
-    ];
-    const ACHIEVEMENT_BY_ID = Object.fromEntries(MEMBER_ACHIEVEMENTS.map(item => [item.id, item]));
+    // 頭像商品使用永久音樂幣兌換；目前由 music/catalog/avatars.json 管理。
+    let AVATAR_PRODUCTS = [];
+    let MEMBER_ACHIEVEMENTS = [];
+    let ACHIEVEMENT_BY_ID = {};
     const BADGE_REWARD_POINTS = { bronze: 10, silver: 20, gold: 30, legend: 30 };
     const MEMBER_LEVELS = [
-      { level: 1, title: '初聲同學', min: 0, next: 3 },
-      { level: 2, title: '旋律同行', min: 3, next: 7 },
-      { level: 3, title: '回憶收藏家', min: 7, next: 13 },
-      { level: 4, title: '青春領航員', min: 13, next: 19 },
-      { level: 5, title: '905 傳說', min: 19, next: 24 }
+      { level: 1, title: '初聲同學', min: 0, next: 1 },
+      { level: 2, title: '旋律同行', min: 1, next: 2 },
+      { level: 3, title: '回憶收藏家', min: 2, next: 3 },
+      { level: 4, title: '905 傳說', min: 3, next: null }
     ];
     function getMemberLevel(badgeCount) {
       const count = Math.max(0, Math.min(MEMBER_ACHIEVEMENTS.length, Number(badgeCount) || 0));
@@ -3862,7 +3772,27 @@
     function isPaidFeatureTester() {
       return !!currentUser && String(currentUser.email || '').trim().toLowerCase() === PAID_FEATURE_TESTER_EMAIL;
     }
-    updateLyricFxStoreUI();
+    async function loadCatalogs() {
+      const [effectsRes, avatarsRes, achievementsRes] = await Promise.all([
+        fetch('music/catalog/lyric-effects.json'),
+        fetch('music/catalog/avatars.json'),
+        fetch('music/catalog/achievements.json')
+      ]);
+      if (!effectsRes.ok || !avatarsRes.ok || !achievementsRes.ok) throw new Error('catalog 載入失敗');
+      const [effects, avatars, achievements] = await Promise.all([
+        effectsRes.json(), avatarsRes.json(), achievementsRes.json()
+      ]);
+      if (!Array.isArray(effects) || !Array.isArray(avatars) || !Array.isArray(achievements)) {
+        throw new Error('catalog 格式錯誤');
+      }
+      LYRIC_EFFECTS = effects;
+      AVATAR_PRODUCTS = avatars;
+      MEMBER_ACHIEVEMENTS = achievements;
+      ACHIEVEMENT_BY_ID = Object.fromEntries(MEMBER_ACHIEVEMENTS.map(item => [item.id, item]));
+      updateLyricFxStoreUI();
+      renderMemberLevel();
+      renderAccountPanel();
+    }
 
     function hasMemberAchievement(id) {
       return !!(userPrefs.collection && userPrefs.collection[id]);
@@ -5123,7 +5053,9 @@
     }
 
     load();
-    loadRemote().then(() => {
+    loadCatalogs().catch(error => {
+      console.error('無法讀取 catalog：', error);
+    }).then(() => loadRemote()).then(() => {
       songs.forEach(s => { if (!stats[s.id]) stats[s.id] = { plays: 0, likes: 0 }; });
       genres = [...new Set(songs.map(s => s.genre))];
       nextId = songs.reduce((m, s) => Math.max(m, Number(s.id) || 0), 0) + 1;
