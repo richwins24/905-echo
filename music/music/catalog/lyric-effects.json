@@ -1,0 +1,5 @@
+[
+  {"id":"none","name":"原始歌詞","price":0,"group":"common"},
+  {"id":"glow","name":"經典發光","price":0,"group":"common"},
+  {"id":"trip-stars","name":"畢旅星光","price":0,"group":"travel","limited":true}
+]
