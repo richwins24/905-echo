@@ -565,6 +565,18 @@
       border-radius: 1rem;
       box-shadow: 0 10px 26px rgba(2, 6, 23, 0.14);
     }
+    #noticeBox {
+      background: linear-gradient(135deg, rgba(146, 64, 14, .92), rgba(180, 83, 9, .72), rgba(120, 53, 15, .92));
+      border: 1px solid rgba(253, 186, 116, .62);
+      color: #fff7ed;
+      font-size: clamp(1.35rem, 3.2vw, 2.5rem);
+      font-weight: 900;
+      letter-spacing: .04em;
+      line-height: 1.35;
+      text-align: center;
+      text-shadow: 0 2px 16px rgba(67, 20, 7, .45);
+      box-shadow: 0 16px 40px rgba(120, 53, 15, .28), inset 0 1px rgba(255,255,255,.16);
+    }
 
     #musicGrid { align-items: stretch; }
     #musicGrid > div {
@@ -1113,7 +1125,8 @@
           </div>
         </details>
       </div>
-
+  <!-- 班級公告：由 music/notice.json 載入，顯示於頁面最上方 -->
+  <div id="noticeBox" class="hidden max-w-7xl mx-auto mb-5 px-5 py-5 md:px-8 md:py-7" role="status" aria-live="polite"></div>
 
   <!-- 單曲限定的沉浸式聆聽企劃主視覺；切換其他主題時隱藏 -->
   <section id="heartEventBanner" class="max-w-7xl mx-auto px-4 pt-5" aria-label="單曲主題活動：沒有人知道我的心事">
@@ -1499,9 +1512,6 @@
       </div>
       <div id="playlistAddList" class="max-h-72 space-y-2 overflow-y-auto"></div>
     </div>
-
-    <!-- 班級公告 -->
-    <div id="noticeBox" class="hidden mb-4 bg-amber-900/30 border border-amber-500/40 text-amber-100 rounded-xl px-4 py-2 text-sm"></div>
 
     <!-- 本週熱門 -->
     <div id="hotBox" class="flex flex-wrap items-center gap-2 mb-6"></div>
