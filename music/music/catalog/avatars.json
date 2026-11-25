@@ -1,0 +1,7 @@
+[
+  {"id":"avatar01","emoji":"🎧","name":"耳機","price":100},
+  {"id":"avatar02","emoji":"🎵","name":"音符","price":100},
+  {"id":"avatar03","emoji":"🌟","name":"星星","price":100},
+  {"id":"avatar04","emoji":"🌈","name":"彩虹","price":200},
+  {"id":"avatar05","emoji":"🎹","name":"鋼琴","price":200}
+]
