@@ -2816,7 +2816,7 @@
           <button type="button" data-lyric-fx-action="${action}" data-effect-id="${esc(effect.id)}" aria-pressed="${active}" aria-label="${esc(actionLabel)}：${esc(effect.name)}" ${disabled ? 'disabled' : ''} class="w-full rounded-lg px-3 py-2 text-xs font-bold transition disabled:cursor-not-allowed disabled:opacity-50 ${actionClass}">${esc(actionLabel)}</button>
         </article>`;
       }).join('');
-      const activeEffect = LYRIC_EFFECTS.find(item => item.id === activeLyricEffectId) || LYRIC_EFFECTS[0];
+      const activeEffect = LYRIC_EFFECTS.find(item => item.id === activeLyricEffectId) || LYRIC_EFFECTS[0] || { name: '尚未載入' };
       status.textContent = `目前使用「${activeEffect.name}」・音樂幣 ${balance}${tester ? '・測試帳號解鎖不扣幣' : ''}。`;
     }
     async function setLyricEffect(effectId) {
