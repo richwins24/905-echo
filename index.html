@@ -961,6 +961,11 @@
 
     <!-- 登入狀態與登入前後差異、個人資料設定 -->
     <section id="accountArea" class="hidden mx-auto max-w-7xl px-4 pt-4 mb-6 rounded-2xl border border-slate-700/80 bg-slate-900/80 p-4 shadow-lg md:p-5">
+      <button id="memberAccountToggle" type="button" class="hidden w-full items-center gap-3 rounded-2xl border border-cyan-300/30 bg-gradient-to-r from-slate-900 via-purple-950/70 to-cyan-950/60 px-4 py-3 text-left shadow-lg transition hover:border-cyan-200/60 hover:from-slate-800 hover:to-cyan-900/60" aria-expanded="false" aria-controls="memberAccountView" title="開啟會員中心">
+        <span id="memberAccountToggleAvatar" class="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full border border-cyan-300/40 bg-purple-900/60 text-lg text-white">♪</span>
+        <span class="min-w-0 flex-1"><span class="flex flex-wrap items-center gap-x-2 gap-y-0.5"><b class="text-sm text-white">會員中心</b><span id="memberAccountToggleName" class="truncate text-xs text-cyan-200"></span></span><span id="memberAccountToggleLevel" class="mt-1 block text-[11px] text-slate-400"></span></span>
+        <i id="memberAccountToggleIcon" class="fa-solid fa-chevron-down shrink-0 text-xs text-cyan-200" aria-hidden="true"></i>
+      </button>
       <div id="memberAccountView" class="hidden">
         <div class="mb-4 flex flex-wrap items-center gap-3">
           <div id="accountAvatarPreview" class="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full border border-purple-400/40 bg-purple-900/50 text-xl text-white">♪</div>
@@ -4181,15 +4186,24 @@
       const isLoggedIn = !!currentUser;
       document.getElementById('accountArea').classList.toggle('hidden', !isLoggedIn);
       document.getElementById('memberAccountView').classList.toggle('hidden', !isLoggedIn);
+      const memberAccountToggle = document.getElementById('memberAccountToggle');
+      memberAccountToggle.classList.toggle('hidden', !isLoggedIn);
+      memberAccountToggle.classList.toggle('flex', isLoggedIn);
       if (!isLoggedIn) return;
 
       const profile = userPrefs.profile || {};
       const displayName = profile.nickname || currentUser.displayName || '同學';
       document.getElementById('accountWelcomeName').textContent = `嗨，${displayName}`;
+      document.getElementById('memberAccountToggleName').textContent = `嗨，${displayName}`;
+      const toggleAvatar = document.getElementById('memberAccountToggleAvatar');
+      if (profile.avatar) toggleAvatar.textContent = profile.avatar;
+      else if (currentUser.photoURL) toggleAvatar.innerHTML = `<img src="${esc(currentUser.photoURL)}" alt="" referrerpolicy="no-referrer" class="h-full w-full object-cover">`;
+      else toggleAvatar.textContent = displayName.charAt(0).toUpperCase();
       const nicknameInput = document.getElementById('profileNickname');
       nicknameInput.value = profile.nickname || currentUser.displayName || '';
       selectedProfileAvatar = typeof profile.avatar === 'string' ? profile.avatar : '';
       renderMemberCollection();
+      document.getElementById('memberAccountToggleLevel').textContent = document.getElementById('memberLevelDisplay').textContent;
       renderProfileUnlocks(profile);
       renderDailyRewardUI();
 
@@ -4262,6 +4276,14 @@
       button.setAttribute('aria-expanded', String(willOpen));
       button.title = willOpen ? '收合訪客與登入功能比較' : '展開訪客與登入功能比較';
       if (willOpen) panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+    const memberAccountToggle = document.getElementById('memberAccountToggle');
+    const memberAccountView = document.getElementById('memberAccountView');
+    memberAccountToggle.addEventListener('click', () => {
+      const open = memberAccountView.classList.contains('hidden');
+      memberAccountView.classList.toggle('hidden', !open);
+      memberAccountToggle.setAttribute('aria-expanded', String(open));
+      document.getElementById('memberAccountToggleIcon').className = `fa-solid ${open ? 'fa-chevron-up' : 'fa-chevron-down'} shrink-0 text-xs text-cyan-200`;
     });
     document.getElementById('accountSignOutBtn').addEventListener('click', () => document.getElementById('loginBtn').click());
     const profileShopPanel = document.getElementById('profileShopPanel');
