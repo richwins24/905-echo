@@ -1,5 +1,9 @@
 [
   {"id":"none","name":"原始歌詞","price":0,"group":"common"},
   {"id":"glow","name":"經典發光","price":0,"group":"common"},
-  {"id":"trip-stars","name":"畢旅星光","price":0,"group":"travel","limited":true}
+  {"id":"heart-bloom","name":"心事花火","price":300,"group":"heart"},
+  {"id":"heart-night","name":"心事夜空","price":500,"group":"heart"},
+  {"id":"trip-stars","name":"畢旅星光","price":0,"group":"travel","limited":true},
+  {"id":"sea-breeze","name":"海風流光","price":300,"group":"travel","limited":true},
+  {"id":"sunset","name":"夕陽漸層","price":500,"group":"travel","limited":true}
 ]
